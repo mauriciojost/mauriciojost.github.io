@@ -1,0 +1,80 @@
+#disqus_thread {
+  margin-top: 1em;
+}
+
+#sidebar {
+    background-attachment: scroll;
+    background-color: #1a4066;
+    background-image: url("/images/overlay.png"), url("/images/background.jpg");
+    background-position: top left, bottom center;
+    background-repeat: repeat, no-repeat;
+    background-attachment: fixed;
+    background-size: auto, cover;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 6em 3em 4em 3em;
+}
+
+#sidebar strong, #sidebar b {
+    color: #ffffff;
+}
+
+#sidebar h1 {
+    font-size: 1.75em;
+    font-weight: 300;
+}
+
+#sidebar h1 br {
+    display: inline;
+}
+
+
+#sidebar h2, #sidebar h3, #sidebar h4, #sidebar h5, #sidebar h6 {
+    color: #ffffff;
+}
+
+#sidebar h1 {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2em;
+    line-height: 1.55em;
+    margin: 0;
+}
+
+#sidebar .image.avatar {
+    margin: 0 0 1em 0;
+    width: 8em;
+}
+
+#content {
+  padding: 3em;
+}
+
+@media screen and (min-width: 940px) {
+  #container {
+    display: table; // Needed
+    height: 100%; // Needed
+  }
+
+  #content {
+    max-width: 790px;
+  }
+
+  #row {
+    display: table-row; // Needed
+  }
+
+  #sidebar, #page-content {
+    display: table-cell;
+  }
+
+  #sidebar {
+    background-color: #1a4066;
+      width: 400px;
+      min-width: 400px;
+  }
+
+  #page-content {
+    vertical-align: top;
+  }
+
+}

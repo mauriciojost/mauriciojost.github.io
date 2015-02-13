@@ -1,0 +1,11 @@
+# Site settings
+title: Laurent Pellegrino
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://www.pellegrino.link" # the base hostname & protocol for your site
+twitter_username: lpellegr
+github_username:  lpellegr
+
+# Build settings
+sass:
+    style: :compressed
+markdown: kramdown
