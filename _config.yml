@@ -8,4 +8,6 @@ github_username:  lpellegr
 # Build settings
 sass:
     style: :compressed
-markdown: kramdown
+markdown: redcarpet
+redcarpet:
+  extensions: ["strikethrough", "with_toc_data"]

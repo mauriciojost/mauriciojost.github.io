@@ -32,7 +32,7 @@ $ mkdir -p Movies
 $ mkdir -p Music
 {% endhighlight %}
 
-The previous sequence of commands can be written pretty quickly but require fingers gymnastic using keyboard shortcuts. With brace expansion, the previous example can be easily one-lined:
+The previous sequence of commands can be written pretty quickly but requires fingers gymnastic using keyboard shortcuts. With brace expansion, the previous example can be easily one-lined:
 
 {% highlight bash %}
 $ mkdir -p ~/{Images,Movies,Music}

@@ -12,7 +12,7 @@ The webpage is powered by the excellent [Jekyll][jekyll] static websites engine.
 
 The template is greatly inspired from [Strata][strata].
 
-[activeeon]: http://www.activeeeon.com
+[activeeon]: http://www.activeeon.com
 [jekyll]:    http://jekyllrb.com
 [medicalid]: https://play.google.com/store/apps/details?id=app.medicalid.free "Medical ID, the app that could save your life!"
 [strata]:    http://html5up.net/strata
