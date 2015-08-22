@@ -305,13 +305,13 @@ Briefly speaking, iterations are made by JMH using the _batchSize_ parameter wit
 
 The next figure sketches the trends:
 
-![tre](https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/pubchart?oid=1847999196&format=image)
+<a href="https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/edit?usp=sharing" target="_blank">![tre](https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/pubchart?oid=1847999196&format=image)</a>
 
 Using _StringBuilder_/_StringBuffer_ clearly outperform other approaches which use the _+_ operator or _String#concat(String)_ for dynamic String concatenation. Although _String#concat(String)_ scales in a similar manner as the method based on the _+_ operator, the difference of performance between both may be explained by the fact that no transformation is performed by the compiler for _String#concat(String)_. This last does not require to create multiple StringBuilder instances while avoiding the extra copy incurred by the call to _StringBuilder#toString()_.
 
 # Conclusion
 
-In conclusion, Java 8 seems not to introduce new optimizations for String concatenation with the _+_ operator. It means that using _StringBuilder_ manually is still required for specific cases where the compiler or the JIT is not applying magic tricks. For instance, when lot of substrings are concatenated to a String variable defined outside the scope of a loop.
+In summary, Java 8 seems not to introduce new optimizations for String concatenation with the _+_ operator. It means that using _StringBuilder_ manually is still required for specific cases where the compiler or the JIT is not applying magic tricks. For instance, when lot of substrings are concatenated to a String variable defined outside the scope of a loop.
 
 The reason for not optimizing automatically all String concatenations is still a bit obscure to me. Probably, too much information and efforts are required to handle  all possible cases safely. After all, that's also a good point to make programmers think about what they write.
 
