@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Laurent Pellegrino">
+  <meta name="theme-color" content="#284a5e">
+  <title>Docker: SELinux is not supported with the BTRFS graph driver!</title>
+  <meta name="description" content="The first time I have succeeded to start a Docker container my reaction was: &quot;Ouawwww, incredibly simple and fast!&quot;. However, before having this fe...">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.pellegrino.link/2015/02/11/docker-selinux-is-not-supported-with-the-btrfs-graph-driver.html">
+  <link rel="alternate" type="application/rss+xml" title="Laurent Pellegrino" href="http://www.pellegrino.link/feed.xml">
+</head>
+
+<body>
+	<div id="container">
+		<div id="row">
+			<header id="sidebar">
+  <a href="/"/>
+    <img src="/images/lemurien.jpg" class="avatar" alt="" />
+  </a>
+
+  <h1>
+    <strong>I am Laurent</strong>, an R&amp;D Engineer <br /> working at <a href="http://www.activeeon.com" title="ActiveEon - Scale Beyond Limits">ActiveEon</a> in French Riviera
+  </h1>
+
+  <nav class="site-nav vspace">
+    <a href="/" class="navlink">Blog</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/archives" class="navlink">Archives</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/about" class="navlink">About</a>
+  </nav>
+
+  <ul class="icons vspace">
+    <li><a href="http://linkedin.pellegrino.link" class="icon fa-linkedin" title="Linkedin profile"><span class="label">Linkedin</span></a></li>
+    <li><a href="https://github.com/lpellegr" class="icon fa-github" title="Github profile"><span class="label">Github</span></a></li>
+    <li><a href="http://stackoverflow.com/users/269447/laurent" class="icon fa-stack-overflow" title="Stackoverflow profile"><span class="label">Stack Overflow</span></a></li>
+    <li><a href="http://www.google.com/recaptcha/mailhide/d?k=01aQ9xMzKtmiI_QFsoA7_5cw==&amp;c=tRqec_6YI_OyihG21CXPRw7EZ3YIpLSQjW_ZCODLh0s=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501aQ9xMzKtmiI_QFsoA7_5cw\75\75\46c\75tRqec_6YI_OyihG21CXPRw7EZ3YIpLSQjW_ZCODLh0s\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+  </ul>
+</header>
+
+			<section id="page-content">
+				<div id="content">
+					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2015-02-11T00:00:00+01:00" itemprop="datePublished">Feb 11, 2015</time></p>
+    <h1 class="post-title" itemprop="name headline">Docker: SELinux is not supported with the BTRFS graph driver!</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>The first time I have succeeded to start a <a href="https://www.docker.com/">Docker</a> container my reaction was: &quot;Ouawwww, incredibly simple and fast!&quot;. However, before having this feeling I have faced a failure while trying to start the docker daemon : &quot;SELinux is not supported with the BTRFS graph driver!&quot;.</p>
+
+<!--more-->
+
+<p>This is a <a href="https://github.com/docker/docker/issues/7952">known issue</a> for systems running a BTRFS filesystem. Hopefully a workaround exists. It consists in editing <code>/etc/sysconfig/docker</code> to replace <code>OPTIONS=&#39;--selinux-enabled&#39;</code> by <code>OPTIONS=&#39;--selinux-enabled=false&#39;</code>.</p>
+
+<p>Once the update made, you have to restart the daemon.</p>
+
+  </div>
+
+  <div itemprop="keywords">
+    Tags:
+    
+      <a href="http://www.google.com/search?q=Btrfs&btnI=I%27m%20feeling%20lucky">Btrfs</a>, 
+    
+      <a href="http://www.google.com/search?q=Docker&btnI=I%27m%20feeling%20lucky">Docker</a>, 
+    
+      <a href="http://www.google.com/search?q=Fedora&btnI=I%27m%20feeling%20lucky">Fedora</a>, 
+    
+      <a href="http://www.google.com/search?q=Linux&btnI=I%27m%20feeling%20lucky">Linux</a>, 
+    
+      <a href="http://www.google.com/search?q=Linux Containers&btnI=I%27m%20feeling%20lucky">Linux Containers</a>, 
+    
+      <a href="http://www.google.com/search?q=LCX&btnI=I%27m%20feeling%20lucky">LCX</a>, 
+    
+      <a href="http://www.google.com/search?q=SeLinux&btnI=I%27m%20feeling%20lucky">SeLinux</a>
+    
+  </div>
+</article>
+
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        var disqus_shortname = 'lpellegr';
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+				</div>
+			</section>
+		</div>
+	</div>
+	<script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-59741838-1', 'auto');
+	ga('send', 'pageview');
+  </script>
+</body>
+</html>
