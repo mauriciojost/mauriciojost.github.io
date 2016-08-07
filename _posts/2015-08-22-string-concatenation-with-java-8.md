@@ -233,7 +233,7 @@ Although _StringBuilder_ is used by the compiler, an instance must be created at
 One solution is to manually create a _StringBuilder_ instance outside the loop:
 
 ```java
-StringBuilder result = new StringBuilder((int)14e6);
+StringBuilder result = new StringBuilder((int)1e6);
 for (int i = 0; i < 1e6; i++) {
     result.append("some more data");
 }

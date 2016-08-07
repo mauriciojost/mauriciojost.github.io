@@ -20,6 +20,6 @@ The template is greatly inspired from [Strata][strata].
 
 [activeeon]: http://www.activeeon.com 
 [jekyll]:    http://jekyllrb.com
-[medicalid]: http://www.medicalid.info 
+[medicalid]: https://www.medicalid.info 
 "Medical ID, the app that could save your life!" 
 [strata]: http://html5up.net/strata
