@@ -1,8 +1,0 @@
-<p>The first time I have succeeded to start a <a href="https://www.docker.com/">Docker</a> container my reaction was: “Ouawwww, incredibly simple and fast!”. However, before having this feeling I have faced a failure while trying to start the docker daemon : “SELinux is not supported with the BTRFS graph driver!”.</p>
-
-<!--more-->
-
-<p>This is a <a href="https://github.com/docker/docker/issues/7952">known issue</a> for systems running a BTRFS filesystem. Hopefully a workaround exists. It consists in editing <code class="highlighter-rouge">/etc/sysconfig/docker</code> to replace <code class="highlighter-rouge">OPTIONS='--selinux-enabled'</code> by <code class="highlighter-rouge">OPTIONS='--selinux-enabled=false'</code>.</p>
-
-<p>Once the update made, you have to restart the daemon.</p>
-
