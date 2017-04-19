@@ -22,8 +22,7 @@
   </a>
 
   <h1>
-    <strong>I am Laurent</strong>, an R&amp;D Engineer <br /> working at <a href="http://www.activeeon.com" title="ActiveEon - Scale Beyond Limits">ActiveEon</a> in French Riviera
-  </h1>
+    <strong>I am Laurent</strong>,<br /> a Software Engineer</h1>
 
   <nav class="site-nav vspace">
     <a href="/" class="navlink">Blog</a>
@@ -101,7 +100,7 @@
 
 <p>Let&#39;s start with a simple example:</p>
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StaticStringConcatenation</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="s">"some more data"</span><span class="o">;</span>
         <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
@@ -113,14 +112,14 @@
 <span class="err">$</span> <span class="n">javap</span> <span class="o">-</span><span class="n">c</span> <span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">classes</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">StaticStringConcatenation</span><span class="o">.</span><span class="na">class</span>
 <span class="n">Compiled</span> <span class="n">from</span> <span class="s">"StaticStringConcatenation.java"</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">StaticStringConcatenation</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="n">StaticStringConcatenation</span><span class="o">();</span>
+  <span class="kd">public</span> <span class="nf">StaticStringConcatenation</span><span class="o">();</span>
     <span class="nl">Code:</span>
        <span class="mi">0</span><span class="o">:</span> <span class="n">aload_0</span>          <span class="c1">// Push 'this' on to the stack</span>
        <span class="mi">1</span><span class="o">:</span> <span class="n">invokespecial</span> <span class="err">#</span><span class="mi">1</span> <span class="c1">// Invoke Object class constructor</span>
                            <span class="c1">// pop 'this' ref from the stack</span>
        <span class="mi">4</span><span class="o">:</span> <span class="k">return</span>           <span class="c1">// Return from constructor</span>
 
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">String</span><span class="o">[]);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">String</span><span class="o">[]);</span>
     <span class="nl">Code:</span>
        <span class="mi">0</span><span class="o">:</span> <span class="n">ldc</span>           <span class="err">#</span><span class="mi">2</span> <span class="c1">// Load constant #2 on to the stack</span>
        <span class="mi">2</span><span class="o">:</span> <span class="n">astore_1</span>         <span class="c1">// Create local var from stack (pop #2)</span>
@@ -161,7 +160,7 @@
 <p>Now, let&#39;s take a look at the instructions and their associated comments for the <em>main</em> method. At code <em>7</em>, a new instance of <em>StringBuilder</em> is created, then at code <em>11</em> the empty String is appended to the <em>StringBuilder</em> object by using the append method. Similarly, at code <em>16</em> the String &quot;some more data&quot; is concatenated before retrieving a String representation with the help of the <em>toString</em> method (code 19). Finally, once the reference to the static field PrintStream is fetched (code 8), the value is displayed on the standard output (code 27).</p>
 
 <p>If you have followed what I said before, you may ask why is an instance of StringBuilder created? after all the code source has no reference to <em>StringBuilder</em>. The answer lies in the fact that all of the substrings building the final String are known at compile time. In this specific case, the Java compiler (written by people who know the drawback of the <em>+</em> operator) optimizes the bytecode that is generated. In our case, String concatenation with the <em>+</em> operator is replaced by:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="k">new</span> <span class="nf">StringBuilder</span><span class="p">(</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"some more data"</span><span class="o">);</span>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="k">new</span> <span class="n">StringBuilder</span><span class="o">().</span><span class="na">append</span><span class="o">(</span><span class="s">""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"some more data"</span><span class="o">);</span>
 </code></pre></div>
 <p>This optimization is known as a static string concatenation optimization and is available since Java 5.</p>
 
@@ -171,7 +170,7 @@
 
 <p>Dynamic string concatenation refers to the concatenation of substrings whose the result is known at runtime only. This is for instance the case for substrings appended to a String in a for loop:</p>
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DynamicStringConcatenation</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
         <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="n">e6</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
             <span class="n">result</span> <span class="o">+=</span> <span class="s">"some more data"</span><span class="o">;</span>
@@ -184,14 +183,14 @@
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="err">$</span> <span class="n">javap</span> <span class="o">-</span><span class="n">c</span> <span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">classes</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">DynamicStringConcatenation</span><span class="o">.</span><span class="na">class</span>
 <span class="n">Compiled</span> <span class="n">from</span> <span class="s">"DynamicStringConcatenation.java"</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">DynamicStringConcatenation</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="n">DynamicStringConcatenation</span><span class="o">();</span>
+  <span class="kd">public</span> <span class="nf">DynamicStringConcatenation</span><span class="o">();</span>
     <span class="nl">Code:</span>
        <span class="mi">0</span><span class="o">:</span> <span class="n">aload_0</span>          <span class="c1">// Push 'this' on to the stack</span>
        <span class="mi">1</span><span class="o">:</span> <span class="n">invokespecial</span> <span class="err">#</span><span class="mi">1</span> <span class="c1">// Invoke Object class constructor</span>
                            <span class="c1">// pop 'this' ref from the stack</span>
        <span class="mi">4</span><span class="o">:</span> <span class="k">return</span>           <span class="c1">// Return from constructor</span>
 
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">String</span><span class="o">[]);</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">String</span><span class="o">[]);</span>
     <span class="nl">Code:</span>
        <span class="mi">0</span><span class="o">:</span> <span class="n">ldc</span>            <span class="err">#</span><span class="mi">2</span> <span class="c1">// Load constant #2 on to the stack</span>
        <span class="mi">2</span><span class="o">:</span> <span class="n">astore_1</span>          <span class="c1">// Create local var from stack, pop #2</span>
@@ -276,7 +275,7 @@ Although <em>StringBuilder</em> is used by the compiler, an instance must be cre
     <span class="kd">private</span> <span class="n">StringBuffer</span> <span class="n">stringBuffer</span><span class="o">;</span>
 
     <span class="nd">@Setup</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">Iteration</span><span class="o">)</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">setup</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">string</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
         <span class="n">stringConcat</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
         <span class="n">stringBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
@@ -284,22 +283,22 @@ Although <em>StringBuilder</em> is used by the compiler, an instance must be cre
     <span class="o">}</span>
 
     <span class="nd">@Benchmark</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">stringConcatenation</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringConcatenation</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">string</span> <span class="o">+=</span> <span class="s">"some more data"</span><span class="o">;</span>
     <span class="o">}</span>
 
     <span class="nd">@Benchmark</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">stringConcatConcatenation</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringConcatConcatenation</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">stringConcat</span> <span class="o">=</span> <span class="n">stringConcat</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">"some more data"</span><span class="o">);</span>
     <span class="o">}</span>
 
     <span class="nd">@Benchmark</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">stringBuilderConcatenation</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringBuilderConcatenation</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">stringBuilder</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"some more data"</span><span class="o">);</span>
     <span class="o">}</span>
 
     <span class="nd">@Benchmark</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="n">stringBufferConcatenation</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringBufferConcatenation</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">stringBuffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"some more data"</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
@@ -311,7 +310,7 @@ Although <em>StringBuilder</em> is used by the compiler, an instance must be cre
 
 <p>The next figure sketches the trends:</p>
 
-<p><a href="https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/edit?usp=sharing" target="_blank"><img src="https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/pubchart?oid=1847999196&amp;format=image" alt="tre"></a></p>
+<p><a href="https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/edit?usp=sharing" target="_blank"><img src="https://docs.google.com/spreadsheets/d/1dV4Pbe2_ZCsc9TDBYsN9u69a2a3xSjCAzxKR7I6fxzg/pubchart?oid=1847999196&format=image" alt="tre"></a></p>
 
 <p>Using <em>StringBuilder</em>/<em>StringBuffer</em> clearly outperform other approaches which use the <em>+</em> operator or <em>String#concat(String)</em> for dynamic String concatenation. Although <em>String#concat(String)</em> scales in a similar manner as the method based on the <em>+</em> operator, the difference of performance between both may be explained by the fact that no transformation is performed by the compiler for <em>String#concat(String)</em>. This last does not require to create multiple StringBuilder instances while avoiding the extra copy incurred by the call to <em>StringBuilder#toString()</em>.</p>
 

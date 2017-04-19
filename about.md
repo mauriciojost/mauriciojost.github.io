@@ -4,10 +4,9 @@ title: About
 permalink: /about/
 ---
 
-My name is Laurent Pellegrino. I'm an R&D Engineer working at
-[ActiveEon][activeeon]. I like working with new technologies, especially in Java
-and Python. In my spare time I maintain the [Medical ID][medicalid] Android app
-and I really appreciate to go jogging.
+My name is Laurent Pellegrino. I'm a senior Software Engineer. I like working
+with new technologies, especially in Java. In my spare time I maintain the
+[Medical ID][medicalid] Android app and I really appreciate to go jogging.
 
 The content on this site is made available for the benefit of the community.
 I write about my experiences and passions. Opinions expressed are solely my own
@@ -18,8 +17,8 @@ The webpage is powered by the excellent [Jekyll][jekyll] static websites engine.
 
 The template is greatly inspired from [Strata][strata].
 
-[activeeon]: http://www.activeeon.com 
+[activeeon]: http://www.activeeon.com
 [jekyll]:    http://jekyllrb.com
-[medicalid]: https://www.medicalid.info 
-"Medical ID, the app that could save your life!" 
+[medicalid]: https://www.medicalid.info
+"Medical ID, the app that could save your life!"
 [strata]: http://html5up.net/strata

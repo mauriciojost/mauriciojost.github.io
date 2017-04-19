@@ -22,8 +22,7 @@
   </a>
 
   <h1>
-    <strong>I am Laurent</strong>, an R&amp;D Engineer <br /> working at <a href="http://www.activeeon.com" title="ActiveEon - Scale Beyond Limits">ActiveEon</a> in French Riviera
-  </h1>
+    <strong>I am Laurent</strong>,<br /> a Software Engineer</h1>
 
   <nav class="site-nav vspace">
     <a href="/" class="navlink">Blog</a>
@@ -57,13 +56,13 @@
 
 <p>Changing permanently the I/O scheduler for a specific disk is really easy. It can be realized by executing the following shell command as root:</p>
 
-<figure class="highlight"><pre><code class="language-console" data-lang="console">echo {SCHEDULER-NAME} &gt; /sys/block/{DEVICE-NAME}/queue/scheduler</code></pre></figure>
+<figure class="highlight"><pre><code class="language-console" data-lang="console"><span class="err">echo {SCHEDULER-NAME} &gt; /sys/block/{DEVICE-NAME}/queue/scheduler</span></code></pre></figure>
 
 <p>where {SCHEDULER-NAME} is either the value <code>cfq</code>, <code>noop</code> or <code>deadline</code> and {DEVICE-NAME} the name of your device (e.g. sda). In my case, I used the <code>noop</code> scheduler since it is the one that implies no reordering for I/O requests. Indeed, in contrary to Hard Disk Drives (HDD), SSD are not mechanical and don&#39;t require to physically move heads for reads and writes. Consequently, reordering I/O requests is a waste of CPU time, which eventually decreases throughput and increases latency.</p>
 
 <p>Once applied you can check the change with:</p>
 
-<figure class="highlight"><pre><code class="language-console" data-lang="console">cat /sys/block/{DEVICE-NAME}/queue/scheduler</code></pre></figure>
+<figure class="highlight"><pre><code class="language-console" data-lang="console"><span class="err">cat /sys/block/{DEVICE-NAME}/queue/scheduler</span></code></pre></figure>
 
 <p>However, the change is lost after a reboot. If you are using systemd (e.g on Fedora 20), which is a system and service manager service, a specific unit may be written to apply your configuration at each reboot.</p>
 
@@ -78,13 +77,13 @@ ExecStart=/bin/bash -c 'echo noop &gt; /sys/block/sda/queue/scheduler'
 TimeoutSec=0
 RemainAfterExit=yes
 [Install]
-WantedBy=multi-user.target</code></pre></figure>
+<span class="err">WantedBy=multi-user.target</span></code></pre></figure>
 
 <p>Then, enable the service for auto start at boot and start it for the current session with:</p>
 
 <figure class="highlight"><pre><code class="language-console" data-lang="console">chmod 755 /etc/systemd/system/io-scheduler.service
 systemctl enable io-scheduler.service
-systemctl start io-scheduler.service</code></pre></figure>
+<span class="err">systemctl start io-scheduler.service</span></code></pre></figure>
 
   </div>
 
