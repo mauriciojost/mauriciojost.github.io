@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Mauricio Jost">
+  <meta name="theme-color" content="#284a5e">
+  <title>Serializing (almost) Anything with Kryo (for Spark)</title>
+  <meta name="description" content="What is Kryo?">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html">
+  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://localhost:4000/feed.xml">
+</head>
+
+<body>
+	<div id="container">
+		<div id="row">
+			<header id="sidebar">
+  <a href="/"/>
+    <!--<img src="/images/giraffe.png" class="avatar" alt="Cartoon giraffe" />-->
+  </a>
+
+  <h1>
+    <strong>I am Mauricio</strong>,<br />and these are my two cents</h1>
+
+  <nav class="site-nav vspace">
+    <a href="/" class="navlink">Blog</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/archives" class="navlink">Archives</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/about" class="navlink">About</a>
+  </nav>
+
+  <ul class="icons vspace">
+    <li><a href="http://https://www.linkedin.com/in/mauriciojost" class="icon fa-linkedin" title="Linkedin profile"><span class="label">Linkedin</span></a></li>
+    <li><a href="https://github.com/mauriciojost" class="icon fa-github" title="Github profile"><span class="label">Github</span></a></li>
+    <li><a href="http://stackoverflow.com/users/1554927/mauriciojost" class="icon fa-stack-overflow" title="Stackoverflow profile"><span class="label">Stack Overflow</span></a></li>
+  </ul>
+</header>
+
+			<section id="page-content">
+				<div id="content">
+					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2016-10-31T23:00:00+01:00" itemprop="datePublished">Oct 31, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Serializing (almost) Anything with Kryo (for Spark)</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="what-is-kryo">What is Kryo?</h2>
+
+<p>Kryo serialization is one of the fastest on-JVM serialization libraries, and it is certainly the most popular in the Spark world.</p>
+
+<p>To get the most out of this algorithm you must register the few classes that will have to be serialized. This will help to decrease the size of serialized objects, as their serialization will be tailor-made optimized by Kryo.</p>
+
+<p>Registering your classes with Kryo in Spark is done this way:</p>
+
+<!--more-->
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">sparkConf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">()</span>
+<span class="o">...</span>
+<span class="n">sparkConf</span><span class="o">.</span><span class="n">registerKryoClasses</span><span class="o">(</span>
+   <span class="nc">Array</span><span class="o">(</span>
+       <span class="c1">// your classes here
+</span>   <span class="o">)</span>
+<span class="o">)</span>
+</code></pre></div>
+<h2 id="how-to-serialize-unaccessible-classes">How to serialize unaccessible classes?</h2>
+
+<p>It all goes fine until you hit private classes, or arrays of classes. If you tried to serialize classes from the Joda library probably you know what I am talking about. However there are a few tricks that will help you serialize almost anything:  </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// scala basic classes
+</span>
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"scala.collection.immutable.$colon$colon"</span><span class="o">)</span>
+
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"scala.collection.immutable.Nil$"</span><span class="o">)</span>
+
+<span class="n">classOf</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">Tuple2</span><span class="o">[</span><span class="k">_</span>,<span class="k">_</span><span class="o">]]]</span>
+
+<span class="c1">// arrays of primitive classes
+</span>
+<span class="n">classOf</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span>
+
+<span class="n">classOf</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span>
+
+<span class="c1">// monads of primitive classes
+</span>
+<span class="n">classOf</span><span class="o">[</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span>
+
+<span class="n">classOf</span><span class="o">[</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]]</span>
+
+<span class="c1">// case objects
+</span>
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"scala.None$"</span><span class="o">)</span>
+
+<span class="c1">// protected static final classes
+</span>
+<span class="nc">ClassTag</span><span class="o">(</span><span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"org.roaringbitmap.RoaringArray$Element"</span><span class="o">))</span>
+   <span class="o">.</span><span class="n">wrap</span><span class="o">.</span><span class="n">runtimeClass</span>
+
+<span class="c1">// public static class FakeFileStatus
+</span>
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span>
+   <span class="s">"org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus"</span><span class="o">)</span>
+
+<span class="nc">ClassTag</span><span class="o">(</span><span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span>
+   <span class="s">"org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus"</span><span class="o">))</span>
+   <span class="o">.</span><span class="n">wrap</span><span class="o">.</span><span class="n">runtimeClass</span>
+
+<span class="c1">// joda classes
+</span>
+<span class="n">classOf</span><span class="o">[</span><span class="kt">org.joda.time.tz.DateTimeZoneBuilder</span><span class="o">]</span>
+
+<span class="n">classOf</span><span class="o">[</span><span class="kt">org.joda.time.tz.FixedDateTimeZone</span><span class="o">]</span>
+
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span>
+   <span class="s">"org.joda.time.tz.DateTimeZoneBuilder$PrecalculatedZone"</span><span class="o">)</span>
+
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"org.joda.time.tz.DateTimeZoneBuilder$DSTZone"</span><span class="o">)</span>
+
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"org.joda.time.tz.DateTimeZoneBuilder$Recurrence"</span><span class="o">)</span>
+
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"org.joda.time.tz.DateTimeZoneBuilder$OfYear"</span><span class="o">)</span>
+
+<span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">"org.joda.time.tz.CachedDateTimeZone$Info"</span><span class="o">)</span>
+
+<span class="nc">ClassTag</span><span class="o">(</span><span class="nc">Class</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span>
+   <span class="s">"org.joda.time.tz.CachedDateTimeZone$Info"</span><span class="o">)).</span><span class="n">wrap</span><span class="o">.</span><span class="n">runtimeClass</span>
+</code></pre></div>
+  </div>
+
+  <div itemprop="keywords">
+    Tags:
+    
+      <a href="http://www.google.com/search?q=spark&btnI=I%27m%20feeling%20lucky">spark</a>, 
+    
+      <a href="http://www.google.com/search?q=kryo&btnI=I%27m%20feeling%20lucky">kryo</a>, 
+    
+      <a href="http://www.google.com/search?q=serialization&btnI=I%27m%20feeling%20lucky">serialization</a>, 
+    
+      <a href="http://www.google.com/search?q=register&btnI=I%27m%20feeling%20lucky">register</a>, 
+    
+      <a href="http://www.google.com/search?q=class&btnI=I%27m%20feeling%20lucky">class</a>, 
+    
+      <a href="http://www.google.com/search?q=private&btnI=I%27m%20feeling%20lucky">private</a>
+    
+  </div>
+</article>
+
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        var disqus_shortname = 'mauriciojost-github-io';
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+				</div>
+			</section>
+		</div>
+	</div>
+	<script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
