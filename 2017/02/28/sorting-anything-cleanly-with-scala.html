@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Mauricio Jost">
+  <meta name="theme-color" content="#284a5e">
+  <title>Sorting Anything Cleanly with Scala</title>
+  <meta name="description" content="Why sorting?">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html">
+  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://localhost:4000/feed.xml">
+</head>
+
+<body>
+	<div id="container">
+		<div id="row">
+			<header id="sidebar">
+  <a href="/"/>
+    <!--<img src="/images/giraffe.png" class="avatar" alt="Cartoon giraffe" />-->
+  </a>
+
+  <h1>
+    <strong>I am Mauricio</strong>,<br />and these are my two cents</h1>
+
+  <nav class="site-nav vspace">
+    <a href="/" class="navlink">Blog</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/archives" class="navlink">Archives</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/about" class="navlink">About</a>
+  </nav>
+
+  <ul class="icons vspace">
+    <li><a href="http://https://www.linkedin.com/in/mauriciojost" class="icon fa-linkedin" title="Linkedin profile"><span class="label">Linkedin</span></a></li>
+    <li><a href="https://github.com/mauriciojost" class="icon fa-github" title="Github profile"><span class="label">Github</span></a></li>
+    <li><a href="http://stackoverflow.com/users/1554927/mauriciojost" class="icon fa-stack-overflow" title="Stackoverflow profile"><span class="label">Stack Overflow</span></a></li>
+  </ul>
+</header>
+
+			<section id="page-content">
+				<div id="content">
+					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2017-02-28T23:00:00+01:00" itemprop="datePublished">Feb 28, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Sorting Anything Cleanly with Scala</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="why-sorting">Why sorting?</h2>
+
+<p>Sorting requirements are present in the vast majority of data processing applications. Think of questions like:</p>
+
+<ul>
+<li><p>what are the last 5 cities visited by a passenger?</p></li>
+<li><p>what is the least profitable product being sold?</p></li>
+<li><p>what is the first snapshot of a hotel booking?</p></li>
+</ul>
+
+<p>All will end up coded with some kind of sorting algorithm under the hood, and Scala provides very good tools for answering them. </p>
+
+<!--more-->
+
+<p>Imagine you have the following collection (you can try this out in the scala-shell):</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span>
+</code></pre></div>
+<p>Here are some of the patterns that we may feel tempted to use, and what I personally consider is a better alternative:</p>
+
+<h2 id="basic-sorting">Basic sorting</h2>
+
+<h3 id="get-an-extreme-value-from-a-collection">Get an extreme value from a collection</h3>
+
+<p>If you feel tempted to do:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">max</span> <span class="k">=</span> <span class="n">l</span><span class="o">.</span><span class="n">toSeq</span><span class="o">.</span><span class="n">sorted</span><span class="o">.</span><span class="n">last</span>
+</code></pre></div>
+<p>you better do: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">max</span> <span class="k">=</span> <span class="n">l</span><span class="o">.</span><span class="n">max</span>
+</code></pre></div>
+<p>Apart from being simpler, it&#39;s also more efficient (as no intermediate collection will be created).</p>
+
+<h3 id="sort-a-collection-even-after-updates">Sort a collection even after updates</h3>
+
+<p>If you feel tempted to do:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">seq</span> <span class="k">=</span> <span class="n">l</span><span class="o">.</span><span class="n">toSeq</span>
+<span class="k">val</span> <span class="n">l2</span> <span class="k">=</span> <span class="n">seq</span> <span class="o">:+</span> <span class="mi">5</span>
+<span class="k">val</span> <span class="n">sorted2</span> <span class="k">=</span> <span class="n">l2</span><span class="o">.</span><span class="n">sorted</span>
+<span class="k">val</span> <span class="n">l3</span> <span class="k">=</span> <span class="n">sorted2</span> <span class="o">:+</span> <span class="mi">6</span>
+<span class="k">val</span> <span class="n">sorted3</span> <span class="k">=</span> <span class="n">l3</span><span class="o">.</span><span class="n">sorted</span>
+</code></pre></div>
+<p>you better do: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">import</span> <span class="nn">scala.collection.SortedSet</span>
+<span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="nc">SortedSet</span><span class="o">.</span><span class="n">empty</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">++</span> <span class="n">l</span>
+<span class="k">val</span> <span class="n">sorted2</span> <span class="k">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">5</span> <span class="c1">// sorted
+</span><span class="k">val</span> <span class="n">sorted3</span> <span class="k">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">6</span> <span class="c1">// sorted
+</span></code></pre></div>
+<p>Apart from being cleaner, it&#39;s also more efficient as (no intermediate non-sorted collections are created).</p>
+
+<h2 id="sorting-on-more-complex-types">Sorting on more complex types</h2>
+
+<p>The above proposal seems just too simple to be applied to other scenarios. What if we have more complex types? For instance: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">A</span><span class="o">(</span><span class="n">p1</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">p2</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">p3</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> 
+   <span class="nc">List</span><span class="o">(</span><span class="n">A</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span> <span class="n">A</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"c"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span> <span class="n">A</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span>
+</code></pre></div>
+<p>We can say that <em>there is no Ordering defined for A</em>. As A is part of our business, it’s up to us to define its <em>Ordering</em>, which we can do easily as follows: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">orderingOnP1</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> 
+   <span class="nc">Ordering</span><span class="o">.</span><span class="n">fromLessThan</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">p1</span>  <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">p1</span><span class="o">,</span> <span class="n">a</span><span class="o">.</span><span class="n">p2</span><span class="o">))</span> <span class="c1">// uses imp. ordering
+</span><span class="n">l</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">orderingOnP1P2</span><span class="o">)</span> <span class="c1">// A(1,c,true)
+</span></code></pre></div>
+<p>Using <em>Orderings</em> your code will become much cleaner, reusable and testable.</p>
+
+  </div>
+
+  <div itemprop="keywords">
+    Tags:
+    
+      <a href="http://www.google.com/search?q=scala&btnI=I%27m%20feeling%20lucky">scala</a>, 
+    
+      <a href="http://www.google.com/search?q=sorting&btnI=I%27m%20feeling%20lucky">sorting</a>, 
+    
+      <a href="http://www.google.com/search?q=orderings&btnI=I%27m%20feeling%20lucky">orderings</a>, 
+    
+      <a href="http://www.google.com/search?q=api&btnI=I%27m%20feeling%20lucky">api</a>, 
+    
+      <a href="http://www.google.com/search?q=max&btnI=I%27m%20feeling%20lucky">max</a>, 
+    
+      <a href="http://www.google.com/search?q=min&btnI=I%27m%20feeling%20lucky">min</a>
+    
+  </div>
+</article>
+
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        var disqus_shortname = 'mauriciojost-github-io';
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+				</div>
+			</section>
+		</div>
+	</div>
+	<script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

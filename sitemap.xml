@@ -1,20 +1,48 @@
----
----
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {% for post in site.posts %}
+    
     <url>
-        <loc>{{ site.url }}{{ post.url | remove: 'index.html' }}</loc>
+        <loc>http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html</loc>
     </url>
-    {% endfor %}
+    
+    <url>
+        <loc>http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/2016/09/01/partial-functions-in-scala.html</loc>
+    </url>
+    
 
-    {% for page in site.pages %}
-    {% if page.layout != nil %}
-    {% if page.layout != 'feed' %}
+    
+    
+    
     <url>
-        <loc>{{ site.url }}{{ page.url | remove: 'index.html' }}</loc>
+        <loc>http://localhost:4000/about/</loc>
     </url>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/archives/</loc>
+    </url>
+    
+    
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/</loc>
+    </url>
+    
+    
+    
+    
+    
+    
+    
 </urlset>
