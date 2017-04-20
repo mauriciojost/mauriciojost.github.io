@@ -21,10 +21,10 @@ Default output folder is `_site/`.
 
 ## Deployment on Github
 
-Use subtree push to send it to the gh-pages branch on GitHub:
+Use subtree push to send it to the frontend branch on GitHub:
 
 ```sh
-git subtree push --prefix _site origin gh-pages
+git subtree push --prefix _site origin master
 ```
 
 ## Acknowledgment
