@@ -21,6 +21,8 @@ The typical example is *f: 1/x* , not defined when *x = 0*.
 
 It is a Scala trait that allows to express a partial function. For instance...
 
+<!--more-->
+
 The previous example would be expressed as: 
 
 ```scala
@@ -29,8 +31,6 @@ val div = new PartialFunction[Int, Int] {
     def isDefinedAt(x: Int) = x > 0
 }
 ```
-
-<!--more-->
 
 Or more concisely (using pattern matching):
 

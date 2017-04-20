@@ -20,6 +20,9 @@ To get the most out of this algorithm you must register the few classes that wil
 
 Registering your classes with Kryo in Spark is done this way:
 
+<!--more-->
+
+
 ```scala
 val sparkConf = new SparkConf()
 ...

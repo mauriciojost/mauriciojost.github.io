@@ -24,6 +24,8 @@ Sorting requirements are present in the vast majority of data processing applica
 
 All will end up coded with some kind of sorting algorithm under the hood, and Scala provides very good tools for answering them. 
 
+<!--more-->
+
 Imagine you have the following collection (you can try this out in the scala-shell):
 
 ```scala
