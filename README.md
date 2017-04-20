@@ -1,4 +1,4 @@
-# pellegrino.link
+# mauriciojost.github.io
 
 ## Installation
 
@@ -26,3 +26,7 @@ Use subtree push to send it to the gh-pages branch on GitHub:
 ```sh
 git subtree push --prefix _site origin gh-pages
 ```
+
+## Acknowledgment
+
+Thanks to [Laurent Pellegrino](http://www.pellegrino.link/) for the blog template!
