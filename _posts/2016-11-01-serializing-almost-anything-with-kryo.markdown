@@ -64,13 +64,17 @@ Class.forName("scala.None$")
 
 // protected static final classes
 
-ClassTag(Class.forName("org.roaringbitmap.RoaringArray$Element")).wrap.runtimeClass
+ClassTag(Class.forName("org.roaringbitmap.RoaringArray$Element"))
+   .wrap.runtimeClass
 
 // public static class FakeFileStatus
 
-Class.forName("org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus")
+Class.forName(
+   "org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus")
 
-ClassTag(Class.forName("org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus")).wrap.runtimeClass
+ClassTag(Class.forName(
+   "org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus"))
+   .wrap.runtimeClass
 
 // joda classes
 
@@ -78,7 +82,8 @@ classOf[org.joda.time.tz.DateTimeZoneBuilder]
 
 classOf[org.joda.time.tz.FixedDateTimeZone]
 
-Class.forName("org.joda.time.tz.DateTimeZoneBuilder$PrecalculatedZone")
+Class.forName(
+   "org.joda.time.tz.DateTimeZoneBuilder$PrecalculatedZone")
 
 Class.forName("org.joda.time.tz.DateTimeZoneBuilder$DSTZone")
 
@@ -88,6 +93,7 @@ Class.forName("org.joda.time.tz.DateTimeZoneBuilder$OfYear")
 
 Class.forName("org.joda.time.tz.CachedDateTimeZone$Info")
 
-ClassTag(Class.forName("org.joda.time.tz.CachedDateTimeZone$Info")).wrap.runtimeClass
+ClassTag(Class.forName(
+   "org.joda.time.tz.CachedDateTimeZone$Info")).wrap.runtimeClass
 ```
 

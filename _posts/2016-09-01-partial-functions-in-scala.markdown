@@ -67,6 +67,7 @@ However, if using collect(partialFunction) instead, we will be populating the th
 val positivesAsStringsPF: PartialFunction[Int, String] = {
     case x: Int if x > 0 => x.toString
 }
+
 val positivesAsStrings = numbers.collect(positivesAsStringsPF)
 ```
 
@@ -87,10 +88,14 @@ Here we provide the domain on which we want to apply a function (on defined mona
 val pfForSome: PartialFunction[Int, String] = {
     case Some(p: Int) => asString(p)
 }
+
 val pfForNone: PartialFunction[Int, String] = {
     case None => default
 }
-val pfForSomeAndNone: PartialFunction[Int, String] =     pfForSome.orElse(pfForNone)
+
+val pfForSomeAndNone: PartialFunction[Int, String] = 
+   pfForSome.orElse(pfForNone)
+
 val resultAsOption: Option[String] = parameter.collect(pfForSomeAndNone)
 ```
 

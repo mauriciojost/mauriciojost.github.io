@@ -81,13 +81,15 @@ The above proposal seems just too simple to be applied to other scenarios. What 
 
 ```scala
 case class A(p1: Int, p2: String, p3: Boolean)
-val l : Iterable[A] = List(A(1, "a", true), A(1, "c", true), A(-1, "a", true))
+val l : Iterable[A] = 
+   List(A(1, "a", true), A(1, "c", true), A(-1, "a", true))
 ```
 
 We can say that *there is no Ordering defined for A*. As A is part of our business, it’s up to us to define its *Ordering*, which we can do easily as follows: 
 
 ```scala
-val orderingOnP1: Ordering[A] = Ordering.fromLessThan(_.p1  (a.p1, a.p2)) // uses imp. ordering
+val orderingOnP1: Ordering[A] = 
+   Ordering.fromLessThan(_.p1  (a.p1, a.p2)) // uses imp. ordering
 l.max(orderingOnP1P2) // A(1,c,true)
 ```
 
