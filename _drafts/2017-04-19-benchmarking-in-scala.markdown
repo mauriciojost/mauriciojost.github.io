@@ -49,10 +49,10 @@ exploitable from Scala thanks to [sbt-jmh](https://github.com/ktoso/sbt-jmh).
 
 ## How to get started right now?
 
-I've set up a [project github/scala-benchmark](https://github.com/mauriciojost/scala-benchmark) which 
-renders [visual reports](https://mauriciojost.github.io/scala-benchmark/) that GitHub can display via GitHub pages. 
+**I've set up a [project github/scala-benchmark](https://github.com/mauriciojost/scala-benchmark) which 
+renders [visual reports](https://mauriciojost.github.io/scala-benchmark/) that GitHub can display via GitHub pages.**
 
-I really recommend [this read on JMH](http://tutorials.jenkov.com/java-performance/jmh.html).
+Also if you want to know more, I really recommend [this read about JMH](http://tutorials.jenkov.com/java-performance/jmh.html).
 
 **Won't you benchmark anything?**
 
