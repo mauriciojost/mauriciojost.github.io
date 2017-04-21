@@ -13,15 +13,9 @@ comments: true
 ---
 ## Why sorting?
 
-Sorting requirements are present in the vast majority of data processing applications. Think of questions like:
+Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for answering them, I thought it would be interesting to dive a bit into them to improve our code.
 
-- what are the last 5 cities visited by a passenger?
-
-- what is the least profitable product being sold?
-
-- what is the first snapshot of a hotel booking?
-
-All will end up coded with some kind of sorting algorithm under the hood, and Scala provides very good tools for answering them. 
+Here are some of the patterns that you may feel tempted to use, and what I personally consider is a better alternative. Leave a comment if you have even a better one!
 
 <!--more-->
 
@@ -31,7 +25,6 @@ Imagine you have the following collection (you can try this out in the scala-she
 val l : Iterable[Int] = List(1,0,2)
 ```
 
-Here are some of the patterns that we may feel tempted to use, and what I personally consider is a better alternative:
 
 ## Basic sorting 
 
