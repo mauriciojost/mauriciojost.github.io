@@ -9,7 +9,6 @@ tags:
 - collect
 - collections
 comments: true
-disqusid: partialfunscala
 ---
 ##  What is a partial function?
 
@@ -102,4 +101,6 @@ val resultAsOption: Option[String] = parameter.collect(pfForSomeAndNone)
 ## Want to know more?
 
 [I really liked this post](http://blog.bruchez.name/2011/10/scala-partial-functions-without-phd.html), I encourage you to take a look.
+
+**Won't you partial-function-ize anything?**
 

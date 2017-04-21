@@ -10,7 +10,6 @@ tags:
 - class 
 - private
 comments: true
-disqusid: serializingkryo
 ---
 ##  What is Kryo?
 
@@ -97,3 +96,4 @@ ClassTag(Class.forName(
    "org.joda.time.tz.CachedDateTimeZone$Info")).wrap.runtimeClass
 ```
 
+**Won't you serialize anything?**

@@ -10,7 +10,6 @@ tags:
 - max 
 - min
 comments: true
-disqusid: sortingordering
 ---
 ## Why sorting?
 
@@ -95,4 +94,5 @@ l.max(orderingOnP1P2) // A(1,c,true)
 
 Using *Orderings* your code will become much cleaner, reusable and testable.
 
+**Will you sort anything?**
 
