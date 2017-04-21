@@ -84,7 +84,8 @@
 <h3 id="because-they-are-efficient">Because they are efficient</h3>
 
 <p>Consider the function <em>f: x.toString</em> where <em>x &gt; 0</em> similar to the one I mentioned above. This could be expressed as: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> 
+      <span class="n">numbers</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
 </code></pre></div>
 <p>But there is something nasty about it. After the filter call, Scala will create an intermediate collection on which it will apply the map call. If your intermediate collection is large (let’s say you have a million of integers and a high percentage is positive) you will waste time creating this discardable intermediate object.
 However, if using collect(partialFunction) instead, we will be populating the the final collection right away. Think of the amount of garbage collection you could save!</p>
@@ -92,7 +93,8 @@ However, if using collect(partialFunction) instead, we will be populating the th
     <span class="k">case</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="kt">if</span> <span class="kt">x</span> <span class="kt">&gt;</span> <span class="err">0</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">toString</span>
 <span class="o">}</span>
 
-<span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">positivesAsStringsPF</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> 
+      <span class="n">numbers</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">positivesAsStringsPF</span><span class="o">)</span>
 </code></pre></div>
 <h3 id="because-they-ease-modularization-and-can-be-combined">Because they ease modularization and can be combined</h3>
 
@@ -112,9 +114,10 @@ However, if using collect(partialFunction) instead, we will be populating the th
 <span class="o">}</span>
 
 <span class="k">val</span> <span class="n">pfForSomeAndNone</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> 
-   <span class="n">pfForSome</span><span class="o">.</span><span class="n">orElse</span><span class="o">(</span><span class="n">pfForNone</span><span class="o">)</span>
+      <span class="n">pfForSome</span><span class="o">.</span><span class="n">orElse</span><span class="o">(</span><span class="n">pfForNone</span><span class="o">)</span>
 
-<span class="k">val</span> <span class="n">resultAsOption</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">pfForSomeAndNone</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">resultAsOption</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> 
+      <span class="n">parameter</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">pfForSomeAndNone</span><span class="o">)</span>
 </code></pre></div>
 <h2 id="want-to-know-more">Want to know more?</h2>
 
