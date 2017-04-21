@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>http://localhost:4000/2017/04/19/benchmarking-in-scala.html</loc>
+    </url>
+    
+    <url>
         <loc>http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html</loc>
     </url>
     

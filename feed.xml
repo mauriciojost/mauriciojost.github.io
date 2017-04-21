@@ -5,9 +5,76 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 20 Apr 2017 21:40:06 +0200</pubDate>
-    <lastBuildDate>Thu, 20 Apr 2017 21:40:06 +0200</lastBuildDate>
+    <pubDate>Fri, 21 Apr 2017 21:12:23 +0200</pubDate>
+    <lastBuildDate>Fri, 21 Apr 2017 21:12:23 +0200</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
+    
+      <item>
+        <title>Measuring the Performance of Anything In Scala</title>
+        <description>&lt;h2 id=&quot;why-benchmarking&quot;&gt;Why benchmarking?&lt;/h2&gt;
+
+&lt;p&gt;Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code.
+But sometimes I feel like I need stronger proofs to go one way or another, specially when I don&amp;#39;t really know what is 
+happening under the JVM hood.&lt;/p&gt;
+
+&lt;p&gt;A number describing the current status of your implementation will let you firstly gain awareness, 
+secondly decide if improvement is worth the investment, 
+and finally measure the improvement of your change. But it is not so easy...&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;what-is-the-problem-with-it&quot;&gt;What is the problem with it?&lt;/h2&gt;
+
+&lt;p&gt;When it comes to performance of an algorithm, we can get such metric by doing &lt;strong&gt;benchmarking&lt;/strong&gt;. &lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Nope, benchmarking is not so trivial, specially on top of JVM. Scala by itself applies more than 
+&lt;a href=&quot;https://wiki.scala-lang.org/display/SIW/Overview+of+Compiler+Phases&quot;&gt;15 phases&lt;/a&gt; when 
+compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a (very) fooled conclusion.&lt;/p&gt;
+
+&lt;p&gt;For instance, try to explain why the comparative benchmark set
+&lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;org.mauritania.minibenchmark.catalog.IdentityTricky&lt;/a&gt; 
+below (the suspiciously even one) yields such unexpected results for 
+&lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark/blob/master/src/main/scala/org/mauritania/minibenchmark/catalog/IdentityTricky.scala&quot;&gt;these very different algorithms&lt;/a&gt;. 
+Found the reason?&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark/&quot;&gt;&lt;img src=&quot;https://browshot.com/screenshot/image/56100717?&amp;width=5500&amp;height=3500&quot; alt=&quot;Project&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;and-the-solution&quot;&gt;And the solution?&lt;/h2&gt;
+
+&lt;p&gt;The one I recommend is to use &lt;a href=&quot;http://openjdk.java.net/projects/code-tools/jmh/&quot;&gt;JMH&lt;/a&gt;, the harness for Java benchmarking that is 
+exploitable from Scala thanks to &lt;a href=&quot;https://github.com/ktoso/sbt-jmh&quot;&gt;sbt-jmh&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-to-get-started-right-now&quot;&gt;How to get started right now?&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;I&amp;#39;ve set up a &lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark&quot;&gt;project github/scala-benchmark&lt;/a&gt; which 
+renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;visual reports&lt;/a&gt; that GitHub can display via GitHub pages.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Also if you want to know more, I really recommend &lt;a href=&quot;http://tutorials.jenkov.com/java-performance/jmh.html&quot;&gt;this read about JMH&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Won&amp;#39;t you benchmark anything?&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 19 Apr 2017 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/2017/04/19/benchmarking-in-scala.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/04/19/benchmarking-in-scala.html</guid>
+        
+        <category>scala</category>
+        
+        <category>performance</category>
+        
+        <category>benchmark</category>
+        
+        <category>api</category>
+        
+        <category>collections</category>
+        
+        <category>jmh</category>
+        
+        
+      </item>
     
       <item>
         <title>Sorting Anything Cleanly with Scala</title>
@@ -72,6 +139,8 @@
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnP1P2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// A(1,c,true)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Using &lt;em&gt;Orderings&lt;/em&gt; your code will become much cleaner, reusable and testable.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Will you sort anything?&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 28 Feb 2017 23:00:00 +0100</pubDate>
         <link>http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html</link>
@@ -171,7 +240,9 @@
 
 &lt;span class=&quot;nc&quot;&gt;ClassTag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
    &lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.CachedDateTimeZone$Info&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runtimeClass&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Won&amp;#39;t you serialize anything?&lt;/strong&gt;&lt;/p&gt;
+</description>
         <pubDate>Mon, 31 Oct 2016 23:00:00 +0100</pubDate>
         <link>http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html</link>
         <guid isPermaLink="true">http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html</guid>
@@ -263,6 +334,8 @@ However, if using collect(partialFunction) instead, we will be populating the th
 &lt;h2 id=&quot;want-to-know-more&quot;&gt;Want to know more?&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://blog.bruchez.name/2011/10/scala-partial-functions-without-phd.html&quot;&gt;I really liked this post&lt;/a&gt;, I encourage you to take a look.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Won&amp;#39;t you partial-function-ize anything?&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 01 Sep 2016 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/2016/09/01/partial-functions-in-scala.html</link>
