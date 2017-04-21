@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-About page...
+All about me is [here](https://sites.google.com/site/mauriciojost/).
