@@ -56,7 +56,8 @@ that allows to create a List[Y] from some elements of a List[X]. Knowing the API
 Consider the function *f: x.toString* where *x > 0* similar to the one I mentioned above. This could be expressed as: 
 
 ```scala
-val positivesAsStrings = numbers.filter(n => n > 0).map(x => x.toString)
+val positivesAsStrings = 
+      numbers.filter(n => n > 0).map(x => x.toString)
 ```
 
 But there is something nasty about it. After the filter call, Scala will create an intermediate collection on which it will apply the map call. If your intermediate collection is large (let’s say you have a million of integers and a high percentage is positive) you will waste time creating this discardable intermediate object.
@@ -67,7 +68,8 @@ val positivesAsStringsPF: PartialFunction[Int, String] = {
     case x: Int if x > 0 => x.toString
 }
 
-val positivesAsStrings = numbers.collect(positivesAsStringsPF)
+val positivesAsStrings = 
+      numbers.collect(positivesAsStringsPF)
 ```
 
 ### Because they ease modularization and can be combined
@@ -93,9 +95,10 @@ val pfForNone: PartialFunction[Int, String] = {
 }
 
 val pfForSomeAndNone: PartialFunction[Int, String] = 
-   pfForSome.orElse(pfForNone)
+      pfForSome.orElse(pfForNone)
 
-val resultAsOption: Option[String] = parameter.collect(pfForSomeAndNone)
+val resultAsOption: Option[String] = 
+      parameter.collect(pfForSomeAndNone)
 ```
 
 ## Want to know more?
