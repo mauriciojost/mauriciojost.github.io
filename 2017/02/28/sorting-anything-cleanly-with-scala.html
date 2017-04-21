@@ -51,23 +51,15 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="why-sorting">Why sorting?</h2>
 
-<p>Sorting requirements are present in the vast majority of data processing applications. Think of questions like:</p>
+<p>Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for answering them, I thought it would be interesting to dive a bit into them to improve our code.</p>
 
-<ul>
-<li><p>what are the last 5 cities visited by a passenger?</p></li>
-<li><p>what is the least profitable product being sold?</p></li>
-<li><p>what is the first snapshot of a hotel booking?</p></li>
-</ul>
-
-<p>All will end up coded with some kind of sorting algorithm under the hood, and Scala provides very good tools for answering them. </p>
+<p>Here are some of the patterns that you may feel tempted to use, and what I personally consider is a better alternative. Leave a comment if you have even a better one!</p>
 
 <!--more-->
 
 <p>Imagine you have the following collection (you can try this out in the scala-shell):</p>
 <div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span>
 </code></pre></div>
-<p>Here are some of the patterns that we may feel tempted to use, and what I personally consider is a better alternative:</p>
-
 <h2 id="basic-sorting">Basic sorting</h2>
 
 <h3 id="get-an-extreme-value-from-a-collection">Get an extreme value from a collection</h3>
