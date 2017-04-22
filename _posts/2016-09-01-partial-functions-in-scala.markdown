@@ -67,7 +67,6 @@ However, if using collect(partialFunction) instead, we will be populating the th
 val positivesAsStringsPF: PartialFunction[Int, String] = {
     case x: Int if x > 0 => x.toString
 }
-
 val positivesAsStrings = 
       numbers.collect(positivesAsStringsPF)
 ```
@@ -79,7 +78,7 @@ When using pattern matching we use blocks like this one:
 ```scala
 val result: String = parameter match {
     case Some(p) => asString(p)
-    case None => “default”
+    case None => "default"
 }
 ```
 
