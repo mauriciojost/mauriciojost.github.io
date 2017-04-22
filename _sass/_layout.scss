@@ -4,8 +4,8 @@
 
 #sidebar {
     background-attachment: scroll;
-    background-color: #304857;
-    background-image: url("/images/overlay.png"), url("/images/background.jpg");
+    background-color: #ff0000;
+    background-image: url("/images/overlay.png"), url("/images/bg.jpg");
     background-position: top left, bottom center;
     background-repeat: repeat, no-repeat;
     background-attachment: fixed;
@@ -67,7 +67,7 @@
   }
 
   #sidebar {
-    background-color: #1a4066;
+    background-color: #553300;
       width: 400px;
       min-width: 400px;
   }
