@@ -40,7 +40,7 @@ below (the suspiciously even one) yields such unexpected results for
 [these very different algorithms](https://github.com/mauriciojost/scala-benchmark/blob/master/src/main/scala/org/mauritania/minibenchmark/catalog/IdentityTricky.scala). 
 Found the reason?
 
-[![Project](https://browshot.com/screenshot/image/56699725?&width=4500&height=2500)](https://mauriciojost.github.io/scala-benchmark/)
+[![Project](https://browshot.com/screenshot/image/56699725?width=4500&height=2500)](https://mauriciojost.github.io/scala-benchmark/)
 
 ## And the solution?
 
