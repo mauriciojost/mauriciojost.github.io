@@ -80,13 +80,13 @@ a {
     -ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     border-bottom: none 1px;
-    color: #222222;
+    color: #49bf9d;
     text-decoration: none;
 }
 
 a:hover {
     border-bottom-color: transparent;
-    color: #999999 !important;
+    color: #74ecc9 !important;
     text-decoration: none;
 }
 
@@ -102,7 +102,7 @@ a.navlink:hover  {
     -o-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     -ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-    color: #ffffff !important;
+    color: #74ecc9 !important;
 }
 
 
@@ -183,7 +183,7 @@ a.navlink:hover  {
 }
 
 .post-read-more:hover, .post-read-more:active {
-    background-color: #444444;
+    background-color: #49bf9d;
     color: white !important;
     padding: 8px 16px;
     text-decoration:none;
