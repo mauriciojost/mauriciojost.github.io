@@ -21,6 +21,15 @@ The JVM is responsible of freing unreferenced memory via an entity called Garbag
 
 It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.
 
+
+![Alt text](http://g.gravizo.com/source/gravizosample2?https%3A%2F%2Fraw.githubusercontent.com%2Fmauriciojost%2Fmauriciojost.github.io%2Fdevelopment%2F_posts%2F2017-08-17-jvm-memory-spaces.markdown#
+gravizosample2dk
+@startuml
+rectangle pepe
+@enduml
+gravizosample2dk
+)
+
 <!--more-->
 
 As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the _new_ keyword as more likely to have a very short life (unless it can learn the opposite, for instance when the object keeps being referenced for a really long time, decreasing the chances it will be eligible for disposal soon). 
