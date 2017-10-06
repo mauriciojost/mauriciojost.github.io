@@ -22,13 +22,42 @@ The JVM is responsible of freing unreferenced memory via an entity called Garbag
 It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.
 
 
-![Alt text](http://g.gravizo.com/source/gravizosample2?https%3A%2F%2Fraw.githubusercontent.com%2Fmauriciojost%2Fmauriciojost.github.io%2Fdevelopment%2F_posts%2F2017-08-17-jvm-memory-spaces.markdown#
-gravizosample2dk
-@startuml
-rectangle pepe
-@enduml
-gravizosample2dk
+![Alt text](https://g.gravizo.com/svg?
+@startuml;
+rectangle execute;
+rectangle execute2 {;
+  rectangle pepe;
+};
+@enduml;
 )
+
+![Alt text](https://g.gravizo.com/svg?
+@startuml;
+rectangle "Heap" {;
+  rectangle "Young Generation" {;
+    rectangle eden as "Memory Pool PS Eden Space: recently allocated objects, did not survive any GC yet";
+    rectangle survivor as "Memory Pool PS Survivor Space: objects that have survived at least one GC";
+  };
+  rectangle "Old Generation" {;
+    rectangle oldgen as "Memory Pool PS Old Gen: also called Tenured, objects that have survived some time in the Survivor Space";
+  };
+};
+rectangle "NonHeap" {;
+  rectangle metaspace as "Memory Pool Metaspace: it used to be PermGen before Java 8";
+  rectangle codecache as "Memory Pool Codecache: contains compiled native code, mostly used by the JIT";
+  rectangle classspace as "Memory Pool Compressed Class Space";
+};
+note right of Heap;
+All object instances;
+are stored here,;
+memory from this;
+space is used whenever;
+new is present in the;
+code;
+end note;
+@enduml;
+)
+
 
 <!--more-->
 
