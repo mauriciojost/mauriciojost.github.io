@@ -45,6 +45,33 @@
 
   
   <article>
+    <span class="post-meta">August 17, 2017</span>
+
+    <h2 class="post-title">
+      <a href="/2017/08/17/jvm-memory-spaces.html">JVM Memory Spaces</a>
+    </h2>
+    <div class="post-content" itemprop="articleBody">
+      <h2 id="why-would-we-need-memory-spaces">Why would we need Memory Spaces?</h2>
+
+<p>The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:</p>
+
+<ul>
+<li><p>mark used memory and</p></li>
+<li><p>delete unused memory (compacting could be part of this step too) </p></li>
+</ul>
+
+<p>It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.</p>
+
+
+    </div>
+
+    <footer style="padding-top: 12px">
+      <a class="post-read-more" href="/2017/08/17/jvm-memory-spaces.html">Read more...</a></footer>
+  </article>
+
+  <hr />
+  
+  <article>
     <span class="post-meta">April 19, 2017</span>
 
     <h2 class="post-title">

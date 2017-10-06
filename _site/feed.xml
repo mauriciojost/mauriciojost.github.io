@@ -5,9 +5,117 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 25 Jul 2017 22:43:01 +0200</pubDate>
-    <lastBuildDate>Tue, 25 Jul 2017 22:43:01 +0200</lastBuildDate>
+    <pubDate>Fri, 06 Oct 2017 08:45:12 +0200</pubDate>
+    <lastBuildDate>Fri, 06 Oct 2017 08:45:12 +0200</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
+    
+      <item>
+        <title>JVM Memory Spaces</title>
+        <description>&lt;h2 id=&quot;why-would-we-need-memory-spaces&quot;&gt;Why would we need Memory Spaces?&lt;/h2&gt;
+
+&lt;p&gt;The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;mark used memory and&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;delete unused memory (compacting could be part of this step too) &lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the &lt;em&gt;new&lt;/em&gt; keyword as more likely to have a very short life (unless it can learn the opposite, for instance when the object keeps being referenced for a really long time, decreasing the chances it will be eligible for disposal soon). &lt;/p&gt;
+
+&lt;p&gt;Indeed, this categorisation exists and is implemented in modern JVMs, and is materialised via Memory Spaces, or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;. &lt;/p&gt;
+
+&lt;h2 id=&quot;what-are-the-memory-spaces-in-java&quot;&gt;What are the Memory Spaces in Java?&lt;/h2&gt;
+
+&lt;p&gt;Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general terms they can be divided into: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Heap Memory Usage (all object instances are stored here, memory from this space is used whenever &lt;em&gt;new&lt;/em&gt; is present in the code)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;(Young Generation)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pool PS Eden Space&lt;/strong&gt; (recently allocated objects, did not survive any GC yet)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pool PS Survivor Space&lt;/strong&gt; (objects that have survived at least one GC)&lt;/li&gt;
+&lt;li&gt;(Old Generation)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pool PS Old Gen&lt;/strong&gt; (also called &lt;strong&gt;Tenured&lt;/strong&gt;, objects that have survived some time in the &lt;strong&gt;Survivor Space&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Non-Heap Memory Usage&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pool Metaspace&lt;/strong&gt; (it used to be &lt;strong&gt;PermGen&lt;/strong&gt; before Java 8)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pool Codecache&lt;/strong&gt; (contains compiled native code, mostly used by the JIT)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Memory Pool Compressed Class Space&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
+
+&lt;p&gt;Yes. &lt;/p&gt;
+
+&lt;p&gt;In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
+
+&lt;h2 id=&quot;can-i-measure-the-use-of-memory-spaces&quot;&gt;Can I measure the use of Memory Spaces&lt;/h2&gt;
+
+&lt;p&gt;Yes! &lt;/p&gt;
+
+&lt;p&gt;You can use &lt;code&gt;jconsole&lt;/code&gt;. It will show you not only the use of all the above mentioned Memory Spaces, but also the threads in your JVM with basic information about them (name, status, stacktrace, etc.), loaded classes, and access to expoed MBeans. &lt;/p&gt;
+
+&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
+
+&lt;p&gt;We will use the Scala REPL as an example: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the corresponding JVM. What I see initially is: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; alt=&quot;Project&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;However, if I perform a GC and then I create lots of objects with: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I will see:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; alt=&quot;Project&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Can you see what happens to the Heap Memory when I launched the GC? What happens when I created objects in Scala? And to the Loaded classes? Use of CPU?&lt;/p&gt;
+
+&lt;p&gt;Conclusions?&lt;/p&gt;
+
+&lt;h2 id=&quot;documentation&quot;&gt;Documentation&lt;/h2&gt;
+
+&lt;p&gt;There is really lots of documentation about these topics, just make sure you don&amp;#39;t drawn into the wrong documentation (see carefully the version and implementation of your JVM before passing any parameter). &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html&quot;&gt;Java Garbage Collection Basics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/5/&quot;&gt;JAVA SE 5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/6/&quot;&gt;JAVA SE 6&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        <pubDate>Thu, 17 Aug 2017 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/2017/08/17/jvm-memory-spaces.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/08/17/jvm-memory-spaces.html</guid>
+        
+        <category>scala</category>
+        
+        <category>java</category>
+        
+        <category>heap</category>
+        
+        <category>memory</category>
+        
+        <category>permgen</category>
+        
+        
+      </item>
     
       <item>
         <title>Measuring the Performance of Anything In Scala</title>
