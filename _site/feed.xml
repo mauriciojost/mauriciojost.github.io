@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 06 Oct 2017 18:59:08 +0200</pubDate>
-    <lastBuildDate>Fri, 06 Oct 2017 18:59:08 +0200</lastBuildDate>
+    <pubDate>Sat, 07 Oct 2017 02:59:53 +0200</pubDate>
+    <lastBuildDate>Sat, 07 Oct 2017 02:59:53 +0200</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -15,10 +15,7 @@
 
 &lt;p&gt;The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;mark used memory and&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;delete unused memory (compacting could be part of this step too) &lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A%20%20digraph%20G%20%7B;%0A%20%20%20%20rankdir=LR;%0A%20%20%20%20mark%20%5Bstyle=filled,%20label=%221.%20Mark%22%5D;%0A%20%20%20%20delete%20%5Bstyle=filled,%20label=%222.%20Delete%22%5D;%0A%20%20%20%20compact%20%5Bstyle=filled,%20label=%223.%20Compact%22%5D;%0A%20%20%20%20;%0A%20%20%20%20delete%20-%3E%20compact%20%5Bstyle=dotted%5D;%0A%20%20%20%20mark%20-%3E%20delete;%0A%20%20%20%20;%20%0A%20%20%20%20marknote%20%5Bshape=note,%20label=%22Mark%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20deletenote%20%5Bshape=note,%20label=%22Delete%5Cnunused%5Cnmemory%22%5D;%0A%20%20%20%20compactnote%20%5Bshape=note,%20label=%22Compact%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20;%20%0A%20%20%20%20compactnote%20-%3E%20compact;%0A%20%20%20%20deletenote%20-%3E%20delete;%0A%20%20%20%20marknote%20-%3E%20mark;%0A%20%20%7D&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.&lt;/p&gt;
 
@@ -32,24 +29,7 @@
 
 &lt;p&gt;Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general terms they can be divided into: &lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Heap Memory Usage (all object instances are stored here, memory from this space is used whenever &lt;em&gt;new&lt;/em&gt; is present in the code)&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;(Young Generation)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Memory Pool PS Eden Space&lt;/strong&gt; (recently allocated objects, did not survive any GC yet)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Memory Pool PS Survivor Space&lt;/strong&gt; (objects that have survived at least one GC)&lt;/li&gt;
-&lt;li&gt;(Old Generation)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Memory Pool PS Old Gen&lt;/strong&gt; (also called &lt;strong&gt;Tenured&lt;/strong&gt;, objects that have survived some time in the &lt;strong&gt;Survivor Space&lt;/strong&gt;)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Non-Heap Memory Usage&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Memory Pool Metaspace&lt;/strong&gt; (it used to be &lt;strong&gt;PermGen&lt;/strong&gt; before Java 8)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Memory Pool Codecache&lt;/strong&gt; (contains compiled native code, mostly used by the JIT)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Memory Pool Compressed Class Space&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22Memory%5CnPool%5CnPS%20Eden%5CnSpace%22;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22Memory%5CnPool%5CnPS%20Survivor%5CnSpace%22;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22Memory%5CnPool%20PS%5CnOld%20Gen%22;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20%22NonHeap%22%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22Memory%5CnPool%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22Memory%5CnPool%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22Memory%5CnPool%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0A;%0Anote%20right%20of%20NonHeap;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
 
@@ -90,16 +70,18 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html&quot;&gt;Java Garbage Collection Basics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/5/&quot;&gt;JAVA SE 5&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/6/&quot;&gt;JAVA SE 6&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/5/&quot;&gt;JAVA SE 5 - DEPRECATED&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/6/&quot;&gt;JAVA SE 6 - DEPRECATED&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with: &lt;/p&gt;
+&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example: &lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
         <pubDate>Thu, 17 Aug 2017 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/2017/08/17/jvm-memory-spaces.html</link>
         <guid isPermaLink="true">http://localhost:4000/2017/08/17/jvm-memory-spaces.html</guid>

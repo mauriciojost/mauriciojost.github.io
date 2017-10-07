@@ -15,48 +15,27 @@ comments: true
 
 The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:
 
-- mark used memory and
-
-- delete unused memory (compacting could be part of this step too) 
+![Alt text](https://g.gravizo.com/svg?
+  digraph G {;
+    rankdir=LR;
+    mark [style=filled, label="1. Mark"];
+    delete [style=filled, label="2. Delete"];
+    compact [style=filled, label="3. Compact"];
+    ;
+    delete -> compact [style=dotted];
+    mark -> delete;
+    ; 
+    marknote [shape=note, label="Mark\\nused\\nmemory"];
+    deletenote [shape=note, label="Delete\\nunused\\nmemory"];
+    compactnote [shape=note, label="Compact\\nused\\nmemory"];
+    ; 
+    compactnote -> compact;
+    deletenote -> delete;
+    marknote -> mark;
+  }
+)
 
 It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.
-
-
-![Alt text](https://g.gravizo.com/svg?
-@startuml;
-rectangle execute;
-rectangle execute2 {;
-  rectangle pepe;
-};
-@enduml;
-)
-
-![Alt text](https://g.gravizo.com/svg?
-@startuml;
-rectangle "Heap" {;
-  rectangle "Young Generation" {;
-    rectangle eden as "Memory Pool PS Eden Space: recently allocated objects, did not survive any GC yet";
-    rectangle survivor as "Memory Pool PS Survivor Space: objects that have survived at least one GC";
-  };
-  rectangle "Old Generation" {;
-    rectangle oldgen as "Memory Pool PS Old Gen: also called Tenured, objects that have survived some time in the Survivor Space";
-  };
-};
-rectangle "NonHeap" {;
-  rectangle metaspace as "Memory Pool Metaspace: it used to be PermGen before Java 8";
-  rectangle codecache as "Memory Pool Codecache: contains compiled native code, mostly used by the JIT";
-  rectangle classspace as "Memory Pool Compressed Class Space";
-};
-note right of Heap;
-All object instances;
-are stored here,;
-memory from this;
-space is used whenever;
-new is present in the;
-code;
-end note;
-@enduml;
-)
 
 
 <!--more-->
@@ -69,25 +48,72 @@ Indeed, this categorisation exists and is implemented in modern JVMs, and is mat
 
 Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general terms they can be divided into: 
 
-- Heap Memory Usage (all object instances are stored here, memory from this space is used whenever _new_ is present in the code)
-
-  - (Young Generation)
-
-    - **Memory Pool PS Eden Space** (recently allocated objects, did not survive any GC yet)
-    
-    - **Memory Pool PS Survivor Space** (objects that have survived at least one GC)
-
-  - (Old Generation)
-
-    - **Memory Pool PS Old Gen** (also called **Tenured**, objects that have survived some time in the **Survivor Space**)
-
-- **Non-Heap Memory Usage**
-
-  - **Memory Pool Metaspace** (it used to be **PermGen** before Java 8)
-
-  - **Memory Pool Codecache** (contains compiled native code, mostly used by the JIT)
-
-  - **Memory Pool Compressed Class Space**
+![Alt text](https://g.gravizo.com/svg?
+@startuml;
+rectangle "JVM Memory" {;
+  rectangle "Heap" {;
+    rectangle "Young\\nGeneration" {;
+      rectangle eden as "Memory\\nPool\\nPS Eden\\nSpace";
+      rectangle survivor as "Memory\\nPool\\nPS Survivor\\nSpace";
+    };
+    rectangle "Old\\nGeneration" {;
+      rectangle oldgen as "Memory\\nPool PS\\nOld Gen";
+    };
+  };
+  rectangle "NonHeap" {;
+    rectangle metaspace as "Memory\\nPool\\nMetaspace";
+    rectangle codecache as "Memory\\nPool\\nCodecache";
+    rectangle classspace as "Memory\\nPool\\nCompressed\\nClass Space";
+  };
+};
+;
+note right of NonHeap;
+  Not subject to GC.;
+end note;
+;
+note right of Heap;
+  All object instances;
+  are stored here,;
+  memory from this;
+  space is used whenever;
+  new is present in the;
+  code.;
+  Subject to GC.;
+end note;
+;
+note right of metaspace;
+  It used to be;
+  PermGen before;
+  Java 8.;
+end note;
+;
+note right of codecache;
+  Contains compiled;
+  native code, mostly;
+  used by the JIT.;
+end note;
+;
+note right of eden;
+   Recently allocated;
+   objects, did not;
+   survive any GC yet.;
+end note;
+;
+note right of survivor;
+   Objects that have;
+   survived at least;
+   one GC.;
+end note;
+;
+note right of oldgen;
+  Also called Tenured,;
+  objects that have;
+  survived some time;
+  in the Survivor Space.;
+end note;
+;
+@enduml;
+)
 
 ### No PermGen Space in JDK 8? 
 
@@ -133,15 +159,16 @@ There is really lots of documentation about these topics, just make sure you don
 
 - [General documentation from Oracle about Java](http://docs.oracle.com/en/java/)
 - [Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)
-- [JAVA SE 5](http://docs.oracle.com/javase/5/)
-- [JAVA SE 6](http://docs.oracle.com/javase/6/)
+- [JAVA SE 5 - DEPRECATED](http://docs.oracle.com/javase/5/)
+- [JAVA SE 6 - DEPRECATED](http://docs.oracle.com/javase/6/)
 - [JAVA SE 7](http://docs.oracle.com/javase/7/)
 - [JAVA SE 8](http://docs.oracle.com/javase/8/)
 - [JAVA SE 9](http://docs.oracle.com/javase/9/)
 
-Also, do not forget `man java`. If java was not installed properly via a package manager, you can still try to read the manual with: 
+Also, do not forget `man java`. If java was not installed properly via a package manager, you can still try to read the manual with `man`. For example: 
 
 ```bash
 man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
 ```
 
+Enjoy!
