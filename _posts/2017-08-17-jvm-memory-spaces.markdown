@@ -13,7 +13,7 @@ comments: true
 
 ## Why would we need Memory Spaces? 
 
-The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:
+The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:
 
 ![Alt text](https://g.gravizo.com/svg?
   digraph G {;
@@ -35,14 +35,14 @@ The JVM is responsible of freing unreferenced memory via an entity called Garbag
   }
 )
 
-It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.
+It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.
 
 
 <!--more-->
 
-As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the _new_ keyword as more likely to have a very short life (unless it can learn the opposite, for instance when the object keeps being referenced for a really long time, decreasing the chances it will be eligible for disposal soon). 
+As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the _new_ keyword as more likely to have a very short life. Of course the GC can learn also that a _new_ object is more likely to have a longer life, for instance when the object keeps being referenced for some definition of _long time_, decreasing the chances it will be eligible for disposal soon. 
 
-Indeed, this categorisation exists and is implemented in modern JVMs, and is materialised via Memory Spaces, or more precisely _Generational Memory Spaces_. 
+Indeed, this categorisation exists and is implemented in JVMs, and is materialised via Memory Spaces, or more precisely _Generational Memory Spaces_. 
 
 ## What are the Memory Spaces in Java?
 
@@ -117,7 +117,7 @@ end note;
 
 ### No PermGen Space in JDK 8? 
 
-Yes. 
+Exactly. 
 
 In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option `MaxMetaspaceSize` to put an upper limit on it.
 
