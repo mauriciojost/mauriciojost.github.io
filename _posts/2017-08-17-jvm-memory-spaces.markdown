@@ -11,6 +11,11 @@ tags:
 comments: true
 ---
 
+In this occasion I will explain what are the Java Memory Spaces. You should be interested if you're a developper often struggling to understand what an `OOM` or `OutOfMemoryError` is, what `PermGen` is, or 
+what `heap memory` is.
+
+I will also address why Memory Spaces are such a good idea, how their usage can be measured from a JVM, and where to find documentation about them.
+
 ## Why would we need Memory Spaces? 
 
 The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:
@@ -35,14 +40,13 @@ The JVM is responsible of freing unreferenced memory via an entity called Garbag
   }
 )
 
-It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.
-
-
 <!--more-->
 
-As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the _new_ keyword as more likely to have a very short life. Of course the GC can learn also that a _new_ object is more likely to have a longer life, for instance when the object keeps being referenced for some definition of _long time_, decreasing the chances it will be eligible for disposal soon. 
+It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. In other words, the more classes loaded, the more memory segments to explore every time memory is claimed.
 
-Indeed, this categorisation exists and is implemented in JVMs, and is materialised via Memory Spaces, or more precisely _Generational Memory Spaces_. 
+As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal. In a simplified version of reality, the GC considers a class oject to be permanent (as it will probably live as long as the JVM). On the other hand, the GC considers objects created with the _new_ keyword as more likely to have shorter life. The GC discriminates _very short life_ from _medium life_ and _long life_ by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they are still referenced (hence their block of memory is marked, preventing it from disposal). Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change their _generation_. 
+
+This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces, or more precisely _Generational Memory Spaces_. 
 
 ## What are the Memory Spaces in Java?
 
@@ -117,11 +121,11 @@ end note;
 
 ### No PermGen Space in JDK 8? 
 
-Exactly. 
+Exactly, no more `PermGen`. 
 
-In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option `MaxMetaspaceSize` to put an upper limit on it.
+In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory instead. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option `MaxMetaspaceSize` to put an upper limit on it.
 
-## Can I measure the use of Memory Spaces
+## Can I measure the use of Memory Spaces?
 
 Yes! 
 
@@ -149,18 +153,20 @@ I will see:
 
 ![Project](/images/posts/jconsole2.png)
 
-Can you see what happens to the Heap Memory when I launched the GC? What happens when I created objects in Scala? And to the Loaded classes? Use of CPU?
+Can you see what happens to the _Heap Memory Usage_ when I launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.
 
-Conclusions?
+What happens when I created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object `val a` allocated.
 
-## Documentation
+And to the Loaded classes? They increased by the team `val a` was instanciated given the lazy class loading. 
+
+Use of CPU? Peak when `val a` was instanciated. Can you see it?
+
+## More Documentation on it?
 
 There is really lots of documentation about these topics, just make sure you don't drawn into the wrong documentation (see carefully the version and implementation of your JVM before passing any parameter). 
 
 - [General documentation from Oracle about Java](http://docs.oracle.com/en/java/)
 - [Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)
-- [JAVA SE 5 - DEPRECATED](http://docs.oracle.com/javase/5/)
-- [JAVA SE 6 - DEPRECATED](http://docs.oracle.com/javase/6/)
 - [JAVA SE 7](http://docs.oracle.com/javase/7/)
 - [JAVA SE 8](http://docs.oracle.com/javase/8/)
 - [JAVA SE 9](http://docs.oracle.com/javase/9/)
