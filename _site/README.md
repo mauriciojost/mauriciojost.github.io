@@ -26,7 +26,8 @@ Use subtree push to send it to the frontend branch on GitHub:
 ```sh
 git checkout development
 jekyll serve
-git commit -s -m "Publish site"
+git commit -a -s -m "Publish site"
+git push
 git subtree push --prefix _site origin master
 ```
 

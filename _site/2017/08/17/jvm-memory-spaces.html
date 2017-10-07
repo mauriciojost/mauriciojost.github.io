@@ -7,7 +7,7 @@
   <meta name="author" content="Mauricio Jost">
   <meta name="theme-color" content="#284a5e">
   <title>JVM Memory Spaces</title>
-  <meta name="description" content="Why would we need Memory Spaces?">
+  <meta name="description" content="In this occasion I will explain what are the Java Memory Spaces. You should be interested if you&#39;re a developper often struggling to understand what an O...">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://localhost:4000/2017/08/17/jvm-memory-spaces.html">
   <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://localhost:4000/feed.xml">
@@ -49,19 +49,24 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="why-would-we-need-memory-spaces">Why would we need Memory Spaces?</h2>
+    <p>In this occasion I will explain what are the Java Memory Spaces. You should be interested if you&#39;re a developper often struggling to understand what an <code>OOM</code> or <code>OutOfMemoryError</code> is, what <code>PermGen</code> is, or 
+what <code>heap memory</code> is.</p>
+
+<p>I will also address why Memory Spaces are such a good idea, how their usage can be measured from a JVM, and where to find documentation about them.</p>
+
+<h2 id="why-would-we-need-memory-spaces">Why would we need Memory Spaces?</h2>
 
 <p>The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:</p>
 
 <p><img src="https://g.gravizo.com/svg?%0A%20%20digraph%20G%20%7B;%0A%20%20%20%20rankdir=LR;%0A%20%20%20%20mark%20%5Bstyle=filled,%20label=%221.%20Mark%22%5D;%0A%20%20%20%20delete%20%5Bstyle=filled,%20label=%222.%20Delete%22%5D;%0A%20%20%20%20compact%20%5Bstyle=filled,%20label=%223.%20Compact%22%5D;%0A%20%20%20%20;%0A%20%20%20%20delete%20-%3E%20compact%20%5Bstyle=dotted%5D;%0A%20%20%20%20mark%20-%3E%20delete;%0A%20%20%20%20;%20%0A%20%20%20%20marknote%20%5Bshape=note,%20label=%22Mark%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20deletenote%20%5Bshape=note,%20label=%22Delete%5Cnunused%5Cnmemory%22%5D;%0A%20%20%20%20compactnote%20%5Bshape=note,%20label=%22Compact%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20;%20%0A%20%20%20%20compactnote%20-%3E%20compact;%0A%20%20%20%20deletenote%20-%3E%20delete;%0A%20%20%20%20marknote%20-%3E%20mark;%0A%20%20%7D" alt="Alt text"></p>
 
-<p>It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.</p>
-
 <!--more-->
 
-<p>As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the <em>new</em> keyword as more likely to have a very short life. Of course the GC can learn also that a <em>new</em> object is more likely to have a longer life, for instance when the object keeps being referenced for some definition of <em>long time</em>, decreasing the chances it will be eligible for disposal soon. </p>
+<p>It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. In other words, the more classes loaded, the more memory segments to explore every time memory is claimed.</p>
 
-<p>Indeed, this categorisation exists and is implemented in JVMs, and is materialised via Memory Spaces, or more precisely <em>Generational Memory Spaces</em>. </p>
+<p>As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal. In a simplified version of reality, the GC considers a class oject to be permanent (as it will probably live as long as the JVM). On the other hand, the GC considers objects created with the <em>new</em> keyword as more likely to have shorter life. The GC discriminates <em>very short life</em> from <em>medium life</em> and <em>long life</em> by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they are still referenced (hence their block of memory is marked, preventing it from disposal). Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change their <em>generation</em>. </p>
+
+<p>This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces, or more precisely <em>Generational Memory Spaces</em>. </p>
 
 <h2 id="what-are-the-memory-spaces-in-java">What are the Memory Spaces in Java?</h2>
 
@@ -71,11 +76,11 @@
 
 <h3 id="no-permgen-space-in-jdk-8">No PermGen Space in JDK 8?</h3>
 
-<p>Exactly. </p>
+<p>Exactly, no more <code>PermGen</code>. </p>
 
-<p>In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option <code>MaxMetaspaceSize</code> to put an upper limit on it.</p>
+<p>In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory instead. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option <code>MaxMetaspaceSize</code> to put an upper limit on it.</p>
 
-<h2 id="can-i-measure-the-use-of-memory-spaces">Can I measure the use of Memory Spaces</h2>
+<h2 id="can-i-measure-the-use-of-memory-spaces">Can I measure the use of Memory Spaces?</h2>
 
 <p>Yes! </p>
 
@@ -97,19 +102,21 @@
 
 <p><img src="/images/posts/jconsole2.png" alt="Project"></p>
 
-<p>Can you see what happens to the Heap Memory when I launched the GC? What happens when I created objects in Scala? And to the Loaded classes? Use of CPU?</p>
+<p>Can you see what happens to the <em>Heap Memory Usage</em> when I launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.</p>
 
-<p>Conclusions?</p>
+<p>What happens when I created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object <code>val a</code> allocated.</p>
 
-<h2 id="documentation">Documentation</h2>
+<p>And to the Loaded classes? They increased by the team <code>val a</code> was instanciated given the lazy class loading. </p>
+
+<p>Use of CPU? Peak when <code>val a</code> was instanciated. Can you see it?</p>
+
+<h2 id="more-documentation-on-it">More Documentation on it?</h2>
 
 <p>There is really lots of documentation about these topics, just make sure you don&#39;t drawn into the wrong documentation (see carefully the version and implementation of your JVM before passing any parameter). </p>
 
 <ul>
 <li><a href="http://docs.oracle.com/en/java/">General documentation from Oracle about Java</a></li>
 <li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html">Java Garbage Collection Basics</a></li>
-<li><a href="http://docs.oracle.com/javase/5/">JAVA SE 5 - DEPRECATED</a></li>
-<li><a href="http://docs.oracle.com/javase/6/">JAVA SE 6 - DEPRECATED</a></li>
 <li><a href="http://docs.oracle.com/javase/7/">JAVA SE 7</a></li>
 <li><a href="http://docs.oracle.com/javase/8/">JAVA SE 8</a></li>
 <li><a href="http://docs.oracle.com/javase/9/">JAVA SE 9</a></li>
