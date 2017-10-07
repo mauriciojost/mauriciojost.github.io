@@ -5,25 +5,25 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 07 Oct 2017 02:59:53 +0200</pubDate>
-    <lastBuildDate>Sat, 07 Oct 2017 02:59:53 +0200</lastBuildDate>
+    <pubDate>Sat, 07 Oct 2017 10:36:47 +0200</pubDate>
+    <lastBuildDate>Sat, 07 Oct 2017 10:36:47 +0200</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
         <title>JVM Memory Spaces</title>
         <description>&lt;h2 id=&quot;why-would-we-need-memory-spaces&quot;&gt;Why would we need Memory Spaces?&lt;/h2&gt;
 
-&lt;p&gt;The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:&lt;/p&gt;
+&lt;p&gt;The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A%20%20digraph%20G%20%7B;%0A%20%20%20%20rankdir=LR;%0A%20%20%20%20mark%20%5Bstyle=filled,%20label=%221.%20Mark%22%5D;%0A%20%20%20%20delete%20%5Bstyle=filled,%20label=%222.%20Delete%22%5D;%0A%20%20%20%20compact%20%5Bstyle=filled,%20label=%223.%20Compact%22%5D;%0A%20%20%20%20;%0A%20%20%20%20delete%20-%3E%20compact%20%5Bstyle=dotted%5D;%0A%20%20%20%20mark%20-%3E%20delete;%0A%20%20%20%20;%20%0A%20%20%20%20marknote%20%5Bshape=note,%20label=%22Mark%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20deletenote%20%5Bshape=note,%20label=%22Delete%5Cnunused%5Cnmemory%22%5D;%0A%20%20%20%20compactnote%20%5Bshape=note,%20label=%22Compact%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20;%20%0A%20%20%20%20compactnote%20-%3E%20compact;%0A%20%20%20%20deletenote%20-%3E%20delete;%0A%20%20%20%20marknote%20-%3E%20mark;%0A%20%20%7D&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
 
-&lt;p&gt;It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.&lt;/p&gt;
+&lt;p&gt;It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
-&lt;p&gt;As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the &lt;em&gt;new&lt;/em&gt; keyword as more likely to have a very short life (unless it can learn the opposite, for instance when the object keeps being referenced for a really long time, decreasing the chances it will be eligible for disposal soon). &lt;/p&gt;
+&lt;p&gt;As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the &lt;em&gt;new&lt;/em&gt; keyword as more likely to have a very short life. Of course the GC can learn also that a &lt;em&gt;new&lt;/em&gt; object is more likely to have a longer life, for instance when the object keeps being referenced for some definition of &lt;em&gt;long time&lt;/em&gt;, decreasing the chances it will be eligible for disposal soon. &lt;/p&gt;
 
-&lt;p&gt;Indeed, this categorisation exists and is implemented in modern JVMs, and is materialised via Memory Spaces, or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;. &lt;/p&gt;
+&lt;p&gt;Indeed, this categorisation exists and is implemented in JVMs, and is materialised via Memory Spaces, or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;. &lt;/p&gt;
 
 &lt;h2 id=&quot;what-are-the-memory-spaces-in-java&quot;&gt;What are the Memory Spaces in Java?&lt;/h2&gt;
 
@@ -33,7 +33,7 @@
 
 &lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
 
-&lt;p&gt;Yes. &lt;/p&gt;
+&lt;p&gt;Exactly. &lt;/p&gt;
 
 &lt;p&gt;In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
 

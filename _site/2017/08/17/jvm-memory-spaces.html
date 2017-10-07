@@ -51,17 +51,17 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="why-would-we-need-memory-spaces">Why would we need Memory Spaces?</h2>
 
-<p>The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute two steps:</p>
+<p>The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:</p>
 
 <p><img src="https://g.gravizo.com/svg?%0A%20%20digraph%20G%20%7B;%0A%20%20%20%20rankdir=LR;%0A%20%20%20%20mark%20%5Bstyle=filled,%20label=%221.%20Mark%22%5D;%0A%20%20%20%20delete%20%5Bstyle=filled,%20label=%222.%20Delete%22%5D;%0A%20%20%20%20compact%20%5Bstyle=filled,%20label=%223.%20Compact%22%5D;%0A%20%20%20%20;%0A%20%20%20%20delete%20-%3E%20compact%20%5Bstyle=dotted%5D;%0A%20%20%20%20mark%20-%3E%20delete;%0A%20%20%20%20;%20%0A%20%20%20%20marknote%20%5Bshape=note,%20label=%22Mark%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20deletenote%20%5Bshape=note,%20label=%22Delete%5Cnunused%5Cnmemory%22%5D;%0A%20%20%20%20compactnote%20%5Bshape=note,%20label=%22Compact%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20;%20%0A%20%20%20%20compactnote%20-%3E%20compact;%0A%20%20%20%20deletenote%20-%3E%20delete;%0A%20%20%20%20marknote%20-%3E%20mark;%0A%20%20%7D" alt="Alt text"></p>
 
-<p>It turns out that if we were to apply these two simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.</p>
+<p>It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. For instance, the more classes loaded, the more memory segments to explore every time memory is claimed.</p>
 
 <!--more-->
 
-<p>As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the <em>new</em> keyword as more likely to have a very short life (unless it can learn the opposite, for instance when the object keeps being referenced for a really long time, decreasing the chances it will be eligible for disposal soon). </p>
+<p>As you could imagine, things get better if the GC is aware of the chances an object is eligible for disposal. For instance, the GC could consider a class oject to be permanent (as it will probably live as long as the JVM), whereas consider an object created with the <em>new</em> keyword as more likely to have a very short life. Of course the GC can learn also that a <em>new</em> object is more likely to have a longer life, for instance when the object keeps being referenced for some definition of <em>long time</em>, decreasing the chances it will be eligible for disposal soon. </p>
 
-<p>Indeed, this categorisation exists and is implemented in modern JVMs, and is materialised via Memory Spaces, or more precisely <em>Generational Memory Spaces</em>. </p>
+<p>Indeed, this categorisation exists and is implemented in JVMs, and is materialised via Memory Spaces, or more precisely <em>Generational Memory Spaces</em>. </p>
 
 <h2 id="what-are-the-memory-spaces-in-java">What are the Memory Spaces in Java?</h2>
 
@@ -71,7 +71,7 @@
 
 <h3 id="no-permgen-space-in-jdk-8">No PermGen Space in JDK 8?</h3>
 
-<p>Yes. </p>
+<p>Exactly. </p>
 
 <p>In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option <code>MaxMetaspaceSize</code> to put an upper limit on it.</p>
 
