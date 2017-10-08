@@ -60,7 +60,7 @@ what <code>heap memory</code> is.</p>
 
 <p>The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:</p>
 
-<p><img src="https://g.gravizo.com/svg?%0A%20%20digraph%20G%20%7B;%0A%20%20%20%20rankdir=LR;%0A%20%20%20%20mark%20%5Bstyle=filled,%20label=%221.%20Mark%22%5D;%0A%20%20%20%20delete%20%5Bstyle=filled,%20label=%222.%20Delete%22%5D;%0A%20%20%20%20compact%20%5Bstyle=filled,%20label=%223.%20Compact%22%5D;%0A%20%20%20%20;%0A%20%20%20%20delete%20-%3E%20compact%20%5Bstyle=dotted%5D;%0A%20%20%20%20mark%20-%3E%20delete;%0A%20%20%20%20;%20%0A%20%20%20%20marknote%20%5Bshape=note,%20label=%22Mark%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20deletenote%20%5Bshape=note,%20label=%22Delete%5Cnunused%5Cnmemory%22%5D;%0A%20%20%20%20compactnote%20%5Bshape=note,%20label=%22Compact%5Cnused%5Cnmemory%22%5D;%0A%20%20%20%20;%20%0A%20%20%20%20compactnote%20-%3E%20compact;%0A%20%20%20%20deletenote%20-%3E%20delete;%0A%20%20%20%20marknote%20-%3E%20mark;%0A%20%20%7D" alt="Alt text"></p>
+<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Garbage%20Collection%20(GC)%20steps;%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;" alt="Alt text"></p>
 
 
     </div>
