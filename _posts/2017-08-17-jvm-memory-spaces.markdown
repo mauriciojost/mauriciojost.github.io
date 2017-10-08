@@ -21,24 +21,18 @@ I will also address why Memory Spaces are such a good idea, how their usage can 
 The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:
 
 ![Alt text](https://g.gravizo.com/svg?
-  digraph G {;
-    rankdir=LR;
-    mark [style=filled, label="1. Mark"];
-    delete [style=filled, label="2. Delete"];
-    compact [style=filled, label="3. Compact"];
-    ;
-    delete -> compact [style=dotted];
-    mark -> delete;
-    ; 
-    marknote [shape=note, label="Mark\\nused\\nmemory"];
-    deletenote [shape=note, label="Delete\\nunused\\nmemory"];
-    compactnote [shape=note, label="Compact\\nused\\nmemory"];
-    ; 
-    compactnote -> compact;
-    deletenote -> delete;
-    marknote -> mark;
-  }
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Garbage Collection (GC) steps;
+scale max 900 width;
+;
+(*) -right-> "1. Mark used memory" %23white;
+-right-> "2. Delete unused memory" %23white;
+-right-> "3. Compact used memory" %23white;
+-right-> \(*\);
+@enduml;
 )
+
 
 <!--more-->
 
@@ -54,28 +48,30 @@ Strictly speaking, the Java Memory Spaces really depend on the Java VM implement
 
 ![Alt text](https://g.gravizo.com/svg?
 @startuml;
+skinparam monochrome false;
+caption Figure 2. Java Memory Spaces;
+scale max 900 width;
 rectangle "JVM Memory" {;
   rectangle "Heap" {;
     rectangle "Young\\nGeneration" {;
-      rectangle eden as "Memory\\nPool\\nPS Eden\\nSpace";
-      rectangle survivor as "Memory\\nPool\\nPS Survivor\\nSpace";
+      rectangle eden as "Memory\\nPool\\nPS Eden\\nSpace" %23red;
+      rectangle survivor as "Memory\\nPool\\nPS Survivor\\nSpace" %23orange;
     };
     rectangle "Old\\nGeneration" {;
-      rectangle oldgen as "Memory\\nPool PS\\nOld Gen";
+      rectangle oldgen as "Memory\\nPool PS\\nOld Gen" %23blue;
     };
   };
-  rectangle "NonHeap" {;
+  rectangle NonHeap {;
     rectangle metaspace as "Memory\\nPool\\nMetaspace";
     rectangle codecache as "Memory\\nPool\\nCodecache";
     rectangle classspace as "Memory\\nPool\\nCompressed\\nClass Space";
   };
 };
-;
-note right of NonHeap;
+note right of NonHeap %23white;
   Not subject to GC.;
 end note;
 ;
-note right of Heap;
+note right of Heap %23white;
   All object instances;
   are stored here,;
   memory from this;
@@ -85,31 +81,31 @@ note right of Heap;
   Subject to GC.;
 end note;
 ;
-note right of metaspace;
+note right of metaspace %23white;
   It used to be;
   PermGen before;
   Java 8.;
 end note;
 ;
-note right of codecache;
+note right of codecache %23white;
   Contains compiled;
   native code, mostly;
   used by the JIT.;
 end note;
 ;
-note right of eden;
+note right of eden %23white;
    Recently allocated;
    objects, did not;
    survive any GC yet.;
 end note;
 ;
-note right of survivor;
+note right of survivor %23white;
    Objects that have;
    survived at least;
    one GC.;
 end note;
 ;
-note right of oldgen;
+note right of oldgen %23white;
   Also called Tenured,;
   objects that have;
   survived some time;
@@ -141,7 +137,7 @@ scala
 
 We will open `jconsole` and hook to the corresponding JVM. What I see initially is: 
 
-![Project](/images/posts/jconsole1.png)
+{% img /images/posts/jconsole1.png 800x600 %}
 
 However, if I perform a GC and then I create lots of objects with: 
 
@@ -151,7 +147,7 @@ val a = (1 to 1000000).toList.map(_.toString)
 
 I will see:
 
-![Project](/images/posts/jconsole2.png)
+{% img /images/posts/jconsole2.png 800x600 %}
 
 Can you see what happens to the _Heap Memory Usage_ when I launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.
 
