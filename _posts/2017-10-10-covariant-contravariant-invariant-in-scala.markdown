@@ -15,16 +15,30 @@ As a newbie in Scala I've struggled to understand what `covariance`, `contravari
 
 After some reading, I thought I got somewhere, so I wanted to share it with you.
 
-![Alt text](https://g.gravizo.com/svg?
+The example types:
+
+<span style="display:block;text-align:center">![Alt text](https://g.gravizo.com/svg?
 @startuml;
 skinparam monochrome false;
-caption Figure 1. Use of Covariance and Contravariance;
+caption Figure 1. Example types;
 scale max 900 width;
 Animal <|-- Dog;
 Animal <|-- Cat;
+@enduml;
+)
+
+And what we can get if we master variances:
+
+<span style="display:block;text-align:center">![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Covariance and Contravariance;
+scale max 900 width;
 "List[Animal]" <|-- "List[Dog]": "Covariance [+A]";
 "List[Animal]" <|-- "List[Cat]";
-"Funct[Animal]" --|> "Funct[Dog]": "Contravariance [-A]";
+"Funct[Dog]" <|-- "Funct[Animal]": "Contravariance [-A]";
+note left of "Funct[Animal]": When instanciated,\\ncan be reused\\nas Funct[Dog]\\nthanks to\\ncontravariance;
+note right of "List[Dog]": Can be added\\nto a List[Animal]\\nthanks to\\ncovariance;
 @enduml;
 )
 
