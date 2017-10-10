@@ -55,7 +55,13 @@
 
 <p>After some reading, I thought I got somewhere, so I wanted to share it with you.</p>
 
-<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Use%20of%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BAnimal%5D%22%20--%7C%3E%20%22Funct%5BDog%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0A@enduml;" alt="Alt text"></p>
+<p>The example types:</p>
+
+<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;" alt="Alt text"></p>
+
+<p>And what we can get if we master variances:</p>
+
+<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BDog%5D%22%20%3C%7C--%20%22Funct%5BAnimal%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0Anote%20left%20of%20%22Funct%5BAnimal%5D%22:%20When%20instanciated,%5Cncan%20be%20reused%5Cnas%20Funct%5BDog%5D%5Cnthanks%20to%5Cncontravariance;%0Anote%20right%20of%20%22List%5BDog%5D%22:%20Can%20be%20added%5Cnto%20a%20List%5BAnimal%5D%5Cnthanks%20to%5Cncovariance;%0A@enduml;" alt="Alt text"></p>
 
 
     </div>
