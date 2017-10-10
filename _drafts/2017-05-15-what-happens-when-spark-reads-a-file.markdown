@@ -15,7 +15,7 @@ comments: true
  
 When Spark reads a simple file from HDFS there is a lot going on in your cluster.
 A single file is normally stored in many nodes, which is the result of both, replication and splitting mechanisms.
-They are both are essential for fault toleranCY and performance.
+They are both are essential for fault tolerance and performance.
 
 
 

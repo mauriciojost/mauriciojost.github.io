@@ -51,7 +51,11 @@
   <div class="post-content" itemprop="articleBody">
     <p>As a newbie in Scala I&#39;ve struggled to understand what <code>covariance</code>, <code>contravariance</code> and <code>invariance</code> in Scala mean.</p>
 
-<p>After some reading, I thought I got somewhere, so I wanted to share it with you. </p>
+<p>After some reading, I thought I got somewhere, so I wanted to share it with you.</p>
+
+<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Use%20of%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BAnimal%5D%22%20--%7C%3E%20%22Funct%5BDog%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0A@enduml;" alt="Alt text"></p>
+
+<!--more-->
 
 <h2 id="the-problem">The problem</h2>
 
@@ -67,7 +71,7 @@ For instance, it should be possible to provide functions <code>getName</code> or
   <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">I</span><span class="o">)</span><span class="k">:</span> <span class="kt">O</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
 <span class="o">}</span>
 </code></pre></div>
-<p>Now let&#39;s imagine we have to make our functions operate on the following classes: </p>
+<p>Now let&#39;s imagine we have to make our functions operate on the following classes:</p>
 <div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Our pet classes
 </span><span class="k">sealed</span> <span class="k">class</span> <span class="nc">Animal</span>
 <span class="k">class</span> <span class="nc">Dog</span> <span class="k">extends</span> <span class="nc">Animal</span>
@@ -80,8 +84,6 @@ For instance, it should be possible to provide functions <code>getName</code> or
 </code></pre></div>
 <p>We say that <strong><em>Fun</em> is invariant in <code>I</code> (<code>Animal</code>) and invariant in <code>O</code> (<code>Boolean</code>)</strong>, as there is not subtype association
 done by the compiler.</p>
-
-<!--more-->
 
 <h2 id="generalizing-fun-covariance">Generalizing <code>Fun</code>: Covariance</h2>
 

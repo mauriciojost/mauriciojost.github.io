@@ -5,15 +5,19 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 11 Oct 2017 00:28:14 +0200</pubDate>
-    <lastBuildDate>Wed, 11 Oct 2017 00:28:14 +0200</lastBuildDate>
+    <pubDate>Wed, 11 Oct 2017 00:40:34 +0200</pubDate>
+    <lastBuildDate>Wed, 11 Oct 2017 00:40:34 +0200</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
         <title>CoVariant, ContraVariant and InVariant... Variances in Scala</title>
         <description>&lt;p&gt;As a newbie in Scala I&amp;#39;ve struggled to understand what &lt;code&gt;covariance&lt;/code&gt;, &lt;code&gt;contravariance&lt;/code&gt; and &lt;code&gt;invariance&lt;/code&gt; in Scala mean.&lt;/p&gt;
 
-&lt;p&gt;After some reading, I thought I got somewhere, so I wanted to share it with you. &lt;/p&gt;
+&lt;p&gt;After some reading, I thought I got somewhere, so I wanted to share it with you.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Use%20of%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BAnimal%5D%22%20--%7C%3E%20%22Funct%5BDog%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
 
@@ -29,7 +33,7 @@ For instance, it should be possible to provide functions &lt;code&gt;getName&lt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now let&amp;#39;s imagine we have to make our functions operate on the following classes: &lt;/p&gt;
+&lt;p&gt;Now let&amp;#39;s imagine we have to make our functions operate on the following classes:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Our pet classes
 &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
@@ -42,8 +46,6 @@ For instance, it should be possible to provide functions &lt;code&gt;getName&lt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code&gt;I&lt;/code&gt; (&lt;code&gt;Animal&lt;/code&gt;) and invariant in &lt;code&gt;O&lt;/code&gt; (&lt;code&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
 done by the compiler.&lt;/p&gt;
-
-&lt;!--more--&gt;
 
 &lt;h2 id=&quot;generalizing-fun-covariance&quot;&gt;Generalizing &lt;code&gt;Fun&lt;/code&gt;: Covariance&lt;/h2&gt;
 
