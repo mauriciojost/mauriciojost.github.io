@@ -45,6 +45,54 @@
 
   
   <article>
+    <span class="post-meta">October 10, 2017</span>
+
+    <h2 class="post-title">
+      <a href="/2017/10/10/covariant-contravariant-invariant-in-scala.html">CoVariant, ContraVariant and InVariant... Variances in Scala</a>
+    </h2>
+    <div class="post-content" itemprop="articleBody">
+      <p>As a newbie in Scala I&#39;ve struggled to understand what <code>covariance</code>, <code>contravariance</code> and <code>invariance</code> in Scala mean.</p>
+
+<p>After some reading, I thought I got somewhere, so I wanted to share it with you. </p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>Consider the following example. </p>
+
+<p>Let&#39;s say I work for a veterinary, and I am writing an API to modularize the functions that allow to retrieve pets&#39; information from a database.
+For instance, it should be possible to provide functions <code>getName</code> or <code>getBreed</code>, etc.</p>
+
+<p>I could do it by implementing a class <code>Fun</code> (as in <strong>fun</strong>ction) that encapsulates a function, with attribute <code>f</code> that will work as an <em>information retriever</em>. </p>
+
+<p>Here it is our first attempt: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">Fun</span><span class="o">[</span><span class="kt">I</span>,<span class="kt">O</span><span class="o">](</span><span class="k">val</span> <span class="n">f</span><span class="k">:</span> <span class="kt">I</span> <span class="o">=&gt;</span> <span class="n">O</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">I</span><span class="o">)</span><span class="k">:</span> <span class="kt">O</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Now let&#39;s imagine we have to make our functions operate on the following classes: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Our pet classes
+</span><span class="k">sealed</span> <span class="k">class</span> <span class="nc">Animal</span>
+<span class="k">class</span> <span class="nc">Dog</span> <span class="k">extends</span> <span class="nc">Animal</span>
+<span class="k">class</span> <span class="nc">Cat</span> <span class="k">extends</span> <span class="nc">Animal</span>
+</code></pre></div>
+<p>Good! We can define our first instance of <code>Fun</code>, that tells if our animal is a dog:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Our first information retriever
+</span><span class="k">val</span> <span class="n">isADog</span><span class="k">:</span> <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span>
+        <span class="k">new</span> <span class="nc">Fun</span><span class="o">((</span><span class="n">i</span><span class="k">:</span> <span class="kt">Animal</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">.</span><span class="n">isInstanceOf</span><span class="o">[</span><span class="kt">Dog</span><span class="o">])</span>
+</code></pre></div>
+<p>We say that <strong><em>Fun</em> is invariant in <code>I</code> (<code>Animal</code>) and invariant in <code>O</code> (<code>Boolean</code>)</strong>, as there is not subtype association
+done by the compiler.</p>
+
+
+    </div>
+
+    <footer style="padding-top: 12px">
+      <a class="post-read-more" href="/2017/10/10/covariant-contravariant-invariant-in-scala.html">Read more...</a></footer>
+  </article>
+
+  <hr />
+  
+  <article>
     <span class="post-meta">August 17, 2017</span>
 
     <h2 class="post-title">

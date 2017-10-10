@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>http://localhost:4000/2017/10/10/covariant-contravariant-invariant-in-scala.html</loc>
+    </url>
+    
+    <url>
         <loc>http://localhost:4000/2017/08/17/jvm-memory-spaces.html</loc>
     </url>
     
