@@ -13,7 +13,22 @@ comments: true
 
 As a newbie in Scala I've struggled to understand what `covariance`, `contravariance` and `invariance` in Scala mean.
 
-After some reading, I thought I got somewhere, so I wanted to share it with you. 
+After some reading, I thought I got somewhere, so I wanted to share it with you.
+
+![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Use of Covariance and Contravariance;
+scale max 900 width;
+Animal <|-- Dog;
+Animal <|-- Cat;
+"List[Animal]" <|-- "List[Dog]": "Covariance [+A]";
+"List[Animal]" <|-- "List[Cat]";
+"Funct[Animal]" --|> "Funct[Dog]": "Contravariance [-A]";
+@enduml;
+)
+
+<!--more-->
 
 ## The problem 
 
@@ -32,7 +47,7 @@ class Fun[I,O](val f: I => O) {
 }
 ```
 
-Now let's imagine we have to make our functions operate on the following classes: 
+Now let's imagine we have to make our functions operate on the following classes:
 
 ```scala
 // Our pet classes
@@ -51,8 +66,6 @@ val isADog: Fun[Animal, Boolean] =
 
 We say that **_Fun_ is invariant in `I` (`Animal`) and invariant in `O` (`Boolean`)**, as there is not subtype association
 done by the compiler.
-
-<!--more-->
 
 ## Generalizing `Fun`: Covariance
 
