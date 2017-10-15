@@ -13,7 +13,6 @@ date_now="$(date)"
 git checkout development
 rm -fr "$site_dir"
 mkdir -p "$site_dir"
-cp 
 jekyll build
 
 ls -lah "$site_dir"
