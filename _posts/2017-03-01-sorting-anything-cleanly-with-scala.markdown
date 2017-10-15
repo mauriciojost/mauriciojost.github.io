@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: [post,  reveal-md]
 title:  "Sorting Anything Cleanly with Scala"
 date:   2017-03-01 00:00:00 +0200
 tags:
