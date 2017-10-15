@@ -24,5 +24,5 @@ rm -fr *
 tar -xf "$site_tgz_tmp"
 git commit -a -s -m "Publish site as of $date_now"
 
-git checkout development
+git checkout -f development
 
