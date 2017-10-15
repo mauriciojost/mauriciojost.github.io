@@ -29,5 +29,5 @@ tar -xf "$site_tgz_tmp"
 git commit -a -s -m "Publish site as of $date_now"
 git push -f origin master
 
-git checkout -f development
+git checkout development
 
