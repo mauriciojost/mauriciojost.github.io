@@ -31,14 +31,8 @@ Default output folder is `_site/`.
 
 ## Deployment on Github
 
-Use subtree push to send it to the frontend branch on GitHub:
-
 ```bash
-git checkout development
-jekyll serve
-git commit -a -s -m "Publish site"
-git push
-git subtree push --prefix _site origin master
+bash publish.sh
 ```
 
 ## Acknowledgment
