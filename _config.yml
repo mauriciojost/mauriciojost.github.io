@@ -6,7 +6,7 @@ github_username:  mauriciojost
 
 # Build settings
 sass:
-    style: :compressed
+  style: :compressed
 markdown: redcarpet
 redcarpet:
   extensions: ["strikethrough", "with_toc_data"]
