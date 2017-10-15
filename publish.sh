@@ -11,6 +11,7 @@ site_tgz_tmp="/tmp/publish-$RANDOM-$RANDOM.tar.gz"
 date_now="$(date)"
 
 git checkout development
+git submodule update --init --recursive
 rm -fr "$site_dir"
 mkdir -p "$site_dir"
 jekyll build
@@ -29,4 +30,5 @@ git commit -a -s -m "Publish site as of $date_now"
 git push -f origin master
 
 git checkout development
+git submodule update --init --recursive
 
