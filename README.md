@@ -5,10 +5,19 @@
 To install execute:
 
 ```bash
-sudo dnf install ruby-devel.x86_64
+# Install ruby
+# sudo apt-get install ruby2.4
+
+# Install jekyll for blog generation from static files
 gem install jekyll
+
+# Install redcarpet markdown interpreter
 gem install redcarpet
+
+# Ensure all submodules to this project are properly cloned too
+git submodule update --init --recursive
 ```
+
 
 ## Jekyll usage
 
