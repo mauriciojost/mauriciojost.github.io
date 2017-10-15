@@ -3,11 +3,16 @@ title: Mauricio Jost
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://mauriciojost.github.io" # the base hostname & protocol for your site
 github_username:  mauriciojost
-include: ["reveal.js"]
 
 # Build settings
 sass:
   style: :compressed
+
+# Markdown syntax related settings
 markdown: redcarpet
 redcarpet:
   extensions: ["strikethrough", "with_toc_data"]
+
+# Dist build settings
+include: ["reveal.js"]
+exclude: ["publish.sh"]
