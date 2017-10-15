@@ -2,18 +2,19 @@
 
 ## Installation
 
-Compiling Jekyll template requires the following packages:
+To install execute:
 
-```sh
+```bash
 sudo dnf install ruby-devel.x86_64
-gem install jekyll redcarpet
+gem install jekyll
+gem install redcarpet
 ```
 
 ## Jekyll usage
 
 Preview is available during development if content was served by Jekyll:
 
-```sh
+```bash
 jekyll serve
 ```
 
@@ -23,7 +24,7 @@ Default output folder is `_site/`.
 
 Use subtree push to send it to the frontend branch on GitHub:
 
-```sh
+```bash
 git checkout development
 jekyll serve
 git commit -a -s -m "Publish site"
