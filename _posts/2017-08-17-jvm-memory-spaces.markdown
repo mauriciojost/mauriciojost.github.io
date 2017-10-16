@@ -11,7 +11,7 @@ tags:
 comments: true
 ---
 
-In this occasion I will explain what are the Java Memory Spaces. You should be interested if you're a developper often struggling to understand what an `OOM` or `OutOfMemoryError` is, what `PermGen` is, or 
+In this occasion I will explain what are the Java Memory Spaces. You should be interested if you're a developer often struggling to understand what an `OOM` or `OutOfMemoryError` is, what `PermGen` is, or 
 what `heap memory` is.
 
 I will also address why Memory Spaces are such a good idea, how their usage can be measured from a JVM, and where to find documentation about them.
