@@ -29,6 +29,17 @@ jekyll serve
 
 Default output folder is `_site/`.
 
+### Write a new post
+
+New posts are added in `_posts` directory, respecting the file naming convention.
+
+Layouts define the form of a post:
+
+- `post`: will use `Jekyll` itself
+- `presentation`: will use `reveal.js`
+
+See existing example post for more information. 
+
 ## Deployment on Github
 
 ```bash

@@ -1,7 +1,7 @@
 ---
 layout: [post,  presentation]
 title: "Using reveal-md layout"
-date:   2017-03-01 00:00:00 +0200
+date:   2017-10-16 00:00:00 +0200
 reveal:
   theme: black
   transition: slide
@@ -17,25 +17,34 @@ reveal:
 
 Single Horizontal Slide
 
-<!--NextSlide-->
+<!--nextslide-->
+
 # Second
 
 Single Horizontal Slide
 
-<!--NextSlide-->
+<!--nextslide-->
+
 # Third
 
 Single Horizontal Slide
 
-<!--DownSlide-->
+<!--downslide-->
+
 ## Third A
 
 Vertical Slide 1
 
-<!--DownSlide-->
+<!--ignoreslide-->
+
+Something that will be displayed in the blog, but not in the slides.
+
+<!--downslide-->
+
 ## Third B
 
 Vertical Slide 2
 
-<!--IgnoreSlide-->
+<!--ignoreslide-->
+
 Something that will be displayed in the blog, but not in the slides.
