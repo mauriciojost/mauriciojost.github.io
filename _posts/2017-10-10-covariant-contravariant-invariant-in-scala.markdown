@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: [post, presentation]
 title:  "CoVariant, ContraVariant and InVariant... Variances in Scala"
 date:   2017-10-10 00:00:00 +0200
 tags:
@@ -11,11 +11,9 @@ tags:
 comments: true
 ---
 
-As a newbie in Scala I've struggled to understand what `covariance`, `contravariance` and `invariance` in Scala mean.
+## The problem 
 
-After some reading, I thought I got somewhere, so I wanted to share it with you.
-
-The example types:
+Consider the following example:
 
 <span style="display:block;text-align:center">![Alt text](https://g.gravizo.com/svg?
 @startuml;
@@ -27,31 +25,25 @@ Animal <|-- Cat;
 @enduml;
 )
 
-And what we can get if we master variances:
+Let's say I work for a veterinary, and I am writing an API. I want to modularize the functions that allow to retrieve pets' information from a database.
+For instance, it should be possible to provide functions `getName` or `getBreed`, etc. 
 
-<span style="display:block;text-align:center">![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Covariance and Contravariance;
-scale max 900 width;
-"List[Animal]" <|-- "List[Dog]": "Covariance [+A]";
-"List[Animal]" <|-- "List[Cat]";
-"Funct[Dog]" <|-- "Funct[Animal]": "Contravariance [-A]";
-note left of "Funct[Animal]": When instanciated,\\ncan be reused\\nas Funct[Dog]\\nthanks to\\ncontravariance;
-note right of "List[Dog]": Can be added\\nto a List[Animal]\\nthanks to\\ncovariance;
-@enduml;
-)
+How would you do that?
+
+<!--nextslide-->
 
 <!--more-->
 
-## The problem 
+Let's first define our business classes:
 
-Consider the following example. 
+```scala
+// Our pet classes
+sealed class Animal
+class Dog extends Animal
+class Cat extends Animal
+```
 
-Let's say I work for a veterinary, and I am writing an API to modularize the functions that allow to retrieve pets' information from a database.
-For instance, it should be possible to provide functions `getName` or `getBreed`, etc.
-
-I could do it by implementing a class `Fun` (as in **fun**ction) that encapsulates a function, with attribute `f` that will work as an _information retriever_. 
+Then, we could define a class `Fun` (as in **fun**ction) that will encapsulate an _information retriever_ function. This is a provided function `f`. 
 
 Here it is our first attempt: 
 
@@ -59,15 +51,6 @@ Here it is our first attempt:
 class Fun[I,O](val f: I => O) {
   def apply(i: I): O = f(i)
 }
-```
-
-Now let's imagine we have to make our functions operate on the following classes:
-
-```scala
-// Our pet classes
-sealed class Animal
-class Dog extends Animal
-class Cat extends Animal
 ```
 
 Good! We can define our first instance of `Fun`, that tells if our animal is a dog:
@@ -160,6 +143,23 @@ val contravariantIsDogForDog: Fun[Dog, Boolean] = // specific type
 
 contravariantIsDogForDog(myDog) // returns true
 ```
+
+## Summary
+
+This is the result of applying variances:
+
+<span style="display:block;text-align:center">![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Covariance and Contravariance;
+scale max 900 width;
+"List[Animal]" <|-- "List[Dog]": "Covariance [+A]";
+"List[Animal]" <|-- "List[Cat]";
+"Funct[Dog]" <|-- "Funct[Animal]": "Contravariance [-A]";
+note left of "Funct[Animal]": When instanciated,\\ncan be reused\\nas Funct[Dog]\\nthanks to\\ncontravariance;
+note right of "List[Dog]": Can be added\\nto a List[Animal]\\nthanks to\\ncovariance;
+@enduml;
+)
 
 ## More Information
 
