@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: [post, presentation]
 title:  "JVM Memory Spaces"
 date:   2017-08-17 00:00:00 +0200
 tags:
@@ -11,19 +11,42 @@ tags:
 comments: true
 ---
 
-In this occasion I will explain what are the Java Memory Spaces. You should be interested if you're a developer often struggling to understand what an `OOM` or `OutOfMemoryError` is, what `PermGen` is, or 
-what `heap memory` is.
+This post addresses:
 
-I will also address why Memory Spaces are such a good idea, how their usage can be measured from a JVM, and where to find documentation about them.
+- what are Java Memory Spaces
+- why they are such a good idea
+- their names and use in the JVM
+- how to measure their usage in practice
+- where to find more documentation about them
 
-## Why would we need Memory Spaces? 
+<!--slide-down-->
 
-The JVM is responsible of freing unreferenced memory via an entity called Garbage Collector (or GC for short). Every time the GC is requested to claim memory, it will execute these steps:
+So, if you don't understand concepts like:
+
+- `OutOfMemoryError`
+- `PermGen`
+- `heap memory`
+- etc.
+
+Then I suggest you to continue reading!
+
+<!--slide-next-->
+
+<!--more-->
+
+## Why the need for Memory Spaces?
+
+<!--slide-ignore-begin-->
+
+The JVM frees unreferenced memory via an entity called Garbage Collector (or GC for short).
+Every time the GC claims memory, it executes these steps:
+
+<!--slide-ignore-end-->
 
 ![Alt text](https://g.gravizo.com/svg?
 @startuml;
 skinparam monochrome false;
-caption Figure 1. Garbage Collection (GC) steps;
+caption Figure 1. The steps of the Garbage Collection (GC);
 scale max 900 width;
 ;
 (*) -right-> "1. Mark used memory" %23white;
@@ -33,18 +56,40 @@ scale max 900 width;
 @enduml;
 )
 
+<!--slide-ignore-begin-->
 
-<!--more-->
+If these steps were to be applied to a flat memory space, the process of freeing memory would become
+proportionally as slow as the amount of memory used. In other words, the more classes loaded, the more
+memory segments to explore every time memory is claimed.
 
-It turns out that if we were to apply these simple steps to a flat memory space, the process of freing memory would become as slow as the amount of memory used. In other words, the more classes loaded, the more memory segments to explore every time memory is claimed.
+As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal.
 
-As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal. In a simplified version of reality, the GC considers a class oject to be permanent (as it will probably live as long as the JVM). On the other hand, the GC considers objects created with the _new_ keyword as more likely to have shorter life. The GC discriminates _very short life_ from _medium life_ and _long life_ by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they are still referenced (hence their block of memory is marked, preventing it from disposal). Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change their _generation_. 
+In a simplified version of reality, the GC considers a class object to be permanent (as it will probably
+live as long as the JVM).
 
-This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces, or more precisely _Generational Memory Spaces_. 
+On the other hand, the GC considers objects created with the _new_ keyword as
+more likely to have shorter life. The GC discriminates _very short life_ from _medium life_ and _long life_
+by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they
+are still referenced (hence their block of memory is marked, preventing it from disposal).
+
+Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change
+their _generation_.
+
+This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces,
+or more precisely _Generational Memory Spaces_.
+
+<!--slide-ignore-end-->
+
+<!--slide-next-->
 
 ## What are the Memory Spaces in Java?
 
-Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general terms they can be divided into: 
+<!--slide-ignore-begin-->
+
+Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general
+terms they can be divided into:
+
+<!--slide-ignore-end-->
 
 ![Alt text](https://g.gravizo.com/svg?
 @startuml;
@@ -115,17 +160,33 @@ end note;
 @enduml;
 )
 
-### No PermGen Space in JDK 8? 
+<!--slide-down-->
+
+### No PermGen Space in JDK 8?
 
 Exactly, no more `PermGen`. 
 
-In JDK 8 the permanent generation was removed, and the class metadata is allocated in native memory instead. The amount of native memory that can be used for class metadata is by default unlimited. You can use the option `MaxMetaspaceSize` to put an upper limit on it.
+In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.
 
-## Can I measure the use of Memory Spaces?
+<!--slide-ignore-begin-->
 
-Yes! 
+The amount of native memory that can be used for class metadata is by default unlimited. You can use the option `MaxMetaspaceSize` to put an upper limit on it.
 
-You can use `jconsole`. It will show you not only the use of all the above mentioned Memory Spaces, but also the threads in your JVM with basic information about them (name, status, stacktrace, etc.), loaded classes, and access to expoed MBeans. 
+<!--slide-ignore-end-->
+
+<!--slide-next-->
+
+## In practice, can I measure the use of Memory Spaces?
+
+You can use `jconsole` for that. This tool will show you:
+
+- the use of Memory Spaces
+- the threads in your JVM (with name, status, stacktrace, etc.)
+- loaded classes
+- exposed MBeans
+- and more!
+
+<!--slide-down-->
 
 ### Example
 
@@ -135,31 +196,62 @@ We will use the Scala REPL as an example:
 scala
 ```
 
-We will open `jconsole` and hook to the corresponding JVM. What I see initially is: 
+We will open `jconsole` and hook to the just launched JVM (using its PID).
+
+```bash
+jconsole <PID>
+```
+
+to hook to the corresponding JVM.
+
+<!--slide-ignore-begin-->
+
+What I see initially is:
+
+<!--slide-ignore-end-->
+
+<!--slide-down-->
 
 {% img /images/posts/jconsole1.png 800x600 %}
 
-However, if I perform a GC and then I create lots of objects with: 
+<!--slide-down-->
 
-```scala
+However, if you perform a GC and then you create lots of objects with:
+
+```
 val a = (1 to 1000000).toList.map(_.toString)
 ```
 
-I will see:
+<!--slide-down-->
+
+<!--slide-ignore-begin-->
+
+You will see:
+
+<!--slide-ignore-end-->
 
 {% img /images/posts/jconsole2.png 800x600 %}
 
-Can you see what happens to the _Heap Memory Usage_ when I launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.
+<!--slide-down-->
 
-What happens when I created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object `val a` allocated.
+Can you explain:
 
-And to the Loaded classes? They increased by the team `val a` was instanciated given the lazy class loading. 
+- what happens to the _Heap Memory Usage_ when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.
+- what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object `val a` allocated.
 
-Use of CPU? Peak when `val a` was instanciated. Can you see it?
+<!--slide-down-->
+
+And more generally:
+
+- what happens to the Loaded classes? They increased by the team `val a` was instantiated given the lazy class loading.
+- what happens to the use of CPU? There is a peak when `val a` was instantiated. Can you see it?
+
+<!--slide-next-->
 
 ## More Documentation on it?
 
-There is really lots of documentation about these topics, just make sure you don't drawn into the wrong documentation (see carefully the version and implementation of your JVM before passing any parameter). 
+There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
+double check the version of the JVM it relates too.
 
 - [General documentation from Oracle about Java](http://docs.oracle.com/en/java/)
 - [Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)
@@ -167,10 +259,14 @@ There is really lots of documentation about these topics, just make sure you don
 - [JAVA SE 8](http://docs.oracle.com/javase/8/)
 - [JAVA SE 9](http://docs.oracle.com/javase/9/)
 
+<!--slide-down-->
+
 Also, do not forget `man java`. If java was not installed properly via a package manager, you can still try to read the manual with `man`. For example: 
 
 ```bash
 man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
 ```
+
+<!--slide-next-->
 
 Enjoy!
