@@ -17,6 +17,12 @@ reveal:
 
 Single Horizontal Slide
 
+<!--startignore-->
+
+To be ignored!
+
+<!--endignore-->
+
 <!--nextslide-->
 
 # Second
