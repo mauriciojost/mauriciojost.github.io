@@ -17,40 +17,33 @@ reveal:
 
 Single Horizontal Slide
 
-<!--startignore-->
+<!--slide-ignore-begin-->
 
-To be ignored!
+To be ignored by the slides!
 
-<!--endignore-->
+<!--slide-ignore-end-->
 
-<!--nextslide-->
+<!--slide-next-->
 
 # Second
 
 Single Horizontal Slide
 
-<!--nextslide-->
+<!--slide-next-->
 
 # Third
 
 Single Horizontal Slide
 
-<!--downslide-->
+<!--slide-down-->
 
 ## Third A
 
 Vertical Slide 1
 
-<!--ignoreslide-->
-
-Something that will be displayed in the blog, but not in the slides.
-
-<!--downslide-->
+<!--slide-down-->
 
 ## Third B
 
 Vertical Slide 2
 
-<!--ignoreslide-->
-
-Something that will be displayed in the blog, but not in the slides.
