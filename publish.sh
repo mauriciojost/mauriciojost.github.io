@@ -26,6 +26,7 @@ git checkout master
 cd "$root_dir"
 rm -fr *
 tar -xf "$site_tgz_tmp"
+git add *
 git commit -a -s -m "Publish site as of $date_now"
 git push -f origin master
 
