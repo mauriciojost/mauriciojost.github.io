@@ -10,7 +10,7 @@ site_dir="$root_dir/_site"
 site_tgz_tmp="/tmp/publish-$RANDOM-$RANDOM.tar.gz"
 date_now="$(date)"
 
-git checkout development
+git checkout -f development
 git submodule update --init --recursive
 rm -fr "$site_dir"
 mkdir -p "$site_dir"
@@ -22,7 +22,7 @@ tar -czf "$site_tgz_tmp" *
 cd "$root_dir"
 rm -fr "$site_dir"
 
-git checkout master
+git checkout -f master
 cd "$root_dir"
 rm -fr *
 tar -xf "$site_tgz_tmp"
