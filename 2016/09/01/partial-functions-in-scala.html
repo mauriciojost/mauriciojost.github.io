@@ -9,8 +9,8 @@
   <title>Partial Functions in Scala</title>
   <meta name="description" content="What is a partial function?">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/2016/09/01/partial-functions-in-scala.html">
-  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://localhost:4000/feed.xml">
+  <link rel="canonical" href="http://mauriciojost.github.io/2016/09/01/partial-functions-in-scala.html">
+  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://mauriciojost.github.io/feed.xml">
 </head>
 
 <body>
@@ -92,7 +92,6 @@ However, if using collect(partialFunction) instead, we will be populating the th
 <div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">positivesAsStringsPF</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
     <span class="k">case</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="kt">if</span> <span class="kt">x</span> <span class="kt">&gt;</span> <span class="err">0</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">toString</span>
 <span class="o">}</span>
-
 <span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> 
       <span class="n">numbers</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">positivesAsStringsPF</span><span class="o">)</span>
 </code></pre></div>
@@ -101,7 +100,7 @@ However, if using collect(partialFunction) instead, we will be populating the th
 <p>When using pattern matching we use blocks like this one:</p>
 <div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">result</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">parameter</span> <span class="k">match</span> <span class="o">{</span>
     <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">asString</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
-    <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="err">“</span><span class="n">default</span><span class="err">”</span>
+    <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="s">"default"</span>
 <span class="o">}</span>
 </code></pre></div>
 <p>Here we provide the domain on which we want to apply a function (on defined monads, and also undefined monads in this case), and the function itself for each case. For the sake of modularization, this can be expressed as a set of partial functions combined together:</p>
@@ -171,6 +170,6 @@ However, if using collect(partialFunction) instead, we will be populating the th
 	<script type="text/x-mathjax-config">
       MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
     </script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

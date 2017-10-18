@@ -3,11 +3,689 @@
   <channel>
     <title>Mauricio Jost</title>
     <description></description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Apr 2017 23:36:38 +0200</pubDate>
-    <lastBuildDate>Fri, 21 Apr 2017 23:36:38 +0200</lastBuildDate>
-    <generator>Jekyll v3.4.3</generator>
+    <link>http://mauriciojost.github.io/</link>
+    <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 18 Oct 2017 08:19:14 +0200</pubDate>
+    <lastBuildDate>Wed, 18 Oct 2017 08:19:14 +0200</lastBuildDate>
+    <generator>Jekyll v3.6.0</generator>
+    
+      <item>
+        <title>CoVariant, ContraVariant and InVariant... Variances in Scala</title>
+        <description>&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Consider the following example:&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s say I work for a veterinary, and I am writing an API. I want to modularize the functions that allow to retrieve pets&amp;#39; information from a database.
+For instance, it should be possible to provide functions &lt;code&gt;getName&lt;/code&gt; or &lt;code&gt;getBreed&lt;/code&gt;, etc. &lt;/p&gt;
+
+&lt;p&gt;How would you do that?&lt;/p&gt;
+
+&lt;!--nextslide--&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Let&amp;#39;s first define our business classes:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Our pet classes
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then, we could define a class &lt;code&gt;Fun&lt;/code&gt; (as in &lt;strong&gt;fun&lt;/strong&gt;ction) that will encapsulate an &lt;em&gt;information retriever&lt;/em&gt; function. This is a provided function &lt;code&gt;f&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;Here it is our first attempt: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;,&lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Good! We can define our first instance of &lt;code&gt;Fun&lt;/code&gt;, that tells if our animal is a dog:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Our first information retriever
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isADog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code&gt;I&lt;/code&gt; (&lt;code&gt;Animal&lt;/code&gt;) and invariant in &lt;code&gt;O&lt;/code&gt; (&lt;code&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
+done by the compiler.&lt;/p&gt;
+
+&lt;h2 id=&quot;generalizing-fun-covariance&quot;&gt;Generalizing &lt;code&gt;Fun&lt;/code&gt;: Covariance&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
+
+&lt;p&gt;Let&amp;#39;s say I have managed to collect many &lt;em&gt;information retrievers&lt;/em&gt;: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I would like to treat all &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;z&lt;/code&gt; polymorphically, for instance storing them in a &lt;code&gt;List[Animal, AnyVal]&lt;/code&gt;. Our initial declaration
+of &lt;code&gt;Fun[I, O]&lt;/code&gt;, invariant in both &lt;code&gt;I&lt;/code&gt; and &lt;code&gt;O&lt;/code&gt;, does not allow this.&lt;/p&gt;
+
+&lt;p&gt;This is where &lt;strong&gt;covariance&lt;/strong&gt; becomes handy.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
+
+&lt;p&gt;The solution is covariance. The principle: making &lt;code&gt;Clz&lt;/code&gt; covariant in &lt;code&gt;A&lt;/code&gt; means that
+if &lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt;, then &lt;code&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;. In other words the inheritance of
+this parametric type follows the one from the parameter type.&lt;/p&gt;
+
+&lt;p&gt;To do it, we simply re-define &lt;code&gt;Fun&lt;/code&gt;, but making it covariant in &lt;code&gt;O&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;+O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// now covariant on O
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;covariantIsDog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// specific type
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;covariantIsDogForAnyVal&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;AnyVal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// generic type
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;covariantIsDog&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// assigned to a more general type
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// works because
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// Boolean &amp;lt;: AnyVal, and thanks
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// to covariance
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// Fun[_, Boolean] &amp;lt;: Fun[_, AnyVal]
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;covariantIsDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns true
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;covariantIsDogForAnyVal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;specializing-fun-contravariance&quot;&gt;Specializing &lt;code&gt;Fun&lt;/code&gt;: Contravariance&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
+
+&lt;p&gt;Let&amp;#39;s say we have our function &lt;code&gt;Fun[Animal, Boolean]&lt;/code&gt;. Given that &lt;code&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code&gt;Dog&lt;/code&gt; is a subtype of &lt;code&gt;Animal&lt;/code&gt;),
+it seems natural to be able to apply such function to a &lt;code&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
+
+&lt;p&gt;This is where &lt;strong&gt;contravariance&lt;/strong&gt; becomes handy.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
+
+&lt;p&gt;The solution is contravariance.&lt;/p&gt;
+
+&lt;p&gt;The principle: making &lt;code&gt;Clz&lt;/code&gt; contravariant in &lt;code&gt;A&lt;/code&gt; means that
+if &lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt;, then &lt;code&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;. In other words the inheritance of
+this parametric type follows inversely the one from the parameter type. It allows
+for specialization.&lt;/p&gt;
+
+&lt;p&gt;We simply re-define &lt;code&gt;Fun&lt;/code&gt; but making it contravariant in &lt;code&gt;I&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;-I&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// now contravariant in I
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contravariantIsDog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// generic type
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contravariantIsDogForDog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// specific type
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;contravariantIsDog&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// assigned to a more specific type
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// works because
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// Dog &amp;lt;: Animal, and thanks
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// to contravariance
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// Fun[Dog, _] &amp;gt;: Fun[Animal, _]
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;contravariantIsDogForDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;This is the result of applying variances:&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BDog%5D%22%20%3C%7C--%20%22Funct%5BAnimal%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0Anote%20left%20of%20%22Funct%5BAnimal%5D%22:%20When%20instanciated,%5Cncan%20be%20reused%5Cnas%20Funct%5BDog%5D%5Cnthanks%20to%5Cncontravariance;%0Anote%20right%20of%20%22List%5BDog%5D%22:%20Can%20be%20added%5Cnto%20a%20List%5BAnimal%5D%5Cnthanks%20to%5Cncovariance;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;more-information&quot;&gt;More Information&lt;/h2&gt;
+
+&lt;p&gt;See the &lt;a href=&quot;https://docs.scala-lang.org/tour/variances.html&quot;&gt;official Scala documentation on variance&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 10 Oct 2017 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/post.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/post.html</guid>
+        
+        <category>scala</category>
+        
+        <category>types</category>
+        
+        <category>covariant</category>
+        
+        <category>contravariant</category>
+        
+        <category>invariant</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>CoVariant, ContraVariant and InVariant... Variances in Scala</title>
+        <description>&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Consider the following example:&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s say I work for a veterinary, and I am writing an API. I want to modularize the functions that allow to retrieve pets&amp;#39; information from a database.
+For instance, it should be possible to provide functions &lt;code&gt;getName&lt;/code&gt; or &lt;code&gt;getBreed&lt;/code&gt;, etc. &lt;/p&gt;
+
+&lt;p&gt;How would you do that?&lt;/p&gt;
+
+&lt;!--nextslide--&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Let&amp;#39;s first define our business classes:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Our pet classes
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then, we could define a class &lt;code&gt;Fun&lt;/code&gt; (as in &lt;strong&gt;fun&lt;/strong&gt;ction) that will encapsulate an &lt;em&gt;information retriever&lt;/em&gt; function. This is a provided function &lt;code&gt;f&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;Here it is our first attempt: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;,&lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Good! We can define our first instance of &lt;code&gt;Fun&lt;/code&gt;, that tells if our animal is a dog:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Our first information retriever
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isADog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code&gt;I&lt;/code&gt; (&lt;code&gt;Animal&lt;/code&gt;) and invariant in &lt;code&gt;O&lt;/code&gt; (&lt;code&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
+done by the compiler.&lt;/p&gt;
+
+&lt;h2 id=&quot;generalizing-fun-covariance&quot;&gt;Generalizing &lt;code&gt;Fun&lt;/code&gt;: Covariance&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
+
+&lt;p&gt;Let&amp;#39;s say I have managed to collect many &lt;em&gt;information retrievers&lt;/em&gt;: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I would like to treat all &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;z&lt;/code&gt; polymorphically, for instance storing them in a &lt;code&gt;List[Animal, AnyVal]&lt;/code&gt;. Our initial declaration
+of &lt;code&gt;Fun[I, O]&lt;/code&gt;, invariant in both &lt;code&gt;I&lt;/code&gt; and &lt;code&gt;O&lt;/code&gt;, does not allow this.&lt;/p&gt;
+
+&lt;p&gt;This is where &lt;strong&gt;covariance&lt;/strong&gt; becomes handy.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
+
+&lt;p&gt;The solution is covariance. The principle: making &lt;code&gt;Clz&lt;/code&gt; covariant in &lt;code&gt;A&lt;/code&gt; means that
+if &lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt;, then &lt;code&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;. In other words the inheritance of
+this parametric type follows the one from the parameter type.&lt;/p&gt;
+
+&lt;p&gt;To do it, we simply re-define &lt;code&gt;Fun&lt;/code&gt;, but making it covariant in &lt;code&gt;O&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;+O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// now covariant on O
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;covariantIsDog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// specific type
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;covariantIsDogForAnyVal&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;AnyVal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// generic type
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;covariantIsDog&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// assigned to a more general type
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// works because
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// Boolean &amp;lt;: AnyVal, and thanks
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// to covariance
+&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// Fun[_, Boolean] &amp;lt;: Fun[_, AnyVal]
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;covariantIsDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns true
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;covariantIsDogForAnyVal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;specializing-fun-contravariance&quot;&gt;Specializing &lt;code&gt;Fun&lt;/code&gt;: Contravariance&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
+
+&lt;p&gt;Let&amp;#39;s say we have our function &lt;code&gt;Fun[Animal, Boolean]&lt;/code&gt;. Given that &lt;code&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code&gt;Dog&lt;/code&gt; is a subtype of &lt;code&gt;Animal&lt;/code&gt;),
+it seems natural to be able to apply such function to a &lt;code&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
+
+&lt;p&gt;This is where &lt;strong&gt;contravariance&lt;/strong&gt; becomes handy.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
+
+&lt;p&gt;The solution is contravariance.&lt;/p&gt;
+
+&lt;p&gt;The principle: making &lt;code&gt;Clz&lt;/code&gt; contravariant in &lt;code&gt;A&lt;/code&gt; means that
+if &lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt;, then &lt;code&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;. In other words the inheritance of
+this parametric type follows inversely the one from the parameter type. It allows
+for specialization.&lt;/p&gt;
+
+&lt;p&gt;We simply re-define &lt;code&gt;Fun&lt;/code&gt; but making it contravariant in &lt;code&gt;I&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;-I&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// now contravariant in I
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;O&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contravariantIsDog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// generic type
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contravariantIsDogForDog&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fun&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Dog&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// specific type
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;contravariantIsDog&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// assigned to a more specific type
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// works because
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// Dog &amp;lt;: Animal, and thanks
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// to contravariance
+&lt;/span&gt;                           &lt;span class=&quot;c1&quot;&gt;// Fun[Dog, _] &amp;gt;: Fun[Animal, _]
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;contravariantIsDogForDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myDog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;This is the result of applying variances:&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BDog%5D%22%20%3C%7C--%20%22Funct%5BAnimal%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0Anote%20left%20of%20%22Funct%5BAnimal%5D%22:%20When%20instanciated,%5Cncan%20be%20reused%5Cnas%20Funct%5BDog%5D%5Cnthanks%20to%5Cncontravariance;%0Anote%20right%20of%20%22List%5BDog%5D%22:%20Can%20be%20added%5Cnto%20a%20List%5BAnimal%5D%5Cnthanks%20to%5Cncovariance;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;more-information&quot;&gt;More Information&lt;/h2&gt;
+
+&lt;p&gt;See the &lt;a href=&quot;https://docs.scala-lang.org/tour/variances.html&quot;&gt;official Scala documentation on variance&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 10 Oct 2017 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html</guid>
+        
+        <category>scala</category>
+        
+        <category>types</category>
+        
+        <category>covariant</category>
+        
+        <category>contravariant</category>
+        
+        <category>invariant</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>JVM Memory Spaces</title>
+        <description>&lt;p&gt;This post addresses:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what are Java Memory Spaces&lt;/li&gt;
+&lt;li&gt;why they are such a good idea&lt;/li&gt;
+&lt;li&gt;their names and use in the JVM&lt;/li&gt;
+&lt;li&gt;how to measure their usage in practice&lt;/li&gt;
+&lt;li&gt;where to find more documentation about them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;So, if you don&amp;#39;t understand concepts like:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PermGen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;heap memory&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then I suggest you to continue reading!&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;why-the-need-for-memory-spaces&quot;&gt;Why the need for Memory Spaces?&lt;/h2&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;The JVM frees unreferenced memory via an entity called Garbage Collector (or GC for short).
+Every time the GC claims memory, it executes these steps:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20The%20steps%20of%20the%20Garbage%20Collection%20(GC);%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;If these steps were to be applied to a flat memory space, the process of freeing memory would become
+proportionally as slow as the amount of memory used. In other words, the more classes loaded, the more
+memory segments to explore every time memory is claimed.&lt;/p&gt;
+
+&lt;p&gt;As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal.&lt;/p&gt;
+
+&lt;p&gt;In a simplified version of reality, the GC considers a class object to be permanent (as it will probably
+live as long as the JVM).&lt;/p&gt;
+
+&lt;p&gt;On the other hand, the GC considers objects created with the &lt;em&gt;new&lt;/em&gt; keyword as
+more likely to have shorter life. The GC discriminates &lt;em&gt;very short life&lt;/em&gt; from &lt;em&gt;medium life&lt;/em&gt; and &lt;em&gt;long life&lt;/em&gt;
+by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they
+are still referenced (hence their block of memory is marked, preventing it from disposal).&lt;/p&gt;
+
+&lt;p&gt;Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change
+their &lt;em&gt;generation&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces,
+or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;what-are-the-memory-spaces-in-java&quot;&gt;What are the Memory Spaces in Java?&lt;/h2&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general
+terms they can be divided into:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Java%20Memory%20Spaces%20(MP%20stands%20for%20Memory%20Pool);%0Ascale%20max%20900%20width;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22MP%20PS%5CnEden%5CnSpace%22%20%23red;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22MP%20PS%5CnSurvivor%5CnSpace%22%20%23orange;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22MP%20PS%5CnOld%20Gen%22%20%23blue;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20OffHeap%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22MP%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22MP%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22MP%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0Anote%20right%20of%20OffHeap%20%23white;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap%20%23white;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace%20%23white;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache%20%23white;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden%20%23white;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor%20%23white;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen%20%23white;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
+
+&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;in-practice-can-i-measure-the-use-of-memory-spaces&quot;&gt;In practice, can I measure the use of Memory Spaces?&lt;/h2&gt;
+
+&lt;p&gt;You can use &lt;code&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the use of Memory Spaces&lt;/li&gt;
+&lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
+&lt;li&gt;loaded classes&lt;/li&gt;
+&lt;li&gt;exposed MBeans&lt;/li&gt;
+&lt;li&gt;and more!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
+
+&lt;p&gt;We will use the Scala REPL as an example: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;jconsole &amp;lt;PID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;to hook to the corresponding JVM.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;What I see initially is:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;However, if you perform a GC and then you create lots of objects with:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val a = (1 to 1000000).toList.map(_.toString)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-down--&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;You will see:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Can you explain:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
+&lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;And more generally:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
+&lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;more-documentation-on-it&quot;&gt;More Documentation on it?&lt;/h2&gt;
+
+&lt;p&gt;There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
+double check the version of the JVM it relates too.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html&quot;&gt;Java Garbage Collection Basics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 17 Aug 2017 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/post.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/post.html</guid>
+        
+        <category>scala</category>
+        
+        <category>java</category>
+        
+        <category>heap</category>
+        
+        <category>memory</category>
+        
+        <category>permgen</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>JVM Memory Spaces</title>
+        <description>&lt;p&gt;This post addresses:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what are Java Memory Spaces&lt;/li&gt;
+&lt;li&gt;why they are such a good idea&lt;/li&gt;
+&lt;li&gt;their names and use in the JVM&lt;/li&gt;
+&lt;li&gt;how to measure their usage in practice&lt;/li&gt;
+&lt;li&gt;where to find more documentation about them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;So, if you don&amp;#39;t understand concepts like:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PermGen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;heap memory&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then I suggest you to continue reading!&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;why-the-need-for-memory-spaces&quot;&gt;Why the need for Memory Spaces?&lt;/h2&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;The JVM frees unreferenced memory via an entity called Garbage Collector (or GC for short).
+Every time the GC claims memory, it executes these steps:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20The%20steps%20of%20the%20Garbage%20Collection%20(GC);%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;If these steps were to be applied to a flat memory space, the process of freeing memory would become
+proportionally as slow as the amount of memory used. In other words, the more classes loaded, the more
+memory segments to explore every time memory is claimed.&lt;/p&gt;
+
+&lt;p&gt;As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal.&lt;/p&gt;
+
+&lt;p&gt;In a simplified version of reality, the GC considers a class object to be permanent (as it will probably
+live as long as the JVM).&lt;/p&gt;
+
+&lt;p&gt;On the other hand, the GC considers objects created with the &lt;em&gt;new&lt;/em&gt; keyword as
+more likely to have shorter life. The GC discriminates &lt;em&gt;very short life&lt;/em&gt; from &lt;em&gt;medium life&lt;/em&gt; and &lt;em&gt;long life&lt;/em&gt;
+by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they
+are still referenced (hence their block of memory is marked, preventing it from disposal).&lt;/p&gt;
+
+&lt;p&gt;Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change
+their &lt;em&gt;generation&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces,
+or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;what-are-the-memory-spaces-in-java&quot;&gt;What are the Memory Spaces in Java?&lt;/h2&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general
+terms they can be divided into:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Java%20Memory%20Spaces%20(MP%20stands%20for%20Memory%20Pool);%0Ascale%20max%20900%20width;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22MP%20PS%5CnEden%5CnSpace%22%20%23red;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22MP%20PS%5CnSurvivor%5CnSpace%22%20%23orange;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22MP%20PS%5CnOld%20Gen%22%20%23blue;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20OffHeap%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22MP%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22MP%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22MP%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0Anote%20right%20of%20OffHeap%20%23white;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap%20%23white;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace%20%23white;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache%20%23white;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden%20%23white;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor%20%23white;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen%20%23white;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
+
+&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;in-practice-can-i-measure-the-use-of-memory-spaces&quot;&gt;In practice, can I measure the use of Memory Spaces?&lt;/h2&gt;
+
+&lt;p&gt;You can use &lt;code&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the use of Memory Spaces&lt;/li&gt;
+&lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
+&lt;li&gt;loaded classes&lt;/li&gt;
+&lt;li&gt;exposed MBeans&lt;/li&gt;
+&lt;li&gt;and more!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
+
+&lt;p&gt;We will use the Scala REPL as an example: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;jconsole &amp;lt;PID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;to hook to the corresponding JVM.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;What I see initially is:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;However, if you perform a GC and then you create lots of objects with:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val a = (1 to 1000000).toList.map(_.toString)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-down--&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;You will see:&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Can you explain:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
+&lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;And more generally:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
+&lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;more-documentation-on-it&quot;&gt;More Documentation on it?&lt;/h2&gt;
+
+&lt;p&gt;There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
+double check the version of the JVM it relates too.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html&quot;&gt;Java Garbage Collection Basics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 17 Aug 2017 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/presentation.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/presentation.html</guid>
+        
+        <category>scala</category>
+        
+        <category>java</category>
+        
+        <category>heap</category>
+        
+        <category>memory</category>
+        
+        <category>permgen</category>
+        
+        
+      </item>
     
       <item>
         <title>Measuring the Performance of Anything In Scala</title>
@@ -41,7 +719,7 @@ below (the suspiciously even one) yields such unexpected results for
 &lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark/blob/master/src/main/scala/org/mauritania/minibenchmark/catalog/IdentityTricky.scala&quot;&gt;these very different algorithms&lt;/a&gt;. 
 Found the reason?&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark/&quot;&gt;&lt;img src=&quot;https://browshot.com/screenshot/image/56100717?&amp;width=5500&amp;height=3500&quot; alt=&quot;Project&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;&lt;img src=&quot;/images/posts/scala-benchmark.png&quot; alt=&quot;Project&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;and-the-solution&quot;&gt;And the solution?&lt;/h2&gt;
 
@@ -58,8 +736,8 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
 &lt;p&gt;&lt;strong&gt;Won&amp;#39;t you benchmark anything?&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 19 Apr 2017 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/2017/04/19/benchmarking-in-scala.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/04/19/benchmarking-in-scala.html</guid>
+        <link>http://mauriciojost.github.io/2017/04/19/benchmarking-in-scala.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/04/19/benchmarking-in-scala.html</guid>
         
         <category>scala</category>
         
@@ -80,9 +758,9 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
         <title>Sorting Anything Cleanly with Scala</title>
         <description>&lt;h2 id=&quot;why-sorting&quot;&gt;Why sorting?&lt;/h2&gt;
 
-&lt;p&gt;Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for answering them, I thought it would be interesting to dive a bit into them to improve our code.&lt;/p&gt;
+&lt;p&gt;Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for addressing them, I thought it would be interesting to dive a bit into them to improve our code.&lt;/p&gt;
 
-&lt;p&gt;Here are some of the patterns that you may feel tempted to use, and what I personally consider is a better alternative. Leave a comment if you have even a better one!&lt;/p&gt;
+&lt;p&gt;Here are some of the patterns that you may feel tempted to use, and what I consider is a better alternative. Leave a comment if you have even a better one!&lt;/p&gt;
 
 &lt;!--more--&gt;
 
@@ -99,7 +777,7 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
 &lt;p&gt;you better do: &lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Apart from being simpler, it&amp;#39;s also more efficient (as no intermediate collection will be created).&lt;/p&gt;
+&lt;p&gt;Apart from being simpler and easier to read, it&amp;#39;s also more efficient (as no intermediate collection will be created).&lt;/p&gt;
 
 &lt;h3 id=&quot;sort-a-collection-even-after-updates&quot;&gt;Sort a collection even after updates&lt;/h3&gt;
 
@@ -118,25 +796,43 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Apart from being cleaner, it&amp;#39;s also more efficient as (no intermediate non-sorted collections are created).&lt;/p&gt;
 
+&lt;p&gt;Mind though, that &lt;code&gt;Set&lt;/code&gt; is not suitable if you need your collection to keep duplicate elements.&lt;/p&gt;
+
 &lt;h2 id=&quot;sorting-on-more-complex-types&quot;&gt;Sorting on more complex types&lt;/h2&gt;
 
-&lt;p&gt;The above proposal seems just too simple to be applied to other scenarios. What if we have more complex types? For instance: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p3&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-   &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;c&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;p&gt;The above proposal seems just too simple to be applied to other scenarios. 
+What if we have more complex types? For instance: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; 
+   &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; 
+   &lt;span class=&quot;n&quot;&gt;p3&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; 
+   &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;c&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; 
+   &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We can say that &lt;em&gt;there is no Ordering defined for A&lt;/em&gt;. As A is part of our business, it’s up to us to define its &lt;em&gt;Ordering&lt;/em&gt;, which we can do easily as follows: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnP1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-   &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fromLessThan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// uses imp. ordering
+&lt;p&gt;We can say that &lt;em&gt;there is no implicit Ordering defined for A&lt;/em&gt;. As A is part of our business, 
+it’s up to us to define its &lt;em&gt;Ordering&lt;/em&gt;, which we can do easily as follows: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnP1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnP1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// A(-1,a,true)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Keep in mind that there is an implicit ordering defined for the type &lt;code&gt;Int&lt;/code&gt; and that&amp;#39;s why this works. 
+Scala also has an implicit ordering defined for tuples of types for which there is an implicit ordering, which includes
+primitive types such as &lt;code&gt;Int&lt;/code&gt;, &lt;code&gt;String&lt;/code&gt;, &lt;code&gt;Double&lt;/code&gt; and so on. Thanks to this we can specify a multi-field ordering with 
+a given priority, as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnP1P2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
+      &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// uses imp. ordering
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnP1P2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// A(1,c,true)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Using &lt;em&gt;Orderings&lt;/em&gt; your code will become much cleaner, reusable and testable.&lt;/p&gt;
+&lt;p&gt;Using &lt;em&gt;Orderings&lt;/em&gt; your code will become much cleaner, robust, reusable and testable.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Will you sort anything?&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 28 Feb 2017 23:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html</guid>
+        <link>http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html</guid>
         
         <category>scala</category>
         
@@ -236,8 +932,8 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
 &lt;p&gt;&lt;strong&gt;Won&amp;#39;t you serialize anything?&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 31 Oct 2016 23:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html</guid>
+        <link>http://mauriciojost.github.io/2016/10/31/serializing-almost-anything-with-kryo.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2016/10/31/serializing-almost-anything-with-kryo.html</guid>
         
         <category>spark</category>
         
@@ -299,7 +995,6 @@ However, if using collect(partialFunction) instead, we will be populating the th
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;positivesAsStringsPF&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toString&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
 &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;positivesAsStrings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
       &lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;positivesAsStringsPF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -308,7 +1003,7 @@ However, if using collect(partialFunction) instead, we will be populating the th
 &lt;p&gt;When using pattern matching we use blocks like this one:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parameter&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;asString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;None&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;None&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;default&quot;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Here we provide the domain on which we want to apply a function (on defined monads, and also undefined monads in this case), and the function itself for each case. For the sake of modularization, this can be expressed as a set of partial functions combined together:&lt;/p&gt;
@@ -333,8 +1028,8 @@ However, if using collect(partialFunction) instead, we will be populating the th
 &lt;p&gt;&lt;strong&gt;Won&amp;#39;t you partial-function-ize anything?&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 01 Sep 2016 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/2016/09/01/partial-functions-in-scala.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/09/01/partial-functions-in-scala.html</guid>
+        <link>http://mauriciojost.github.io/2016/09/01/partial-functions-in-scala.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2016/09/01/partial-functions-in-scala.html</guid>
         
         <category>scala</category>
         

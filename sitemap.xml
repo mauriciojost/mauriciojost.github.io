@@ -2,19 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
-        <loc>http://localhost:4000/2017/04/19/benchmarking-in-scala.html</loc>
+        <loc>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/post.html</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html</loc>
+        <loc>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/2016/10/31/serializing-almost-anything-with-kryo.html</loc>
+        <loc>http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/post.html</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/2016/09/01/partial-functions-in-scala.html</loc>
+        <loc>http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/presentation.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2017/04/19/benchmarking-in-scala.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2016/10/31/serializing-almost-anything-with-kryo.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2016/09/01/partial-functions-in-scala.html</loc>
     </url>
     
 
@@ -22,7 +38,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/about/</loc>
+        <loc>http://mauriciojost.github.io/about/</loc>
     </url>
     
     
@@ -30,7 +46,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/archives/</loc>
+        <loc>http://mauriciojost.github.io/archives/</loc>
     </url>
     
     
@@ -40,7 +56,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/</loc>
+        <loc>http://mauriciojost.github.io/</loc>
     </url>
     
     

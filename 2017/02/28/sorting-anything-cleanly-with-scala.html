@@ -9,8 +9,8 @@
   <title>Sorting Anything Cleanly with Scala</title>
   <meta name="description" content="Why sorting?">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/2017/02/28/sorting-anything-cleanly-with-scala.html">
-  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://localhost:4000/feed.xml">
+  <link rel="canonical" href="http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html">
+  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://mauriciojost.github.io/feed.xml">
 </head>
 
 <body>
@@ -51,9 +51,9 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="why-sorting">Why sorting?</h2>
 
-<p>Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for answering them, I thought it would be interesting to dive a bit into them to improve our code.</p>
+<p>Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for addressing them, I thought it would be interesting to dive a bit into them to improve our code.</p>
 
-<p>Here are some of the patterns that you may feel tempted to use, and what I personally consider is a better alternative. Leave a comment if you have even a better one!</p>
+<p>Here are some of the patterns that you may feel tempted to use, and what I consider is a better alternative. Leave a comment if you have even a better one!</p>
 
 <!--more-->
 
@@ -70,7 +70,7 @@
 <p>you better do: </p>
 <div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">max</span> <span class="k">=</span> <span class="n">l</span><span class="o">.</span><span class="n">max</span>
 </code></pre></div>
-<p>Apart from being simpler, it&#39;s also more efficient (as no intermediate collection will be created).</p>
+<p>Apart from being simpler and easier to read, it&#39;s also more efficient (as no intermediate collection will be created).</p>
 
 <h3 id="sort-a-collection-even-after-updates">Sort a collection even after updates</h3>
 
@@ -89,19 +89,37 @@
 </span></code></pre></div>
 <p>Apart from being cleaner, it&#39;s also more efficient as (no intermediate non-sorted collections are created).</p>
 
+<p>Mind though, that <code>Set</code> is not suitable if you need your collection to keep duplicate elements.</p>
+
 <h2 id="sorting-on-more-complex-types">Sorting on more complex types</h2>
 
-<p>The above proposal seems just too simple to be applied to other scenarios. What if we have more complex types? For instance: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">A</span><span class="o">(</span><span class="n">p1</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">p2</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">p3</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> 
-   <span class="nc">List</span><span class="o">(</span><span class="n">A</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span> <span class="n">A</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"c"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span> <span class="n">A</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span>
+<p>The above proposal seems just too simple to be applied to other scenarios. 
+What if we have more complex types? For instance: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">A</span><span class="o">(</span>
+   <span class="n">p1</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> 
+   <span class="n">p2</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> 
+   <span class="n">p3</span><span class="k">:</span> <span class="kt">Boolean</span>
+<span class="o">)</span>
+<span class="k">val</span> <span class="n">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span>
+   <span class="n">A</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span> 
+   <span class="n">A</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"c"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span> 
+   <span class="n">A</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+<span class="o">)</span>
 </code></pre></div>
-<p>We can say that <em>there is no Ordering defined for A</em>. As A is part of our business, it’s up to us to define its <em>Ordering</em>, which we can do easily as follows: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">orderingOnP1</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> 
-   <span class="nc">Ordering</span><span class="o">.</span><span class="n">fromLessThan</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">p1</span>  <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">p1</span><span class="o">,</span> <span class="n">a</span><span class="o">.</span><span class="n">p2</span><span class="o">))</span> <span class="c1">// uses imp. ordering
+<p>We can say that <em>there is no implicit Ordering defined for A</em>. As A is part of our business, 
+it’s up to us to define its <em>Ordering</em>, which we can do easily as follows: </p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">orderingOnP1</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Ordering</span><span class="o">.</span><span class="n">by</span><span class="o">(</span><span class="n">a</span> <span class="k">=&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">p1</span><span class="o">)</span>
+<span class="n">l</span><span class="o">.</span><span class="n">min</span><span class="o">(</span><span class="n">orderingOnP1</span><span class="o">)</span> <span class="c1">// A(-1,a,true)
+</span></code></pre></div>
+<p>Keep in mind that there is an implicit ordering defined for the type <code>Int</code> and that&#39;s why this works. 
+Scala also has an implicit ordering defined for tuples of types for which there is an implicit ordering, which includes
+primitive types such as <code>Int</code>, <code>String</code>, <code>Double</code> and so on. Thanks to this we can specify a multi-field ordering with 
+a given priority, as follows:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">orderingOnP1P2</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> 
+      <span class="nc">Ordering</span><span class="o">.</span><span class="n">by</span><span class="o">(</span><span class="n">a</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">p1</span><span class="o">,</span> <span class="n">a</span><span class="o">.</span><span class="n">p2</span><span class="o">))</span> <span class="c1">// uses imp. ordering
 </span><span class="n">l</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">orderingOnP1P2</span><span class="o">)</span> <span class="c1">// A(1,c,true)
 </span></code></pre></div>
-<p>Using <em>Orderings</em> your code will become much cleaner, reusable and testable.</p>
+<p>Using <em>Orderings</em> your code will become much cleaner, robust, reusable and testable.</p>
 
 <p><strong>Will you sort anything?</strong></p>
 
@@ -153,6 +171,6 @@
 	<script type="text/x-mathjax-config">
       MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
     </script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

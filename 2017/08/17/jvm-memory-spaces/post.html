@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Mauricio Jost">
+  <meta name="theme-color" content="#284a5e">
+  <title>JVM Memory Spaces</title>
+  <meta name="description" content="This post addresses:">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/post.html">
+  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://mauriciojost.github.io/feed.xml">
+</head>
+
+<body>
+	<div id="container">
+		<div id="row">
+			<header id="sidebar">
+  <a href="/"/>
+    <img src="/images/mjost-profile-photo.jpg" class="avatar" alt="Mauricio Jost" />
+  </a>
+
+  <h1>
+    <strong>I am Mauricio</strong><br />and these are my two cents</h1> 
+
+  <nav class="site-nav vspace">
+    <a href="/" class="navlink">Blog</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/archives" class="navlink">Archives</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/about" class="navlink">About</a>
+  </nav>
+
+  <ul class="icons vspace">
+    <li><a href="https://www.linkedin.com/in/mauriciojost/" class="icon fa-linkedin" title="Linkedin profile"><span class="label">Linkedin</span></a></li>
+    <li><a href="https://github.com/mauriciojost" class="icon fa-github" title="Github profile"><span class="label">Github</span></a></li>
+    <li><a href="http://stackoverflow.com/users/1554927/mauriciojost" class="icon fa-stack-overflow" title="Stackoverflow profile"><span class="label">Stack Overflow</span></a></li>
+  </ul>
+</header>
+
+			<section id="page-content">
+				<div id="content">
+					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2017-08-17T00:00:00+02:00" itemprop="datePublished">Aug 17, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">JVM Memory Spaces</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>This post addresses:</p>
+
+<ul>
+<li>what are Java Memory Spaces</li>
+<li>why they are such a good idea</li>
+<li>their names and use in the JVM</li>
+<li>how to measure their usage in practice</li>
+<li>where to find more documentation about them</li>
+</ul>
+
+<!--slide-down-->
+
+<p>So, if you don&#39;t understand concepts like:</p>
+
+<ul>
+<li><code>OutOfMemoryError</code></li>
+<li><code>PermGen</code></li>
+<li><code>heap memory</code></li>
+<li>etc.</li>
+</ul>
+
+<p>Then I suggest you to continue reading!</p>
+
+<!--slide-next-->
+
+<!--more-->
+
+<h2 id="why-the-need-for-memory-spaces">Why the need for Memory Spaces?</h2>
+
+<!--slide-ignore-begin-->
+
+<p>The JVM frees unreferenced memory via an entity called Garbage Collector (or GC for short).
+Every time the GC claims memory, it executes these steps:</p>
+
+<!--slide-ignore-end-->
+
+<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20The%20steps%20of%20the%20Garbage%20Collection%20(GC);%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;" alt="Alt text"></p>
+
+<!--slide-ignore-begin-->
+
+<p>If these steps were to be applied to a flat memory space, the process of freeing memory would become
+proportionally as slow as the amount of memory used. In other words, the more classes loaded, the more
+memory segments to explore every time memory is claimed.</p>
+
+<p>As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal.</p>
+
+<p>In a simplified version of reality, the GC considers a class object to be permanent (as it will probably
+live as long as the JVM).</p>
+
+<p>On the other hand, the GC considers objects created with the <em>new</em> keyword as
+more likely to have shorter life. The GC discriminates <em>very short life</em> from <em>medium life</em> and <em>long life</em>
+by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they
+are still referenced (hence their block of memory is marked, preventing it from disposal).</p>
+
+<p>Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change
+their <em>generation</em>.</p>
+
+<p>This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces,
+or more precisely <em>Generational Memory Spaces</em>.</p>
+
+<!--slide-ignore-end-->
+
+<!--slide-next-->
+
+<h2 id="what-are-the-memory-spaces-in-java">What are the Memory Spaces in Java?</h2>
+
+<!--slide-ignore-begin-->
+
+<p>Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general
+terms they can be divided into:</p>
+
+<!--slide-ignore-end-->
+
+<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Java%20Memory%20Spaces%20(MP%20stands%20for%20Memory%20Pool);%0Ascale%20max%20900%20width;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22MP%20PS%5CnEden%5CnSpace%22%20%23red;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22MP%20PS%5CnSurvivor%5CnSpace%22%20%23orange;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22MP%20PS%5CnOld%20Gen%22%20%23blue;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20OffHeap%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22MP%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22MP%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22MP%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0Anote%20right%20of%20OffHeap%20%23white;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap%20%23white;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace%20%23white;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache%20%23white;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden%20%23white;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor%20%23white;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen%20%23white;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;" alt="Alt text"></p>
+
+<!--slide-down-->
+
+<h3 id="no-permgen-space-in-jdk-8">No PermGen Space in JDK 8?</h3>
+
+<p>Exactly, no more <code>PermGen</code>. </p>
+
+<p>In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.</p>
+
+<!--slide-ignore-begin-->
+
+<p>The amount of native memory that can be used for class metadata is by default unlimited. You can use the option <code>MaxMetaspaceSize</code> to put an upper limit on it.</p>
+
+<!--slide-ignore-end-->
+
+<!--slide-next-->
+
+<h2 id="in-practice-can-i-measure-the-use-of-memory-spaces">In practice, can I measure the use of Memory Spaces?</h2>
+
+<p>You can use <code>jconsole</code> for that. This tool will show you:</p>
+
+<ul>
+<li>the use of Memory Spaces</li>
+<li>the threads in your JVM (with name, status, stacktrace, etc.)</li>
+<li>loaded classes</li>
+<li>exposed MBeans</li>
+<li>and more!</li>
+</ul>
+
+<!--slide-down-->
+
+<h3 id="example">Example</h3>
+
+<p>We will use the Scala REPL as an example: </p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">scala
+</code></pre></div>
+<p>We will open <code>jconsole</code> and hook to the just launched JVM (using its PID).</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">jconsole &lt;PID&gt;
+</code></pre></div>
+<p>to hook to the corresponding JVM.</p>
+
+<!--slide-ignore-begin-->
+
+<p>What I see initially is:</p>
+
+<!--slide-ignore-end-->
+
+<!--slide-down-->
+
+<p><img src="/images/posts/jconsole1.png" style="width:800px;height:600px;"></p>
+
+<!--slide-down-->
+
+<p>However, if you perform a GC and then you create lots of objects with:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">val a = (1 to 1000000).toList.map(_.toString)
+</code></pre></div>
+<!--slide-down-->
+
+<!--slide-ignore-begin-->
+
+<p>You will see:</p>
+
+<!--slide-ignore-end-->
+
+<p><img src="/images/posts/jconsole2.png" style="width:800px;height:600px;"></p>
+
+<!--slide-down-->
+
+<p>Can you explain:</p>
+
+<ul>
+<li>what happens to the <em>Heap Memory Usage</em> when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.</li>
+<li>what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object <code>val a</code> allocated.</li>
+</ul>
+
+<!--slide-down-->
+
+<p>And more generally:</p>
+
+<ul>
+<li>what happens to the Loaded classes? They increased by the team <code>val a</code> was instantiated given the lazy class loading.</li>
+<li>what happens to the use of CPU? There is a peak when <code>val a</code> was instantiated. Can you see it?</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="more-documentation-on-it">More Documentation on it?</h2>
+
+<p>There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
+double check the version of the JVM it relates too.</p>
+
+<ul>
+<li><a href="http://docs.oracle.com/en/java/">General documentation from Oracle about Java</a></li>
+<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html">Java Garbage Collection Basics</a></li>
+<li><a href="http://docs.oracle.com/javase/7/">JAVA SE 7</a></li>
+<li><a href="http://docs.oracle.com/javase/8/">JAVA SE 8</a></li>
+<li><a href="http://docs.oracle.com/javase/9/">JAVA SE 9</a></li>
+</ul>
+
+<!--slide-down-->
+
+<p>Also, do not forget <code>man java</code>. If java was not installed properly via a package manager, you can still try to read the manual with <code>man</code>. For example: </p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
+</code></pre></div>
+<!--slide-next-->
+
+<p>Enjoy!</p>
+
+  </div>
+
+  <hr/>
+
+  <div itemprop="keywords">
+    Tags:
+    
+      <a href="http://www.google.com/search?q=scala&btnI=I%27m%20feeling%20lucky">scala</a>, 
+    
+      <a href="http://www.google.com/search?q=java&btnI=I%27m%20feeling%20lucky">java</a>, 
+    
+      <a href="http://www.google.com/search?q=heap&btnI=I%27m%20feeling%20lucky">heap</a>, 
+    
+      <a href="http://www.google.com/search?q=memory&btnI=I%27m%20feeling%20lucky">memory</a>, 
+    
+      <a href="http://www.google.com/search?q=permgen&btnI=I%27m%20feeling%20lucky">permgen</a>
+    
+  </div>
+</article>
+
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        var disqus_shortname = 'mauriciojost-github-io';
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+				</div>
+			</section>
+		</div>
+	</div>
+	<script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
