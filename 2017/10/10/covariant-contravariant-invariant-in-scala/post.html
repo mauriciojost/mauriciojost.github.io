@@ -51,120 +51,205 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="the-problem">The problem</h2>
 
+<p>Variance aims to provide flexibility to the inheritance on parametric types. Example:</p>
+
+<ul>
+<li>It seems reasonable that <code>List[Dog]</code> extends <code>List[Animal]</code></li>
+<li>It seems reasonable that I can use <code>X=&gt;Boolean</code> as <code>X=&gt;AnyVal</code></li>
+</ul>
+
+<!--slide-next-->
+
+<h3 id="a-concrete-example">A concrete example</h3>
+
 <p>Consider the following example:</p>
 
 <p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;" alt="Alt text"></p>
 
-<p>Let&#39;s say I work for a veterinary, and I am writing an API. I want to modularize the functions that allow to retrieve pets&#39; information from a database.
-For instance, it should be possible to provide functions <code>getName</code> or <code>getBreed</code>, etc. </p>
+<!--slide-down-->
+
+<p>Let&#39;s say you work for a veterinary.</p>
+
+<p>You&#39;re writing an API, and want to modularize the functions
+that retrieve pets&#39; information from a DB, like</p>
+
+<ul>
+<li><code>getName</code></li>
+<li><code>getBreed</code></li>
+<li>etc.</li>
+</ul>
+
+<!--slide-down-->
 
 <p>How would you do that?</p>
 
-<!--nextslide-->
-
 <!--more-->
 
-<p>Let&#39;s first define our business classes:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Our pet classes
-</span><span class="k">sealed</span> <span class="k">class</span> <span class="nc">Animal</span>
-<span class="k">class</span> <span class="nc">Dog</span> <span class="k">extends</span> <span class="nc">Animal</span>
-<span class="k">class</span> <span class="nc">Cat</span> <span class="k">extends</span> <span class="nc">Animal</span>
-</code></pre></div>
-<p>Then, we could define a class <code>Fun</code> (as in <strong>fun</strong>ction) that will encapsulate an <em>information retriever</em> function. This is a provided function <code>f</code>. </p>
+<!--slide-next-->
 
-<p>Here it is our first attempt: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">Fun</span><span class="o">[</span><span class="kt">I</span>,<span class="kt">O</span><span class="o">](</span><span class="k">val</span> <span class="n">f</span><span class="k">:</span> <span class="kt">I</span> <span class="o">=&gt;</span> <span class="n">O</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">I</span><span class="o">)</span><span class="k">:</span> <span class="kt">O</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
-<span class="o">}</span>
+<p>Let&#39;s first define our business classes:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">// Our pet classes
+sealed class Animal
+class Dog extends Animal
+class Cat extends Animal
 </code></pre></div>
+<!--slide-down-->
+
+<p>Then, we could define a class <code>Fun</code> (as in <strong>fun</strong>ction) that will encapsulate an
+<em>information retriever</em> function. This is a provided function <code>f</code>.</p>
+
+<p>Here is our first attempt:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">class Fun[I,O] (val f: I =&gt; O) {
+  def apply(i: I): O = f(i)
+}
+</code></pre></div>
+<!--slide-down-->
+
 <p>Good! We can define our first instance of <code>Fun</code>, that tells if our animal is a dog:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Our first information retriever
-</span><span class="k">val</span> <span class="n">isADog</span><span class="k">:</span> <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span>
-        <span class="k">new</span> <span class="nc">Fun</span><span class="o">((</span><span class="n">i</span><span class="k">:</span> <span class="kt">Animal</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">.</span><span class="n">isInstanceOf</span><span class="o">[</span><span class="kt">Dog</span><span class="o">])</span>
+<div class="highlight"><pre><code class="language-" data-lang="">// Our first information retriever
+val isADog: Fun[Animal, Boolean] =
+        new Fun((i: Animal) =&gt;
+              i.isInstanceOf[Dog])
 </code></pre></div>
+<!--slide-down-->
+
 <p>We say that <strong><em>Fun</em> is invariant in <code>I</code> (<code>Animal</code>) and invariant in <code>O</code> (<code>Boolean</code>)</strong>, as there is not subtype association
 done by the compiler.</p>
 
+<!--slide-next-->
+
 <h2 id="generalizing-fun-covariance">Generalizing <code>Fun</code>: Covariance</h2>
+
+<!--slide-down-->
 
 <h3 id="the-problem">The problem</h3>
 
-<p>Let&#39;s say I have managed to collect many <em>information retrievers</em>: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">x</span><span class="k">:</span>  <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
-<span class="k">val</span> <span class="n">y</span><span class="k">:</span>  <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
-<span class="k">val</span> <span class="n">z</span><span class="k">:</span>  <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+<p>Let&#39;s say you managed to collect many <em>information retrievers</em>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">val x:  Fun[Animal, Boolean] = ...
+val y:  Fun[Animal, String] = ...
+val z:  Fun[Animal, Int] = ...
 </code></pre></div>
-<p>I would like to treat all <code>x</code>, <code>y</code> and <code>z</code> polymorphically, for instance storing them in a <code>List[Animal, AnyVal]</code>. Our initial declaration
-of <code>Fun[I, O]</code>, invariant in both <code>I</code> and <code>O</code>, does not allow this.</p>
+<!--slide-down-->
+
+<p>It would be good to be able to treat all <code>x</code>, <code>y</code> and <code>z</code> polymorphically, for instance storing them
+in a <code>List[Animal, AnyVal]</code>.</p>
+
+<p>Our initial declaration of <code>Fun[I, O]</code>, invariant in both <code>I</code> and <code>O</code>,
+does not allow this.</p>
+
+<!--slide-down-->
 
 <p>This is where <strong>covariance</strong> becomes handy.</p>
 
+<!--slide-down-->
+
 <h3 id="the-solution">The solution</h3>
+
+<!--slide-ignore-begin-->
 
 <p>The solution is covariance. The principle: making <code>Clz</code> covariant in <code>A</code> means that
 if <code>Cat &lt;: Animal</code>, then <code>Clz[Cat] &lt;: Clz[Animal]</code>. In other words the inheritance of
 this parametric type follows the one from the parameter type.</p>
 
-<p>To do it, we simply re-define <code>Fun</code>, but making it covariant in <code>O</code>:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">Fun</span><span class="o">[</span><span class="kt">I</span>, <span class="kt">+O</span><span class="o">](</span><span class="k">val</span> <span class="n">f</span><span class="k">:</span> <span class="kt">I</span> <span class="o">=&gt;</span> <span class="n">O</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// now covariant on O
-</span>  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">I</span><span class="o">)</span><span class="k">:</span> <span class="kt">O</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
-<span class="o">}</span>
-<span class="k">val</span> <span class="n">covariantIsDog</span><span class="k">:</span> <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span>          <span class="c1">// specific type
-</span>        <span class="k">new</span> <span class="nc">Fun</span><span class="o">((</span><span class="n">i</span><span class="k">:</span> <span class="kt">Animal</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">.</span><span class="n">isInstanceOf</span><span class="o">[</span><span class="kt">Dog</span><span class="o">])</span>
+<!--slide-ignore-end-->
 
-<span class="k">val</span> <span class="n">covariantIsDogForAnyVal</span><span class="k">:</span> <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">AnyVal</span><span class="o">]</span> <span class="k">=</span>  <span class="c1">// generic type
-</span>        <span class="n">covariantIsDog</span> <span class="c1">// assigned to a more general type
-</span>                       <span class="c1">// works because
-</span>                       <span class="c1">// Boolean &lt;: AnyVal, and thanks
-</span>                       <span class="c1">// to covariance
-</span>                       <span class="c1">// Fun[_, Boolean] &lt;: Fun[_, AnyVal]
-</span>
-<span class="n">covariantIsDog</span><span class="o">(</span><span class="n">myDog</span><span class="o">)</span> <span class="c1">// returns true
-</span><span class="n">covariantIsDogForAnyVal</span><span class="o">(</span><span class="n">myDog</span><span class="o">)</span> <span class="c1">// returns true
-</span></code></pre></div>
+<p>To do it, we simply re-define <code>Fun</code>, but making it covariant in <code>O</code>:</p>
+
+<!--slide-down-->
+<div class="highlight"><pre><code class="language-" data-lang="">// now covariant on O
+class Fun[I, +O] (val f: I =&gt; O) {
+  def apply(i: I): O = f(i)
+}
+</code></pre></div>
+<!--slide-down-->
+<div class="highlight"><pre><code class="language-" data-lang="">// specific type
+val covIsDog: Fun[Animal, Boolean] =
+        new Fun((i: Animal) =&gt;
+              i.isInstanceOf[Dog])
+
+// generic type
+val covIsDogForAnyVal: Fun[Animal, AnyVal] =
+        covIsDog // assigned to a more general type
+                 // works because
+                 // Boolean &lt;: AnyVal,
+                 // and thanks to covariance
+                 // Fun[X, Boolean] &lt;: Fun[X, AnyVal]
+
+</code></pre></div>
+<!--slide-down-->
+<div class="highlight"><pre><code class="language-" data-lang="">covariantIsDog(myDog) // true
+covariantIsDogForAnyVal(myDog) // true
+</code></pre></div>
+<!--slide-next-->
+
 <h2 id="specializing-fun-contravariance">Specializing <code>Fun</code>: Contravariance</h2>
+
+<!--slide-down-->
 
 <h3 id="the-problem">The problem</h3>
 
 <p>Let&#39;s say we have our function <code>Fun[Animal, Boolean]</code>. Given that <code>Dog &lt;: Animal</code> (<code>Dog</code> is a subtype of <code>Animal</code>),
 it seems natural to be able to apply such function to a <code>Dog</code> too.</p>
 
+<!--slide-down-->
+
 <p>This is where <strong>contravariance</strong> becomes handy.</p>
+
+<!--slide-down-->
 
 <h3 id="the-solution">The solution</h3>
 
 <p>The solution is contravariance.</p>
+
+<!--slide-ignore-begin-->
 
 <p>The principle: making <code>Clz</code> contravariant in <code>A</code> means that
 if <code>Cat &lt;: Animal</code>, then <code>Clz[Cat] &gt;: Clz[Animal]</code>. In other words the inheritance of
 this parametric type follows inversely the one from the parameter type. It allows
 for specialization.</p>
 
-<p>We simply re-define <code>Fun</code> but making it contravariant in <code>I</code>:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">Fun</span><span class="o">[</span><span class="kt">-I</span>, <span class="kt">O</span><span class="o">](</span><span class="k">val</span> <span class="n">f</span><span class="k">:</span> <span class="kt">I</span> <span class="o">=&gt;</span> <span class="n">O</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// now contravariant in I
-</span>  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">I</span><span class="o">)</span><span class="k">:</span> <span class="kt">O</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
-<span class="o">}</span>
-<span class="k">val</span> <span class="n">contravariantIsDog</span><span class="k">:</span> <span class="kt">Fun</span><span class="o">[</span><span class="kt">Animal</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span>    <span class="c1">// generic type
-</span>        <span class="k">new</span> <span class="nc">Fun</span><span class="o">((</span><span class="n">i</span><span class="k">:</span> <span class="kt">Animal</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">.</span><span class="n">isInstanceOf</span><span class="o">[</span><span class="kt">Dog</span><span class="o">])</span>
+<!--slide-ignore-end-->
 
-<span class="k">val</span> <span class="n">contravariantIsDogForDog</span><span class="k">:</span> <span class="kt">Fun</span><span class="o">[</span><span class="kt">Dog</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span> <span class="c1">// specific type
-</span>        <span class="n">contravariantIsDog</span> <span class="c1">// assigned to a more specific type
-</span>                           <span class="c1">// works because
-</span>                           <span class="c1">// Dog &lt;: Animal, and thanks
-</span>                           <span class="c1">// to contravariance
-</span>                           <span class="c1">// Fun[Dog, _] &gt;: Fun[Animal, _]
-</span>
-<span class="n">contravariantIsDogForDog</span><span class="o">(</span><span class="n">myDog</span><span class="o">)</span> <span class="c1">// returns true
-</span></code></pre></div>
+<!--slide-down-->
+
+<p>We simply re-define <code>Fun</code> but making it contravariant in <code>I</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">// now contravariant in I
+class Fun[-I, O] (val f: I =&gt; O) {
+  def apply(i: I): O = f(i)
+}
+</code></pre></div>
+<!--slide-down-->
+<div class="highlight"><pre><code class="language-" data-lang="">// generic type
+val contravariantIsDog: Fun[Animal, Boolean] =
+        new Fun((i: Animal) =&gt; i.isInstanceOf[Dog])
+
+// specific type
+val contravariantIsDogForDog: Fun[Dog, Boolean] =
+        contravariantIsDog // assigned to a more specific type
+                           // works because
+                           // Dog &lt;: Animal, and thanks
+                           // to contravariance
+                           // Fun[Dog, _] &gt;: Fun[Animal, _]
+
+</code></pre></div>
+<!--slide-down-->
+<div class="highlight"><pre><code class="language-" data-lang="">contravariantIsDogForDog(myDog) // returns true
+</code></pre></div>
+<!--slide-next-->
+
 <h2 id="summary">Summary</h2>
 
 <p>This is the result of applying variances:</p>
 
 <p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BDog%5D%22%20%3C%7C--%20%22Funct%5BAnimal%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0Anote%20left%20of%20%22Funct%5BAnimal%5D%22:%20When%20instanciated,%5Cncan%20be%20reused%5Cnas%20Funct%5BDog%5D%5Cnthanks%20to%5Cncontravariance;%0Anote%20right%20of%20%22List%5BDog%5D%22:%20Can%20be%20added%5Cnto%20a%20List%5BAnimal%5D%5Cnthanks%20to%5Cncovariance;%0A@enduml;" alt="Alt text"></p>
 
+<!--slide-next-->
+
 <h2 id="more-information">More Information</h2>
 
 <p>See the <a href="https://docs.scala-lang.org/tour/variances.html">official Scala documentation on variance</a>.</p>
+
+<!--slide-next-->
 
 <p>Enjoy!</p>
 
