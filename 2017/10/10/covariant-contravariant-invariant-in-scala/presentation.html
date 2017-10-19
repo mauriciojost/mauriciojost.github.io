@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="/reveal.js/css/reveal.css"/>
     
-      <link rel="stylesheet" href="/reveal.js/css/theme/black.css" id="theme"/>
+      <link rel="stylesheet" href="/reveal.js/css/theme/white.css" id="theme"/>
     
 
     <!-- Code syntax highlighting -->
@@ -61,29 +61,37 @@
                  start-ignore-separator="<!--slide-ignore-begin-->"
                  end-ignore-separator="<!--slide-ignore-end-->">
           <script type="text/template">
-            <h2 id="the-problem">The problem</h2>
+            <h2 id="variance">Variance</h2>
 
-<p>Variance aims to provide flexibility to the inheritance on parametric types. Example:</p>
+<p>The variance in Scala aims to provide flexibility to the inheritance on parametric types.</p>
+
+<p>It addresses cases like:</p>
 
 <ul>
-<li>It seems reasonable that <code>List[Dog]</code> extends <code>List[Animal]</code></li>
-<li>It seems reasonable that I can use <code>X=&gt;Boolean</code> as <code>X=&gt;AnyVal</code></li>
+<li><code>List[Dog]</code> a subtype <code>List[Animal]</code></li>
+<li><code>X=&gt;Boolean</code> a subtype of <code>X=&gt;AnyVal</code></li>
 </ul>
 
 <!--slide-next-->
+
+<!--more-->
 
 <h3 id="a-concrete-example">A concrete example</h3>
 
 <p>Consider the following example:</p>
 
 <p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;" alt="Alt text"></p>
-
+<div class="highlight"><pre><code class="language-" data-lang="">// Our pet classes
+sealed class Animal
+class Dog extends Animal
+class Cat extends Animal
+</code></pre></div>
 <!--slide-down-->
 
-<p>Let&#39;s say you work for a veterinary.</p>
+<p>Let&#39;s say you work for a veterinary. You&#39;re writing an API.</p>
 
-<p>You&#39;re writing an API, and want to modularize the functions
-that retrieve pets&#39; information from a DB, like</p>
+<p>You want to <strong>modularize the functions
+that retrieve pets&#39; information from a DB</strong>, like:</p>
 
 <ul>
 <li><code>getName</code></li>
@@ -93,161 +101,140 @@ that retrieve pets&#39; information from a DB, like</p>
 
 <!--slide-down-->
 
-<p>How would you do that?</p>
-
-<!--more-->
-
-<!--slide-next-->
-
-<p>Let&#39;s first define our business classes:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">// Our pet classes
-sealed class Animal
-class Dog extends Animal
-class Cat extends Animal
-</code></pre></div>
-<!--slide-down-->
-
-<p>Then, we could define a class <code>Fun</code> (as in <strong>fun</strong>ction) that will encapsulate an
-<em>information retriever</em> function. This is a provided function <code>f</code>.</p>
+<p>Then, we could define a class <code>Func</code> that will encapsulate an
+<em>information retriever</em> function, <code>f</code>.</p>
 
 <p>Here is our first attempt:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">class Fun[I,O] (val f: I =&gt; O) {
+<div class="highlight"><pre><code class="language-" data-lang="">class Func[I,O] (val f: I =&gt; O) {
   def apply(i: I): O = f(i)
 }
 </code></pre></div>
 <!--slide-down-->
 
-<p>Good! We can define our first instance of <code>Fun</code>, that tells if our animal is a dog:</p>
+<p>Good! We can define our first instance of <code>Func</code>:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">// Our first information retriever
-val isADog: Fun[Animal, Boolean] =
-        new Fun((i: Animal) =&gt;
-              i.isInstanceOf[Dog])
+// Is my animal a dog?
+val isADog: Func[Animal, Boolean] = {
+  new Func((i: Animal) =&gt; i.isInstanceOf[Dog])
+}
 </code></pre></div>
-<!--slide-down-->
+<!--slide-next-->
 
 <p>We say that <strong><em>Fun</em> is invariant in <code>I</code> (<code>Animal</code>) and invariant in <code>O</code> (<code>Boolean</code>)</strong>, as there is not subtype association
 done by the compiler.</p>
 
 <!--slide-next-->
 
-<h2 id="generalizing-fun-covariance">Generalizing <code>Fun</code>: Covariance</h2>
+<h2 id="generalizing-func-covariance">Generalizing <code>Func</code>: Covariance</h2>
 
 <!--slide-down-->
 
 <h3 id="the-problem">The problem</h3>
 
-<p>Let&#39;s say you managed to collect many <em>information retrievers</em>:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">val x:  Fun[Animal, Boolean] = ...
-val y:  Fun[Animal, String] = ...
-val z:  Fun[Animal, Int] = ...
+<p>Let&#39;s say you handle many <code>Func</code> implementations:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">val x:  Func[Animal, Boolean] = ...
+val y:  Func[Animal, String] = ...
+val z:  Func[Animal, Int] = ...
 </code></pre></div>
 <!--slide-down-->
 
-<p>It would be good to be able to treat all <code>x</code>, <code>y</code> and <code>z</code> polymorphically, for instance storing them
-in a <code>List[Animal, AnyVal]</code>.</p>
+<p>It would be good to be able to treat all <code>x</code>, <code>y</code> and <code>z</code> polymorphically.</p>
 
-<p>Our initial declaration of <code>Fun[I, O]</code>, invariant in both <code>I</code> and <code>O</code>,
-does not allow this.</p>
-
-<!--slide-down-->
-
-<p>This is where <strong>covariance</strong> becomes handy.</p>
+<p>For instance be able to do:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">val l: List[Func[Animal, AnyVal]] =
+   List(x, y, z) // won't work, invariance
+</code></pre></div>
+<p>Our initial declaration of <code>Func[I, O]</code> was invariant in both <code>I</code> and <code>O</code>.
+It <strong>does not allow this supertype relation</strong>.</p>
 
 <!--slide-down-->
 
 <h3 id="the-solution">The solution</h3>
 
-<!--slide-ignore-begin-->
+<p>The solution is <strong>covariance</strong>.</p>
 
-<p>The solution is covariance. The principle: making <code>Clz</code> covariant in <code>A</code> means that
-if <code>Cat &lt;: Animal</code>, then <code>Clz[Cat] &lt;: Clz[Animal]</code>. In other words the inheritance of
-this parametric type follows the one from the parameter type.</p>
+<p>The principle: making <code>Clz</code> covariant in <code>A</code> means that</p>
 
-<!--slide-ignore-end-->
+<ul>
+<li><code>Cat &lt;: Animal</code> implies</li>
+<li><code>Clz[Cat] &lt;: Clz[Animal]</code></li>
+</ul>
 
-<p>To do it, we simply re-define <code>Fun</code>, but making it covariant in <code>O</code>:</p>
+<p>In other words: the inheritance of this <strong>parametric</strong> type follows the one from the <strong>parameter</strong> type.</p>
 
 <!--slide-down-->
+
+<p>Back to our example, we simply re-define <code>Func</code>, but making it covariant in <code>O</code>:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">// now covariant on O
-class Fun[I, +O] (val f: I =&gt; O) {
+class Func[I, +O] (val f: I =&gt; O) {
   def apply(i: I): O = f(i)
 }
 </code></pre></div>
 <!--slide-down-->
 <div class="highlight"><pre><code class="language-" data-lang="">// specific type
-val covIsDog: Fun[Animal, Boolean] =
-        new Fun((i: Animal) =&gt;
-              i.isInstanceOf[Dog])
+val isADog: Func[Animal, Boolean] = ...
 
 // generic type
-val covIsDogForAnyVal: Fun[Animal, AnyVal] =
-        covIsDog // assigned to a more general type
+val covIsDogForAnyVal: Func[Animal, AnyVal] =
+        isADog   // assigned to a more general type
                  // works because
                  // Boolean &lt;: AnyVal,
                  // and thanks to covariance
-                 // Fun[X, Boolean] &lt;: Fun[X, AnyVal]
+                 // Func[X, Boolean] &lt;: Func[X, AnyVal]
 
-</code></pre></div>
-<!--slide-down-->
-<div class="highlight"><pre><code class="language-" data-lang="">covariantIsDog(myDog) // true
-covariantIsDogForAnyVal(myDog) // true
 </code></pre></div>
 <!--slide-next-->
 
-<h2 id="specializing-fun-contravariance">Specializing <code>Fun</code>: Contravariance</h2>
+<h2 id="specializing-func-contravariance">Specializing <code>Func</code>: Contravariance</h2>
 
 <!--slide-down-->
 
 <h3 id="the-problem">The problem</h3>
 
-<p>Let&#39;s say we have our function <code>Fun[Animal, Boolean]</code>. Given that <code>Dog &lt;: Animal</code> (<code>Dog</code> is a subtype of <code>Animal</code>),
+<p>Let&#39;s say we have our function <code>Func[Animal, Boolean]</code>. Given that <code>Dog &lt;: Animal</code> (<code>Dog</code> is a subtype of <code>Animal</code>),
 it seems natural to be able to apply such function to a <code>Dog</code> too.</p>
-
-<!--slide-down-->
-
-<p>This is where <strong>contravariance</strong> becomes handy.</p>
 
 <!--slide-down-->
 
 <h3 id="the-solution">The solution</h3>
 
-<p>The solution is contravariance.</p>
-
-<!--slide-ignore-begin-->
-
-<p>The principle: making <code>Clz</code> contravariant in <code>A</code> means that
-if <code>Cat &lt;: Animal</code>, then <code>Clz[Cat] &gt;: Clz[Animal]</code>. In other words the inheritance of
-this parametric type follows inversely the one from the parameter type. It allows
-for specialization.</p>
-
-<!--slide-ignore-end-->
+<p>The solution is <strong>contravariance</strong>.</p>
 
 <!--slide-down-->
 
-<p>We simply re-define <code>Fun</code> but making it contravariant in <code>I</code>:</p>
+<p>The principle: making <code>Clz</code> contravariant in <code>A</code> means that:</p>
+
+<ul>
+<li><code>Cat &lt;: Animal</code> implies</li>
+<li><code>Clz[Cat] &gt;: Clz[Animal]</code></li>
+</ul>
+
+<p>In other words the inheritance of this parametric type follows
+inversely the one from the parameter type.</p>
+
+<!--slide-down-->
+
+<p>We simply redefine <code>Func</code> but making it contravariant in <code>I</code> this time:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">// now contravariant in I
-class Fun[-I, O] (val f: I =&gt; O) {
+class Func[-I, O] (val f: I =&gt; O) {
   def apply(i: I): O = f(i)
 }
 </code></pre></div>
 <!--slide-down-->
 <div class="highlight"><pre><code class="language-" data-lang="">// generic type
-val contravariantIsDog: Fun[Animal, Boolean] =
-        new Fun((i: Animal) =&gt; i.isInstanceOf[Dog])
+val isDog: Func[Animal, Boolean] =
+        new Func((i: Animal) =&gt; i.isInstanceOf[Dog])
 
 // specific type
-val contravariantIsDogForDog: Fun[Dog, Boolean] =
-        contravariantIsDog // assigned to a more specific type
-                           // works because
-                           // Dog &lt;: Animal, and thanks
-                           // to contravariance
-                           // Fun[Dog, _] &gt;: Fun[Animal, _]
+val contrvarIsDog: Func[Dog, Boolean] =
+        isDog // assigned to a more specific type
+              // works because
+              // Dog &lt;: Animal, and thanks
+              // to contravariance
+              // Func[Dog, X] &gt;: Func[Animal, X]
 
 </code></pre></div>
 <!--slide-down-->
-<div class="highlight"><pre><code class="language-" data-lang="">contravariantIsDogForDog(myDog) // returns true
-</code></pre></div>
-<!--slide-next-->
 
 <h2 id="summary">Summary</h2>
 

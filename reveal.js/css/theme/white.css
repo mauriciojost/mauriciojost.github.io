@@ -129,8 +129,8 @@ body {
 .reveal blockquote {
   display: block;
   position: relative;
-  width: 70%;
-  margin: 20px auto;
+  width: 80%;
+  margin: 0px auto;
   padding: 5px;
   font-style: italic;
   background: rgba(255, 255, 255, 0.05);
@@ -156,13 +156,16 @@ body {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3); }
 
 .reveal code {
-  font-family: monospace; }
+  font-family: monospace; 
+  font-size: 0.75em;
+}
 
 .reveal pre code {
   display: block;
-  padding: 5px;
+  padding: 0px;
   overflow: auto;
-  max-height: 400px;
+  width: 1000px;
+  max-height: inherit;
   word-wrap: normal; }
 
 .reveal table {

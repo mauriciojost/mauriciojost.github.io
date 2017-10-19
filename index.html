@@ -51,39 +51,18 @@
       <a href="/2017/10/10/covariant-contravariant-invariant-in-scala/post.html">CoVariant, ContraVariant and InVariant... Variances in Scala (post)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <h2 id="the-problem">The problem</h2>
+      <h2 id="variance">Variance</h2>
 
-<p>Variance aims to provide flexibility to the inheritance on parametric types. Example:</p>
+<p>The variance in Scala aims to provide flexibility to the inheritance on parametric types.</p>
+
+<p>It addresses cases like:</p>
 
 <ul>
-<li>It seems reasonable that <code>List[Dog]</code> extends <code>List[Animal]</code></li>
-<li>It seems reasonable that I can use <code>X=&gt;Boolean</code> as <code>X=&gt;AnyVal</code></li>
+<li><code>List[Dog]</code> a subtype <code>List[Animal]</code></li>
+<li><code>X=&gt;Boolean</code> a subtype of <code>X=&gt;AnyVal</code></li>
 </ul>
 
 <!--slide-next-->
-
-<h3 id="a-concrete-example">A concrete example</h3>
-
-<p>Consider the following example:</p>
-
-<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;" alt="Alt text"></p>
-
-<!--slide-down-->
-
-<p>Let&#39;s say you work for a veterinary.</p>
-
-<p>You&#39;re writing an API, and want to modularize the functions
-that retrieve pets&#39; information from a DB, like</p>
-
-<ul>
-<li><code>getName</code></li>
-<li><code>getBreed</code></li>
-<li>etc.</li>
-</ul>
-
-<!--slide-down-->
-
-<p>How would you do that?</p>
 
 
     </div>
@@ -101,39 +80,18 @@ that retrieve pets&#39; information from a DB, like</p>
       <a href="/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html">CoVariant, ContraVariant and InVariant... Variances in Scala (presentation)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <h2 id="the-problem">The problem</h2>
+      <h2 id="variance">Variance</h2>
 
-<p>Variance aims to provide flexibility to the inheritance on parametric types. Example:</p>
+<p>The variance in Scala aims to provide flexibility to the inheritance on parametric types.</p>
+
+<p>It addresses cases like:</p>
 
 <ul>
-<li>It seems reasonable that <code>List[Dog]</code> extends <code>List[Animal]</code></li>
-<li>It seems reasonable that I can use <code>X=&gt;Boolean</code> as <code>X=&gt;AnyVal</code></li>
+<li><code>List[Dog]</code> a subtype <code>List[Animal]</code></li>
+<li><code>X=&gt;Boolean</code> a subtype of <code>X=&gt;AnyVal</code></li>
 </ul>
 
 <!--slide-next-->
-
-<h3 id="a-concrete-example">A concrete example</h3>
-
-<p>Consider the following example:</p>
-
-<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;" alt="Alt text"></p>
-
-<!--slide-down-->
-
-<p>Let&#39;s say you work for a veterinary.</p>
-
-<p>You&#39;re writing an API, and want to modularize the functions
-that retrieve pets&#39; information from a DB, like</p>
-
-<ul>
-<li><code>getName</code></li>
-<li><code>getBreed</code></li>
-<li>etc.</li>
-</ul>
-
-<!--slide-down-->
-
-<p>How would you do that?</p>
 
 
     </div>
