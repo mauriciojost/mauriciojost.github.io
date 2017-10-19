@@ -2,6 +2,9 @@
 layout: [post, presentation]
 title:  "CoVariant, ContraVariant and InVariant... Variances in Scala"
 date:   2017-10-10 00:00:00 +0200
+reveal: {
+  theme: white
+}
 tags:
 - scala
 - types
@@ -11,14 +14,18 @@ tags:
 comments: true
 ---
 
-## The problem
+## Variance
 
-Variance aims to provide flexibility to the inheritance on parametric types. Example:
+The variance in Scala aims to provide flexibility to the inheritance on parametric types.
 
-- It seems reasonable that `List[Dog]` extends `List[Animal]`
-- It seems reasonable that I can use `X=>Boolean` as `X=>AnyVal`
+It addresses cases like:
+
+- `List[Dog]` a subtype `List[Animal]`
+- `X=>Boolean` a subtype of `X=>AnyVal`
 
 <!--slide-next-->
+
+<!--more-->
 
 ### A concrete example
 
@@ -34,27 +41,6 @@ Animal <|-- Cat;
 @enduml;
 )
 
-<!--slide-down-->
-
-Let's say you work for a veterinary.
-
-You're writing an API, and want to modularize the functions
-that retrieve pets' information from a DB, like
-
-- `getName`
-- `getBreed`
-- etc.
-
-<!--slide-down-->
-
-How would you do that?
-
-<!--more-->
-
-<!--slide-next-->
-
-Let's first define our business classes:
-
 ```
 // Our pet classes
 sealed class Animal
@@ -64,80 +50,95 @@ class Cat extends Animal
 
 <!--slide-down-->
 
-Then, we could define a class `Fun` (as in **fun**ction) that will encapsulate an
-_information retriever_ function. This is a provided function `f`.
+Let's say you work for a veterinary. You're writing an API.
+
+You want to **modularize the functions
+that retrieve pets' information from a DB**, like:
+
+- `getName`
+- `getBreed`
+- etc.
+
+<!--slide-down-->
+
+Then, we could define a class `Func` that will encapsulate an
+_information retriever_ function, `f`.
 
 Here is our first attempt:
 
 ```
-class Fun[I,O] (val f: I => O) {
+class Func[I,O] (val f: I => O) {
   def apply(i: I): O = f(i)
 }
 ```
 
 <!--slide-down-->
 
-Good! We can define our first instance of `Fun`, that tells if our animal is a dog:
+Good! We can define our first instance of `Func`:
 
 ```
 // Our first information retriever
-val isADog: Fun[Animal, Boolean] =
-        new Fun((i: Animal) =>
-              i.isInstanceOf[Dog])
+// Is my animal a dog?
+val isADog: Func[Animal, Boolean] = {
+  new Func((i: Animal) => i.isInstanceOf[Dog])
+}
 ```
 
-<!--slide-down-->
+<!--slide-next-->
 
 We say that **_Fun_ is invariant in `I` (`Animal`) and invariant in `O` (`Boolean`)**, as there is not subtype association
 done by the compiler.
 
 <!--slide-next-->
 
-## Generalizing `Fun`: Covariance
+## Generalizing `Func`: Covariance
 
 <!--slide-down-->
 
 ### The problem
 
-Let's say you managed to collect many _information retrievers_:
+Let's say you handle many `Func` implementations:
 
 ```
-val x:  Fun[Animal, Boolean] = ...
-val y:  Fun[Animal, String] = ...
-val z:  Fun[Animal, Int] = ...
+val x:  Func[Animal, Boolean] = ...
+val y:  Func[Animal, String] = ...
+val z:  Func[Animal, Int] = ...
 ```
 
 <!--slide-down-->
 
-It would be good to be able to treat all `x`, `y` and `z` polymorphically, for instance storing them
-in a `List[Animal, AnyVal]`.
+It would be good to be able to treat all `x`, `y` and `z` polymorphically.
 
-Our initial declaration of `Fun[I, O]`, invariant in both `I` and `O`,
-does not allow this.
+For instance be able to do:
 
-<!--slide-down-->
+```
+val l: List[Func[Animal, AnyVal]] =
+   List(x, y, z) // won't work, invariance
+```
 
-This is where **covariance** becomes handy.
+Our initial declaration of `Func[I, O]` was invariant in both `I` and `O`.
+It **does not allow this supertype relation**.
 
 <!--slide-down-->
 
 ### The solution
 
-<!--slide-ignore-begin-->
+The solution is **covariance**.
 
-The solution is covariance. The principle: making `Clz` covariant in `A` means that
-if `Cat <: Animal`, then `Clz[Cat] <: Clz[Animal]`. In other words the inheritance of
-this parametric type follows the one from the parameter type.
+The principle: making `Clz` covariant in `A` means that
 
-<!--slide-ignore-end-->
+- `Cat <: Animal` implies
+- `Clz[Cat] <: Clz[Animal]`
 
-To do it, we simply re-define `Fun`, but making it covariant in `O`:
+In other words: the inheritance of this **parametric** type follows the one from the **parameter** type.
 
 <!--slide-down-->
 
+Back to our example, we simply re-define `Func`, but making it covariant in `O`:
+
 ```
 // now covariant on O
-class Fun[I, +O] (val f: I => O) {
+class Func[I, +O] (val f: I => O) {
   def apply(i: I): O = f(i)
 }
 ```
@@ -146,64 +147,52 @@ class Fun[I, +O] (val f: I => O) {
 
 ```
 // specific type
-val covIsDog: Fun[Animal, Boolean] =
-        new Fun((i: Animal) =>
-              i.isInstanceOf[Dog])
+val isADog: Func[Animal, Boolean] = ...
 
 // generic type
-val covIsDogForAnyVal: Fun[Animal, AnyVal] =
-        covIsDog // assigned to a more general type
+val covIsDogForAnyVal: Func[Animal, AnyVal] =
+        isADog   // assigned to a more general type
                  // works because
                  // Boolean <: AnyVal,
                  // and thanks to covariance
-                 // Fun[X, Boolean] <: Fun[X, AnyVal]
+                 // Func[X, Boolean] <: Func[X, AnyVal]
 
-```
-
-<!--slide-down-->
-
-```
-covariantIsDog(myDog) // true
-covariantIsDogForAnyVal(myDog) // true
 ```
 
 <!--slide-next-->
 
-## Specializing `Fun`: Contravariance
+## Specializing `Func`: Contravariance
 
 <!--slide-down-->
 
 ### The problem
 
-Let's say we have our function `Fun[Animal, Boolean]`. Given that `Dog <: Animal` (`Dog` is a subtype of `Animal`),
+Let's say we have our function `Func[Animal, Boolean]`. Given that `Dog <: Animal` (`Dog` is a subtype of `Animal`),
 it seems natural to be able to apply such function to a `Dog` too.
 
 <!--slide-down-->
 
-This is where **contravariance** becomes handy.
-
-<!--slide-down-->
-
 ### The solution
 
-The solution is contravariance.
-
-<!--slide-ignore-begin-->
-
-The principle: making `Clz` contravariant in `A` means that
-if `Cat <: Animal`, then `Clz[Cat] >: Clz[Animal]`. In other words the inheritance of
-this parametric type follows inversely the one from the parameter type. It allows
-for specialization.
-
-<!--slide-ignore-end-->
+The solution is **contravariance**.
 
 <!--slide-down-->
 
-We simply re-define `Fun` but making it contravariant in `I`:
+The principle: making `Clz` contravariant in `A` means that:
+
+- `Cat <: Animal` implies
+- `Clz[Cat] >: Clz[Animal]`
+
+In other words the inheritance of this parametric type follows
+inversely the one from the parameter type.
+
+<!--slide-down-->
+
+We simply redefine `Func` but making it contravariant in `I` this time:
 
 ```
 // now contravariant in I
-class Fun[-I, O] (val f: I => O) {
+class Func[-I, O] (val f: I => O) {
   def apply(i: I): O = f(i)
 }
 ```
@@ -212,26 +201,20 @@ class Fun[-I, O] (val f: I => O) {
 
 ```
 // generic type
-val contravariantIsDog: Fun[Animal, Boolean] =
-        new Fun((i: Animal) => i.isInstanceOf[Dog])
+val isDog: Func[Animal, Boolean] =
+        new Func((i: Animal) => i.isInstanceOf[Dog])
 
 // specific type
-val contravariantIsDogForDog: Fun[Dog, Boolean] =
-        contravariantIsDog // assigned to a more specific type
-                           // works because
-                           // Dog <: Animal, and thanks
-                           // to contravariance
-                           // Fun[Dog, _] >: Fun[Animal, _]
+val contrvarIsDog: Func[Dog, Boolean] =
+        isDog // assigned to a more specific type
+              // works because
+              // Dog <: Animal, and thanks
+              // to contravariance
+              // Func[Dog, X] >: Func[Animal, X]
 
 ```
 
 <!--slide-down-->
-
-```
-contravariantIsDogForDog(myDog) // returns true
-```
-
-<!--slide-next-->
 
 ## Summary
 
