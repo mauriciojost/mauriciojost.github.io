@@ -14,25 +14,23 @@ comments: true
 ## Why benchmarking?
 
 
-Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code.
-But sometimes I feel like I need stronger proofs to go one way or another, specially when I don't really know what is 
-happening under the JVM hood.
+Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don't really know what is happening under the JVM hood.
 
-A number describing the current status of your implementation will let you firstly gain awareness, 
-secondly decide if improvement is worth the investment, 
-and finally measure the improvement of your change. But it is not so easy...
+A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). 
+
+Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you're interested.
 
 <!--more-->
 
-## What is the problem with it? 
+## What is the problem with benchmarking? 
 
-When it comes to performance of an algorithm, we can get such metric by doing **benchmarking**. 
+With benchmarking we can determine the performance of an algorithm. However getting meaningful data is tricky.
 
 > _What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!_
 
 Nope, benchmarking is not so trivial, specially on top of JVM. Scala by itself applies more than 
 [15 phases](https://wiki.scala-lang.org/display/SIW/Overview+of+Compiler+Phases) when 
-compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a (very) fooled conclusion.
+compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a fooled conclusion.
 
 For instance, try to explain why the comparative benchmark set
 [org.mauritania.minibenchmark.catalog.IdentityTricky](https://mauriciojost.github.io/scala-benchmark/) 
@@ -44,13 +42,15 @@ Found the reason?
 
 ## And the solution?
 
-The one I recommend is to use [JMH](http://openjdk.java.net/projects/code-tools/jmh/), the harness for Java benchmarking that is 
-exploitable from Scala thanks to [sbt-jmh](https://github.com/ktoso/sbt-jmh).
+The one I recommend is to use [JMH](http://openjdk.java.net/projects/code-tools/jmh/), the harness for Java benchmarking that is exploitable from Scala thanks to [sbt-jmh](https://github.com/ktoso/sbt-jmh).
+
+There is also [ScalaMeter](https://scalameter.github.io/) that should be taken into account, I haven't personally used it yet at the moment of writing this post. 
 
 ## How to get started right now?
 
 **I've set up a [project github/scala-benchmark](https://github.com/mauriciojost/scala-benchmark) which 
-renders [visual reports](https://mauriciojost.github.io/scala-benchmark/) that GitHub can display via GitHub pages.**
+renders [visual reports](https://mauriciojost.github.io/scala-benchmark/) that GitHub can display via GitHub pages.** 
+Help yourself and fork it if you like the idea.
 
 ## References
 
