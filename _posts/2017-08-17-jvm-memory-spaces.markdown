@@ -11,24 +11,22 @@ tags:
 comments: true
 ---
 
-This post addresses:
+This post is about:
 
-- what are Java Memory Spaces
+- what **Java Memory Spaces** are
 - why they are such a good idea
-- their names and use in the JVM
+- the spaces and their use in the JVM
 - how to measure their usage in practice
 - where to find more documentation about them
 
 <!--slide-down-->
 
-So, if you don't understand concepts like:
+It will help you better understand concepts like:
 
 - `OutOfMemoryError`
 - `PermGen`
 - `heap memory`
 - etc.
-
-Then I suggest you to continue reading!
 
 <!--slide-next-->
 
