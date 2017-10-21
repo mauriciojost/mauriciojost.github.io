@@ -2,9 +2,9 @@
 layout: [post, presentation]
 title:  "CoVariant, ContraVariant and InVariant... Variances in Scala"
 date:   2017-10-10 00:00:00 +0200
-reveal: {
+reveal:
   theme: white
-}
+  center: true
 tags:
 - scala
 - types
@@ -235,10 +235,10 @@ note right of "List[Dog]": Can be added\\nto a List[Animal]\\nthanks to\\ncovari
 
 <!--slide-next-->
 
-## More Information
+## References
 
 See the [official Scala documentation on variance](https://docs.scala-lang.org/tour/variances.html).
 
 <!--slide-next-->
 
-Enjoy!
+# Enjoy!

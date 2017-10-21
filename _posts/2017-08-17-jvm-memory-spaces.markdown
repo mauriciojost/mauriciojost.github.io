@@ -248,7 +248,7 @@ And more generally:
 
 <!--slide-next-->
 
-## More Documentation on it?
+## References
 
 There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
 double check the version of the JVM it relates too.
