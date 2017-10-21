@@ -18,10 +18,10 @@ comments: true
 
 The variance in Scala aims to provide flexibility to the inheritance on parametric types.
 
-It addresses cases like:
+Two examples where it helps are:
 
-- `List[Dog]` a subtype `List[Animal]`
-- `X=>Boolean` a subtype of `X=>AnyVal`
+- Make `List[Dog]` a subtype of `List[Animal]`
+- Reuse a function `Animal=>Boolean` as a function `Dog=>Boolean`
 
 <!--slide-next-->
 
