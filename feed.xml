@@ -5,21 +5,19 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Oct 2017 03:30:45 +0200</pubDate>
-    <lastBuildDate>Sat, 21 Oct 2017 03:30:45 +0200</lastBuildDate>
+    <pubDate>Sat, 21 Oct 2017 04:30:31 +0200</pubDate>
+    <lastBuildDate>Sat, 21 Oct 2017 04:30:31 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
         <title>Writing a post or a presentation? Both!</title>
         <description>&lt;h1 id=&quot;post-or-slides&quot;&gt;Post or slides?&lt;/h1&gt;
 
-&lt;p&gt;Presentations are great. Blogs too.&lt;/p&gt;
-
-&lt;p&gt;Which one do I dedicate my time to?&lt;/p&gt;
+&lt;p&gt;Presentations are great. Blogs too. Which one should do I dedicate my time to?&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;p&gt;Why choosing? Write &lt;strong&gt;both at once&lt;/strong&gt;!&lt;/p&gt;
+&lt;p&gt;No need to choose, you can do &lt;strong&gt;both at once&lt;/strong&gt;!&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -31,13 +29,23 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 &lt;li&gt;a presentation&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;from a single markdown file.&lt;/p&gt;
+&lt;p&gt;from a single &lt;code&gt;markdown&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;first-slide&quot;&gt;First slide&lt;/h1&gt;
+
+&lt;p&gt;This is an example of an horizontal slide.&lt;/p&gt;
+
+&lt;p&gt;Text written here appears in both the presentation and the post layouts.&lt;/p&gt;
+
+&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
+
 &lt;!--slide-ignore-begin--&gt;
 
-&lt;p&gt;You can have text that will be ignored in the slides, but written in the
+&lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
@@ -46,35 +54,45 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;h1 id=&quot;second-slide&quot;&gt;Second slide&lt;/h1&gt;
 
-&lt;p&gt;This is an example of an horizontal slide.&lt;/p&gt;
+&lt;!--slide-down--&gt;
 
-&lt;!--slide-next--&gt;
+&lt;h2 id=&quot;second-slide-a&quot;&gt;Second slide (A)&lt;/h2&gt;
 
-&lt;h1 id=&quot;third-slide&quot;&gt;Third slide&lt;/h1&gt;
-
-&lt;p&gt;Another one.&lt;/p&gt;
+&lt;p&gt;You can add a vertical slide (I personally use them for continuation of the upper slide).&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;third-a&quot;&gt;Third A&lt;/h2&gt;
-
-&lt;p&gt;A vertical slide (I use them for continuation of the upper slide).&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h2 id=&quot;third-b&quot;&gt;Third B&lt;/h2&gt;
+&lt;h2 id=&quot;second-slide-b&quot;&gt;Second slide B&lt;/h2&gt;
 
 &lt;p&gt;Yet another one.&lt;/p&gt;
 
+&lt;!--slide-down--&gt;
+
+&lt;h2 id=&quot;second-slide-c&quot;&gt;Second slide C&lt;/h2&gt;
+
+&lt;p&gt;Last one including a figure from &lt;code&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20of%20a%20figure%20using%20Gravizo;%0Ascale%20max%20900%20width;%0Arectangle%20MARKDOWN;%0Arectangle%20BLOG%20%7B;%0A%20%20rectangle%20POST;%0A%20%20rectangle%20PRESENTATION;%0A%7D;%0AMARKDOWN%20--%3E%20POST;%0AMARKDOWN%20--%3E%20PRESENTATION;%0Anote%20left%20of%20MARKDOWN:%20example;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
 
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here you can find:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
 &lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
+
+&lt;p&gt;And &lt;a href=&quot;https://github.com/mauriciojost/mauriciojost.github.io&quot;&gt;star the project here&lt;/a&gt; if you liked it!&lt;/p&gt;
 </description>
         <pubDate>Mon, 16 Oct 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html</link>
@@ -93,13 +111,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
         <title>Writing a post or a presentation? Both!</title>
         <description>&lt;h1 id=&quot;post-or-slides&quot;&gt;Post or slides?&lt;/h1&gt;
 
-&lt;p&gt;Presentations are great. Blogs too.&lt;/p&gt;
-
-&lt;p&gt;Which one do I dedicate my time to?&lt;/p&gt;
+&lt;p&gt;Presentations are great. Blogs too. Which one should do I dedicate my time to?&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;p&gt;Why choosing? Write &lt;strong&gt;both at once&lt;/strong&gt;!&lt;/p&gt;
+&lt;p&gt;No need to choose, you can do &lt;strong&gt;both at once&lt;/strong&gt;!&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -111,13 +127,23 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 &lt;li&gt;a presentation&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;from a single markdown file.&lt;/p&gt;
+&lt;p&gt;from a single &lt;code&gt;markdown&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;first-slide&quot;&gt;First slide&lt;/h1&gt;
+
+&lt;p&gt;This is an example of an horizontal slide.&lt;/p&gt;
+
+&lt;p&gt;Text written here appears in both the presentation and the post layouts.&lt;/p&gt;
+
+&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
+
 &lt;!--slide-ignore-begin--&gt;
 
-&lt;p&gt;You can have text that will be ignored in the slides, but written in the
+&lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
@@ -126,35 +152,45 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;h1 id=&quot;second-slide&quot;&gt;Second slide&lt;/h1&gt;
 
-&lt;p&gt;This is an example of an horizontal slide.&lt;/p&gt;
+&lt;!--slide-down--&gt;
 
-&lt;!--slide-next--&gt;
+&lt;h2 id=&quot;second-slide-a&quot;&gt;Second slide (A)&lt;/h2&gt;
 
-&lt;h1 id=&quot;third-slide&quot;&gt;Third slide&lt;/h1&gt;
-
-&lt;p&gt;Another one.&lt;/p&gt;
+&lt;p&gt;You can add a vertical slide (I personally use them for continuation of the upper slide).&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;third-a&quot;&gt;Third A&lt;/h2&gt;
-
-&lt;p&gt;A vertical slide (I use them for continuation of the upper slide).&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h2 id=&quot;third-b&quot;&gt;Third B&lt;/h2&gt;
+&lt;h2 id=&quot;second-slide-b&quot;&gt;Second slide B&lt;/h2&gt;
 
 &lt;p&gt;Yet another one.&lt;/p&gt;
 
+&lt;!--slide-down--&gt;
+
+&lt;h2 id=&quot;second-slide-c&quot;&gt;Second slide C&lt;/h2&gt;
+
+&lt;p&gt;Last one including a figure from &lt;code&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20of%20a%20figure%20using%20Gravizo;%0Ascale%20max%20900%20width;%0Arectangle%20MARKDOWN;%0Arectangle%20BLOG%20%7B;%0A%20%20rectangle%20POST;%0A%20%20rectangle%20PRESENTATION;%0A%7D;%0AMARKDOWN%20--%3E%20POST;%0AMARKDOWN%20--%3E%20PRESENTATION;%0Anote%20left%20of%20MARKDOWN:%20example;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
 
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here you can find:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
 &lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
+
+&lt;p&gt;And &lt;a href=&quot;https://github.com/mauriciojost/mauriciojost.github.io&quot;&gt;star the project here&lt;/a&gt; if you liked it!&lt;/p&gt;
 </description>
         <pubDate>Mon, 16 Oct 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html</link>
@@ -354,13 +390,13 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;more-information&quot;&gt;More Information&lt;/h2&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
 &lt;p&gt;See the &lt;a href=&quot;https://docs.scala-lang.org/tour/variances.html&quot;&gt;official Scala documentation on variance&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;p&gt;Enjoy!&lt;/p&gt;
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
 </description>
         <pubDate>Tue, 10 Oct 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/post.html</link>
@@ -564,13 +600,13 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;more-information&quot;&gt;More Information&lt;/h2&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
 &lt;p&gt;See the &lt;a href=&quot;https://docs.scala-lang.org/tour/variances.html&quot;&gt;official Scala documentation on variance&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;p&gt;Enjoy!&lt;/p&gt;
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
 </description>
         <pubDate>Tue, 10 Oct 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html</link>
@@ -751,7 +787,7 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;more-documentation-on-it&quot;&gt;More Documentation on it?&lt;/h2&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
 &lt;p&gt;There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
 double check the version of the JVM it relates too.&lt;/p&gt;
@@ -952,7 +988,7 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;more-documentation-on-it&quot;&gt;More Documentation on it?&lt;/h2&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
 &lt;p&gt;There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
 double check the version of the JVM it relates too.&lt;/p&gt;
@@ -1035,9 +1071,11 @@ exploitable from Scala thanks to &lt;a href=&quot;https://github.com/ktoso/sbt-j
 &lt;p&gt;&lt;strong&gt;I&amp;#39;ve set up a &lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark&quot;&gt;project github/scala-benchmark&lt;/a&gt; which 
 renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;visual reports&lt;/a&gt; that GitHub can display via GitHub pages.&lt;/strong&gt;&lt;/p&gt;
 
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
 &lt;p&gt;Also if you want to know more, I really recommend &lt;a href=&quot;http://tutorials.jenkov.com/java-performance/jmh.html&quot;&gt;this read about JMH&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Won&amp;#39;t you benchmark anything?&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
 </description>
         <pubDate>Wed, 19 Apr 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/04/19/benchmarking-in-scala.html</link>
@@ -1068,22 +1106,27 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
 
 &lt;!--more--&gt;
 
-&lt;p&gt;Imagine you have the following collection (you can try this out in the scala-shell):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id=&quot;basic-sorting&quot;&gt;Basic sorting&lt;/h2&gt;
 
-&lt;h3 id=&quot;get-an-extreme-value-from-a-collection&quot;&gt;Get an extreme value from a collection&lt;/h3&gt;
+&lt;p&gt;Let&amp;#39;s use the below as our example collection (you can try this out in the scala-shell):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;get-an-extreme-value-max&quot;&gt;Get an extreme value: &lt;code&gt;max&lt;/code&gt;&lt;/h3&gt;
 
 &lt;p&gt;If you feel tempted to do:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toSeq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sorted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;you better do: &lt;/p&gt;
+&lt;p&gt;just don&amp;#39;t, &lt;strong&gt;you better do&lt;/strong&gt;:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Apart from being simpler and easier to read, it&amp;#39;s also more efficient (as no intermediate collection will be created).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Why?&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;sort-a-collection-even-after-updates&quot;&gt;Sort a collection even after updates&lt;/h3&gt;
+&lt;p&gt;Apart from being simpler and easier to read, it&amp;#39;s also more efficient
+(as no intermediate collection will be created).&lt;/p&gt;
+
+&lt;h3 id=&quot;keep-sorted&quot;&gt;Keep sorted&lt;/h3&gt;
+
+&lt;p&gt;Some usecases require to keep a collection sorted at all times.&lt;/p&gt;
 
 &lt;p&gt;If you feel tempted to do:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seq&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toSeq&lt;/span&gt;
@@ -1092,47 +1135,55 @@ renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&g
 &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sorted&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;you better do: &lt;/p&gt;
+&lt;p&gt;just don&amp;#39;t, &lt;strong&gt;you better do&lt;/strong&gt;:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scala.collection.SortedSet&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SortedSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sorted
 &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sorted
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Why?&lt;/strong&gt;&lt;/p&gt;
+
 &lt;p&gt;Apart from being cleaner, it&amp;#39;s also more efficient as (no intermediate non-sorted collections are created).&lt;/p&gt;
 
 &lt;p&gt;Mind though, that &lt;code&gt;Set&lt;/code&gt; is not suitable if you need your collection to keep duplicate elements.&lt;/p&gt;
 
-&lt;h2 id=&quot;sorting-on-more-complex-types&quot;&gt;Sorting on more complex types&lt;/h2&gt;
+&lt;h2 id=&quot;sorting-complex-types-ordering&quot;&gt;Sorting complex types: &lt;code&gt;Ordering&lt;/code&gt;&lt;/h2&gt;
 
-&lt;p&gt;The above proposal seems just too simple to be applied to other scenarios. 
-What if we have more complex types? For instance: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; 
-   &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; 
-   &lt;span class=&quot;n&quot;&gt;p3&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;
+&lt;p&gt;Many scenarios with more complex types require some sort of functional definition of the ordering.&lt;/p&gt;
+
+&lt;p&gt;What if we have more complex types? For instance: &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;savings&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;surname&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;hasKids&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; 
-   &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;c&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; 
-   &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Adam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+   &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Charles&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+   &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Adam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We can say that &lt;em&gt;there is no implicit Ordering defined for A&lt;/em&gt;. As A is part of our business, 
+&lt;p&gt;We can say that &lt;em&gt;there is no implicit Ordering defined for Person&lt;/em&gt;. As Person is part of our business,
 it’s up to us to define its &lt;em&gt;Ordering&lt;/em&gt;, which we can do easily as follows: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnP1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnP1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// A(-1,a,true)
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnSavings&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnSavings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Person(-1, &quot;Adam&quot;, true)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Keep in mind that there is an implicit ordering defined for the type &lt;code&gt;Int&lt;/code&gt; and that&amp;#39;s why this works. 
 Scala also has an implicit ordering defined for tuples of types for which there is an implicit ordering, which includes
-primitive types such as &lt;code&gt;Int&lt;/code&gt;, &lt;code&gt;String&lt;/code&gt;, &lt;code&gt;Double&lt;/code&gt; and so on. Thanks to this we can specify a multi-field ordering with 
-a given priority, as follows:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnP1P2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-      &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// uses imp. ordering
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnP1P2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// A(1,c,true)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Using &lt;em&gt;Orderings&lt;/em&gt; your code will become much cleaner, robust, reusable and testable.&lt;/p&gt;
+primitive types such as &lt;code&gt;Int&lt;/code&gt;, &lt;code&gt;String&lt;/code&gt;, &lt;code&gt;Double&lt;/code&gt; and so on.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Will you sort anything?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Thanks to this we can specify a multi-field ordering with a given priority, as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOSavingsAndSurname&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;surname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// uses imp. ordering
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOSavingsAndSurname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Person(1, &quot;Charles&quot;, true)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Using &lt;strong&gt;Orderings&lt;/strong&gt; your code will become:
+ - much cleaner,
+ - robust,
+ - reusable and
+ - testable&lt;/p&gt;
+
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
 </description>
         <pubDate>Tue, 28 Feb 2017 23:00:00 +0100</pubDate>
         <link>http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html</link>
