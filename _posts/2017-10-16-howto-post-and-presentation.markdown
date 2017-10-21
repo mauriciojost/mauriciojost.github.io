@@ -37,15 +37,15 @@ from a single `markdown` file.
 
 <!--slide-next-->
 
-# First slide
+# First part
 
 This is an example of an horizontal slide.
 
 Text written here appears in both the presentation and the post layouts.
 
-Press `ESC` to navigate over all the slides.
-
 <!--slide-ignore-begin-->
+
+Press `ESC` to navigate over all the slides.
 
 You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.
@@ -54,23 +54,23 @@ post, so you can go more into details where it really matters.
 
 <!--slide-next-->
 
-# Second slide
+# Second part
 
 <!--slide-down-->
 
-## Second slide (A)
+## Second part (A)
 
 You can add a vertical slide (I personally use them for continuation of the upper slide).
 
 <!--slide-down-->
 
-## Second slide B
+## Second part B
 
 Yet another one.
 
 <!--slide-down-->
 
-## Second slide C
+## Second part C
 
 Last one including a figure from `Gravizo`:
 
