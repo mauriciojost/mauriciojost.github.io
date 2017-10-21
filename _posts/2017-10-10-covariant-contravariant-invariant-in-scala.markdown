@@ -216,6 +216,40 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 <!--slide-next-->
 
+## Use in the Scala library
+
+I invite you to take a look at the implementation of [the trait Function2 in Scala v2.12](https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala). 
+
+See its declaration (ignore the `@specialized` annotation): 
+
+```
+trait Function2[-T1, -T2, +R] extends ...
+```
+
+What are the consequences of using covariance and contravariance?
+
+<!--slide-down-->
+
+For instance for the function:
+
+```
+val f: Function2[Animal, Cat, Dog] = ...
+```
+
+Which if this casts are illegal?
+
+```
+val f1: Function2[Animal, Cat, Animal] = f
+val f2: Function2[Dog, Cat, Dog] = f
+val f3: Function2[Cat, Cat, Dog] = f
+val f4: Function2[Animal, Cat, Animal] = f
+val f5: Function2[Animal, Cat, Cat] = f
+val f6: Function2[Animal, Dog, Dog] = f
+
+```
+
+<!--slide-next-->
+
 ## Summary
 
 This is the result of applying variances:
