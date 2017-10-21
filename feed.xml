@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Oct 2017 17:15:43 +0200</pubDate>
-    <lastBuildDate>Sat, 21 Oct 2017 17:15:43 +0200</lastBuildDate>
+    <pubDate>Sat, 21 Oct 2017 17:16:52 +0200</pubDate>
+    <lastBuildDate>Sat, 21 Oct 2017 17:16:52 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
@@ -396,7 +396,7 @@ val contrvarIsDog: Func[Dog, Boolean] =
 &lt;p&gt;For instance for the function:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f: Function2[Animal, Cat, Dog] = ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Which if this casts are illegal?&lt;/p&gt;
+&lt;p&gt;Which of these casts are illegal?&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f1: Function2[Animal, Cat, Animal] = f
 val f2: Function2[Dog, Cat, Dog] = f
 val f3: Function2[Cat, Cat, Dog] = f
@@ -631,7 +631,7 @@ val contrvarIsDog: Func[Dog, Boolean] =
 &lt;p&gt;For instance for the function:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f: Function2[Animal, Cat, Dog] = ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Which if this casts are illegal?&lt;/p&gt;
+&lt;p&gt;Which of these casts are illegal?&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f1: Function2[Animal, Cat, Animal] = f
 val f2: Function2[Dog, Cat, Dog] = f
 val f3: Function2[Cat, Cat, Dog] = f
