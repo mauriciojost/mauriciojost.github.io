@@ -51,19 +51,17 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="why-benchmarking">Why benchmarking?</h2>
 
-<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code.
-But sometimes I feel like I need stronger proofs to go one way or another, specially when I don&#39;t really know what is 
-happening under the JVM hood.</p>
+<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don&#39;t really know what is happening under the JVM hood.</p>
 
-<p>A number describing the current status of your implementation will let you firstly gain awareness, 
-secondly decide if improvement is worth the investment, 
-and finally measure the improvement of your change. But it is not so easy...</p>
+<p>A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). </p>
+
+<p>Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you&#39;re interested.</p>
 
 <!--more-->
 
-<h2 id="what-is-the-problem-with-it">What is the problem with it?</h2>
+<h2 id="what-is-the-problem-with-benchmarking">What is the problem with benchmarking?</h2>
 
-<p>When it comes to performance of an algorithm, we can get such metric by doing <strong>benchmarking</strong>. </p>
+<p>With benchmarking we can determine the performance of an algorithm. However getting meaningful data is tricky.</p>
 
 <blockquote>
 <p><em>What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!</em></p>
@@ -71,7 +69,7 @@ and finally measure the improvement of your change. But it is not so easy...</p>
 
 <p>Nope, benchmarking is not so trivial, specially on top of JVM. Scala by itself applies more than 
 <a href="https://wiki.scala-lang.org/display/SIW/Overview+of+Compiler+Phases">15 phases</a> when 
-compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a (very) fooled conclusion.</p>
+compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a fooled conclusion.</p>
 
 <p>For instance, try to explain why the comparative benchmark set
 <a href="https://mauriciojost.github.io/scala-benchmark/">org.mauritania.minibenchmark.catalog.IdentityTricky</a> 
@@ -83,13 +81,15 @@ Found the reason?</p>
 
 <h2 id="and-the-solution">And the solution?</h2>
 
-<p>The one I recommend is to use <a href="http://openjdk.java.net/projects/code-tools/jmh/">JMH</a>, the harness for Java benchmarking that is 
-exploitable from Scala thanks to <a href="https://github.com/ktoso/sbt-jmh">sbt-jmh</a>.</p>
+<p>The one I recommend is to use <a href="http://openjdk.java.net/projects/code-tools/jmh/">JMH</a>, the harness for Java benchmarking that is exploitable from Scala thanks to <a href="https://github.com/ktoso/sbt-jmh">sbt-jmh</a>.</p>
+
+<p>There is also <a href="https://scalameter.github.io/">ScalaMeter</a> that should be taken into account, I haven&#39;t personally used it yet at the moment of writing this post. </p>
 
 <h2 id="how-to-get-started-right-now">How to get started right now?</h2>
 
 <p><strong>I&#39;ve set up a <a href="https://github.com/mauriciojost/scala-benchmark">project github/scala-benchmark</a> which 
-renders <a href="https://mauriciojost.github.io/scala-benchmark/">visual reports</a> that GitHub can display via GitHub pages.</strong></p>
+renders <a href="https://mauriciojost.github.io/scala-benchmark/">visual reports</a> that GitHub can display via GitHub pages.</strong> 
+Help yourself and fork it if you like the idea.</p>
 
 <h2 id="references">References</h2>
 

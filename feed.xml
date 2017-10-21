@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Oct 2017 04:30:31 +0200</pubDate>
-    <lastBuildDate>Sat, 21 Oct 2017 04:30:31 +0200</lastBuildDate>
+    <pubDate>Sat, 21 Oct 2017 16:45:58 +0200</pubDate>
+    <lastBuildDate>Sat, 21 Oct 2017 16:45:58 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
@@ -35,15 +35,15 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h1 id=&quot;first-slide&quot;&gt;First slide&lt;/h1&gt;
+&lt;h1 id=&quot;first-part&quot;&gt;First part&lt;/h1&gt;
 
 &lt;p&gt;This is an example of an horizontal slide.&lt;/p&gt;
 
 &lt;p&gt;Text written here appears in both the presentation and the post layouts.&lt;/p&gt;
 
-&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
-
 &lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
 
 &lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
@@ -52,23 +52,23 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h1 id=&quot;second-slide&quot;&gt;Second slide&lt;/h1&gt;
+&lt;h1 id=&quot;second-part&quot;&gt;Second part&lt;/h1&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;second-slide-a&quot;&gt;Second slide (A)&lt;/h2&gt;
+&lt;h2 id=&quot;second-part-a&quot;&gt;Second part (A)&lt;/h2&gt;
 
 &lt;p&gt;You can add a vertical slide (I personally use them for continuation of the upper slide).&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;second-slide-b&quot;&gt;Second slide B&lt;/h2&gt;
+&lt;h2 id=&quot;second-part-b&quot;&gt;Second part B&lt;/h2&gt;
 
 &lt;p&gt;Yet another one.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;second-slide-c&quot;&gt;Second slide C&lt;/h2&gt;
+&lt;h2 id=&quot;second-part-c&quot;&gt;Second part C&lt;/h2&gt;
 
 &lt;p&gt;Last one including a figure from &lt;code&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
 
@@ -133,15 +133,15 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h1 id=&quot;first-slide&quot;&gt;First slide&lt;/h1&gt;
+&lt;h1 id=&quot;first-part&quot;&gt;First part&lt;/h1&gt;
 
 &lt;p&gt;This is an example of an horizontal slide.&lt;/p&gt;
 
 &lt;p&gt;Text written here appears in both the presentation and the post layouts.&lt;/p&gt;
 
-&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
-
 &lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
 
 &lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
@@ -150,23 +150,23 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h1 id=&quot;second-slide&quot;&gt;Second slide&lt;/h1&gt;
+&lt;h1 id=&quot;second-part&quot;&gt;Second part&lt;/h1&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;second-slide-a&quot;&gt;Second slide (A)&lt;/h2&gt;
+&lt;h2 id=&quot;second-part-a&quot;&gt;Second part (A)&lt;/h2&gt;
 
 &lt;p&gt;You can add a vertical slide (I personally use them for continuation of the upper slide).&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;second-slide-b&quot;&gt;Second slide B&lt;/h2&gt;
+&lt;h2 id=&quot;second-part-b&quot;&gt;Second part B&lt;/h2&gt;
 
 &lt;p&gt;Yet another one.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h2 id=&quot;second-slide-c&quot;&gt;Second slide C&lt;/h2&gt;
+&lt;h2 id=&quot;second-part-c&quot;&gt;Second part C&lt;/h2&gt;
 
 &lt;p&gt;Last one including a figure from &lt;code&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
 
@@ -211,11 +211,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;p&gt;The variance in Scala aims to provide flexibility to the inheritance on parametric types.&lt;/p&gt;
 
-&lt;p&gt;It addresses cases like:&lt;/p&gt;
+&lt;p&gt;Two examples where it helps are:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;List[Dog]&lt;/code&gt; a subtype &lt;code&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;X=&amp;gt;Boolean&lt;/code&gt; a subtype of &lt;code&gt;X=&amp;gt;AnyVal&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Make &lt;code&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Reuse a function &lt;code&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -421,11 +421,11 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 &lt;p&gt;The variance in Scala aims to provide flexibility to the inheritance on parametric types.&lt;/p&gt;
 
-&lt;p&gt;It addresses cases like:&lt;/p&gt;
+&lt;p&gt;Two examples where it helps are:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;List[Dog]&lt;/code&gt; a subtype &lt;code&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;X=&amp;gt;Boolean&lt;/code&gt; a subtype of &lt;code&gt;X=&amp;gt;AnyVal&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Make &lt;code&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Reuse a function &lt;code&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -627,19 +627,19 @@ val contrvarIsDog: Func[Dog, Boolean] =
     
       <item>
         <title>JVM Memory Spaces</title>
-        <description>&lt;p&gt;This post addresses:&lt;/p&gt;
+        <description>&lt;p&gt;This post is about:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what are Java Memory Spaces&lt;/li&gt;
+&lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
 &lt;li&gt;why they are such a good idea&lt;/li&gt;
-&lt;li&gt;their names and use in the JVM&lt;/li&gt;
+&lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
 &lt;li&gt;how to measure their usage in practice&lt;/li&gt;
 &lt;li&gt;where to find more documentation about them&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;So, if you don&amp;#39;t understand concepts like:&lt;/p&gt;
+&lt;p&gt;It will help you better understand concepts like:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
@@ -647,8 +647,6 @@ val contrvarIsDog: Func[Dog, Boolean] =
 &lt;li&gt;&lt;code&gt;heap memory&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;etc.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;Then I suggest you to continue reading!&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -828,19 +826,19 @@ double check the version of the JVM it relates too.&lt;/p&gt;
     
       <item>
         <title>JVM Memory Spaces</title>
-        <description>&lt;p&gt;This post addresses:&lt;/p&gt;
+        <description>&lt;p&gt;This post is about:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what are Java Memory Spaces&lt;/li&gt;
+&lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
 &lt;li&gt;why they are such a good idea&lt;/li&gt;
-&lt;li&gt;their names and use in the JVM&lt;/li&gt;
+&lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
 &lt;li&gt;how to measure their usage in practice&lt;/li&gt;
 &lt;li&gt;where to find more documentation about them&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;So, if you don&amp;#39;t understand concepts like:&lt;/p&gt;
+&lt;p&gt;It will help you better understand concepts like:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
@@ -848,8 +846,6 @@ double check the version of the JVM it relates too.&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;heap memory&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;etc.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;Then I suggest you to continue reading!&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -1031,19 +1027,17 @@ double check the version of the JVM it relates too.&lt;/p&gt;
         <title>Measuring the Performance of Anything In Scala</title>
         <description>&lt;h2 id=&quot;why-benchmarking&quot;&gt;Why benchmarking?&lt;/h2&gt;
 
-&lt;p&gt;Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code.
-But sometimes I feel like I need stronger proofs to go one way or another, specially when I don&amp;#39;t really know what is 
-happening under the JVM hood.&lt;/p&gt;
+&lt;p&gt;Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don&amp;#39;t really know what is happening under the JVM hood.&lt;/p&gt;
 
-&lt;p&gt;A number describing the current status of your implementation will let you firstly gain awareness, 
-secondly decide if improvement is worth the investment, 
-and finally measure the improvement of your change. But it is not so easy...&lt;/p&gt;
+&lt;p&gt;A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). &lt;/p&gt;
+
+&lt;p&gt;Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you&amp;#39;re interested.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
-&lt;h2 id=&quot;what-is-the-problem-with-it&quot;&gt;What is the problem with it?&lt;/h2&gt;
+&lt;h2 id=&quot;what-is-the-problem-with-benchmarking&quot;&gt;What is the problem with benchmarking?&lt;/h2&gt;
 
-&lt;p&gt;When it comes to performance of an algorithm, we can get such metric by doing &lt;strong&gt;benchmarking&lt;/strong&gt;. &lt;/p&gt;
+&lt;p&gt;With benchmarking we can determine the performance of an algorithm. However getting meaningful data is tricky.&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;em&gt;What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!&lt;/em&gt;&lt;/p&gt;
@@ -1051,7 +1045,7 @@ and finally measure the improvement of your change. But it is not so easy...&lt;
 
 &lt;p&gt;Nope, benchmarking is not so trivial, specially on top of JVM. Scala by itself applies more than 
 &lt;a href=&quot;https://wiki.scala-lang.org/display/SIW/Overview+of+Compiler+Phases&quot;&gt;15 phases&lt;/a&gt; when 
-compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a (very) fooled conclusion.&lt;/p&gt;
+compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a fooled conclusion.&lt;/p&gt;
 
 &lt;p&gt;For instance, try to explain why the comparative benchmark set
 &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;org.mauritania.minibenchmark.catalog.IdentityTricky&lt;/a&gt; 
@@ -1063,13 +1057,15 @@ Found the reason?&lt;/p&gt;
 
 &lt;h2 id=&quot;and-the-solution&quot;&gt;And the solution?&lt;/h2&gt;
 
-&lt;p&gt;The one I recommend is to use &lt;a href=&quot;http://openjdk.java.net/projects/code-tools/jmh/&quot;&gt;JMH&lt;/a&gt;, the harness for Java benchmarking that is 
-exploitable from Scala thanks to &lt;a href=&quot;https://github.com/ktoso/sbt-jmh&quot;&gt;sbt-jmh&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The one I recommend is to use &lt;a href=&quot;http://openjdk.java.net/projects/code-tools/jmh/&quot;&gt;JMH&lt;/a&gt;, the harness for Java benchmarking that is exploitable from Scala thanks to &lt;a href=&quot;https://github.com/ktoso/sbt-jmh&quot;&gt;sbt-jmh&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;There is also &lt;a href=&quot;https://scalameter.github.io/&quot;&gt;ScalaMeter&lt;/a&gt; that should be taken into account, I haven&amp;#39;t personally used it yet at the moment of writing this post. &lt;/p&gt;
 
 &lt;h2 id=&quot;how-to-get-started-right-now&quot;&gt;How to get started right now?&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;I&amp;#39;ve set up a &lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark&quot;&gt;project github/scala-benchmark&lt;/a&gt; which 
-renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;visual reports&lt;/a&gt; that GitHub can display via GitHub pages.&lt;/strong&gt;&lt;/p&gt;
+renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;visual reports&lt;/a&gt; that GitHub can display via GitHub pages.&lt;/strong&gt; 
+Help yourself and fork it if you like the idea.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 

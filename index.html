@@ -127,11 +127,11 @@ on how to build your own blog posts, and generate both:</p>
 
 <p>The variance in Scala aims to provide flexibility to the inheritance on parametric types.</p>
 
-<p>It addresses cases like:</p>
+<p>Two examples where it helps are:</p>
 
 <ul>
-<li><code>List[Dog]</code> a subtype <code>List[Animal]</code></li>
-<li><code>X=&gt;Boolean</code> a subtype of <code>X=&gt;AnyVal</code></li>
+<li>Make <code>List[Dog]</code> a subtype of <code>List[Animal]</code></li>
+<li>Reuse a function <code>Animal=&gt;Boolean</code> as a function <code>Dog=&gt;Boolean</code></li>
 </ul>
 
 <!--slide-next-->
@@ -156,11 +156,11 @@ on how to build your own blog posts, and generate both:</p>
 
 <p>The variance in Scala aims to provide flexibility to the inheritance on parametric types.</p>
 
-<p>It addresses cases like:</p>
+<p>Two examples where it helps are:</p>
 
 <ul>
-<li><code>List[Dog]</code> a subtype <code>List[Animal]</code></li>
-<li><code>X=&gt;Boolean</code> a subtype of <code>X=&gt;AnyVal</code></li>
+<li>Make <code>List[Dog]</code> a subtype of <code>List[Animal]</code></li>
+<li>Reuse a function <code>Animal=&gt;Boolean</code> as a function <code>Dog=&gt;Boolean</code></li>
 </ul>
 
 <!--slide-next-->
@@ -181,19 +181,19 @@ on how to build your own blog posts, and generate both:</p>
       <a href="/2017/08/17/jvm-memory-spaces/post.html">JVM Memory Spaces (post)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <p>This post addresses:</p>
+      <p>This post is about:</p>
 
 <ul>
-<li>what are Java Memory Spaces</li>
+<li>what <strong>Java Memory Spaces</strong> are</li>
 <li>why they are such a good idea</li>
-<li>their names and use in the JVM</li>
+<li>the spaces and their use in the JVM</li>
 <li>how to measure their usage in practice</li>
 <li>where to find more documentation about them</li>
 </ul>
 
 <!--slide-down-->
 
-<p>So, if you don&#39;t understand concepts like:</p>
+<p>It will help you better understand concepts like:</p>
 
 <ul>
 <li><code>OutOfMemoryError</code></li>
@@ -201,8 +201,6 @@ on how to build your own blog posts, and generate both:</p>
 <li><code>heap memory</code></li>
 <li>etc.</li>
 </ul>
-
-<p>Then I suggest you to continue reading!</p>
 
 <!--slide-next-->
 
@@ -222,19 +220,19 @@ on how to build your own blog posts, and generate both:</p>
       <a href="/2017/08/17/jvm-memory-spaces/presentation.html">JVM Memory Spaces (presentation)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <p>This post addresses:</p>
+      <p>This post is about:</p>
 
 <ul>
-<li>what are Java Memory Spaces</li>
+<li>what <strong>Java Memory Spaces</strong> are</li>
 <li>why they are such a good idea</li>
-<li>their names and use in the JVM</li>
+<li>the spaces and their use in the JVM</li>
 <li>how to measure their usage in practice</li>
 <li>where to find more documentation about them</li>
 </ul>
 
 <!--slide-down-->
 
-<p>So, if you don&#39;t understand concepts like:</p>
+<p>It will help you better understand concepts like:</p>
 
 <ul>
 <li><code>OutOfMemoryError</code></li>
@@ -242,8 +240,6 @@ on how to build your own blog posts, and generate both:</p>
 <li><code>heap memory</code></li>
 <li>etc.</li>
 </ul>
-
-<p>Then I suggest you to continue reading!</p>
 
 <!--slide-next-->
 
@@ -265,13 +261,11 @@ on how to build your own blog posts, and generate both:</p>
     <div class="post-content" itemprop="articleBody">
       <h2 id="why-benchmarking">Why benchmarking?</h2>
 
-<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code.
-But sometimes I feel like I need stronger proofs to go one way or another, specially when I don&#39;t really know what is 
-happening under the JVM hood.</p>
+<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don&#39;t really know what is happening under the JVM hood.</p>
 
-<p>A number describing the current status of your implementation will let you firstly gain awareness, 
-secondly decide if improvement is worth the investment, 
-and finally measure the improvement of your change. But it is not so easy...</p>
+<p>A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). </p>
+
+<p>Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you&#39;re interested.</p>
 
 
     </div>
