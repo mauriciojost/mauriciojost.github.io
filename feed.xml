@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Oct 2017 16:45:58 +0200</pubDate>
-    <lastBuildDate>Sat, 21 Oct 2017 16:45:58 +0200</lastBuildDate>
+    <pubDate>Sat, 21 Oct 2017 17:15:43 +0200</pubDate>
+    <lastBuildDate>Sat, 21 Oct 2017 17:15:43 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
@@ -382,6 +382,31 @@ val contrvarIsDog: Func[Dog, Boolean] =
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;
 
+&lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
+
+&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation): &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;trait Function2[-T1, -T2, +R] extends ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;For instance for the function:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f: Function2[Animal, Cat, Dog] = ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Which if this casts are illegal?&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f1: Function2[Animal, Cat, Animal] = f
+val f2: Function2[Dog, Cat, Dog] = f
+val f3: Function2[Cat, Cat, Dog] = f
+val f4: Function2[Animal, Cat, Animal] = f
+val f5: Function2[Animal, Cat, Cat] = f
+val f6: Function2[Animal, Dog, Dog] = f
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
 &lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;This is the result of applying variances:&lt;/p&gt;
@@ -588,6 +613,31 @@ val contrvarIsDog: Func[Dog, Boolean] =
               // Dog &amp;lt;: Animal, and thanks
               // to contravariance
               // Func[Dog, X] &amp;gt;: Func[Animal, X]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
+
+&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation): &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;trait Function2[-T1, -T2, +R] extends ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;For instance for the function:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f: Function2[Animal, Cat, Dog] = ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Which if this casts are illegal?&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f1: Function2[Animal, Cat, Animal] = f
+val f2: Function2[Dog, Cat, Dog] = f
+val f3: Function2[Cat, Cat, Dog] = f
+val f4: Function2[Animal, Cat, Animal] = f
+val f5: Function2[Animal, Cat, Cat] = f
+val f6: Function2[Animal, Dog, Dog] = f
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;

@@ -236,6 +236,31 @@ val contrvarIsDog: Func[Dog, Boolean] =
 </code></pre></div>
 <!--slide-next-->
 
+<h2 id="use-in-the-scala-library">Use in the Scala library</h2>
+
+<p>I invite you to take a look at the implementation of <a href="https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala">the trait Function2 in Scala v2.12</a>. </p>
+
+<p>See its declaration (ignore the <code>@specialized</code> annotation): </p>
+<div class="highlight"><pre><code class="language-" data-lang="">trait Function2[-T1, -T2, +R] extends ...
+</code></pre></div>
+<p>What are the consequences of using covariance and contravariance?</p>
+
+<!--slide-down-->
+
+<p>For instance for the function:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">val f: Function2[Animal, Cat, Dog] = ...
+</code></pre></div>
+<p>Which if this casts are illegal?</p>
+<div class="highlight"><pre><code class="language-" data-lang="">val f1: Function2[Animal, Cat, Animal] = f
+val f2: Function2[Dog, Cat, Dog] = f
+val f3: Function2[Cat, Cat, Dog] = f
+val f4: Function2[Animal, Cat, Animal] = f
+val f5: Function2[Animal, Cat, Cat] = f
+val f6: Function2[Animal, Dog, Dog] = f
+
+</code></pre></div>
+<!--slide-next-->
+
 <h2 id="summary">Summary</h2>
 
 <p>This is the result of applying variances:</p>
