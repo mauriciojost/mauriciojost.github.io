@@ -214,7 +214,7 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 ```
 
-<!--slide-down-->
+<!--slide-next-->
 
 ## Summary
 
