@@ -236,7 +236,7 @@ For instance for the function:
 val f: Function2[Animal, Cat, Dog] = ...
 ```
 
-Which if this casts are illegal?
+Which of these casts are illegal?
 
 ```
 val f1: Function2[Animal, Cat, Animal] = f
