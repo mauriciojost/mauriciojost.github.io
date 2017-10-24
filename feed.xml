@@ -5,9 +5,97 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Oct 2017 17:16:52 +0200</pubDate>
-    <lastBuildDate>Sat, 21 Oct 2017 17:16:52 +0200</lastBuildDate>
+    <pubDate>Tue, 24 Oct 2017 09:16:23 +0200</pubDate>
+    <lastBuildDate>Tue, 24 Oct 2017 09:16:23 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
+    
+      <item>
+        <title>Dotfiles</title>
+        <description>&lt;h2 id=&quot;dotfiles-me&quot;&gt;Dotfiles? Me?&lt;/h2&gt;
+
+&lt;p&gt;Keep reading if you are a:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Linux user&lt;/li&gt;
+&lt;li&gt;MacOS user or&lt;/li&gt;
+&lt;li&gt;Cygwin user (over Windows)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;That often:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;loses configs&lt;/strong&gt; of your apps (vim, htop, ...)&lt;/li&gt;
+&lt;li&gt;‎&lt;strong&gt;can&amp;#39;t remember commands&lt;/strong&gt; and flags (&amp;quot;du -sh&amp;quot;, ...)&lt;/li&gt;
+&lt;li&gt;uses &lt;strong&gt;hostile shell&lt;/strong&gt; in remote hosts:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&amp;gt; _
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;dotfiles-to-the-rescue&quot;&gt;Dotfiles to the rescue!&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;Dotfiles is an initiative proposed by Github&lt;/a&gt; to
+keep configuration files (and more) in a versioned repository for
+&lt;strong&gt;better customisation&lt;/strong&gt; and &lt;strong&gt;easier reuse&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;who-actually-use-dotfiles&quot;&gt;Who actually use dotfiles?&lt;/h2&gt;
+
+&lt;p&gt;There is a big community!&lt;/p&gt;
+
+&lt;p&gt;Only &lt;a href=&quot;https://github.com/mathiasbynens/dotfiles&quot;&gt;Mathias &lt;code&gt;dotfiles&lt;/code&gt; project&lt;/a&gt;
+has more Github stars than &lt;a href=&quot;https://github.com/apache/spark&quot;&gt;Apache Spark&lt;/a&gt;!!!&lt;/p&gt;
+
+&lt;p&gt;Many flavors, you fork your favorite one!&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;what-can-my-dotfiles-contain&quot;&gt;What can my dotfiles contain?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Shell aliases and functions&lt;/li&gt;
+&lt;li&gt;‎Any &lt;code&gt;.file&lt;/code&gt; in your home (&lt;code&gt;.bashrc&lt;/code&gt;, ...)&lt;/li&gt;
+&lt;li&gt;‎Any directory in &lt;code&gt;~/.config&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;‎Useful libraries (like &lt;code&gt;stderred&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;‎Documentation&lt;/li&gt;
+&lt;li&gt;‎Code snippets&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;how-to-get-started-with-dotfiles&quot;&gt;How to get started with dotfiles?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Choose your &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;mainstream&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;git clone ...&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Follow &lt;code&gt;README.md&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;# Something like
+cd dotfiles
+bash bootstrap.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
+
+&lt;p&gt;That&amp;#39;s all!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Oct 2017 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2017/10/23/dotfiles/presentation.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/10/23/dotfiles/presentation.html</guid>
+        
+        <category>dotfiles</category>
+        
+        <category>shell</category>
+        
+        
+      </item>
     
       <item>
         <title>Writing a post or a presentation? Both!</title>
@@ -1347,100 +1435,6 @@ primitive types such as &lt;code&gt;Int&lt;/code&gt;, &lt;code&gt;String&lt;/cod
         <category>class</category>
         
         <category>private</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Partial Functions in Scala</title>
-        <description>&lt;h2 id=&quot;what-is-a-partial-function&quot;&gt;What is a partial function?&lt;/h2&gt;
-
-&lt;p&gt;In short, a partial function is simply a mathematical function &lt;em&gt;f: X-&amp;gt;Y&lt;/em&gt; that is not defined for some elements in the domain &lt;em&gt;X&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The typical example is &lt;em&gt;f: 1/x&lt;/em&gt; , not defined when &lt;em&gt;x = 0&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;but-what-is-a-partial-function-in-scala&quot;&gt;But, what is a partial function in Scala?&lt;/h2&gt;
-
-&lt;p&gt;It is a Scala trait that allows to express a partial function. For instance...&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;The previous example would be expressed as: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isDefinedAt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Or more concisely (using pattern matching):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;positives&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;why-should-i-use-it&quot;&gt;Why should I use it?&lt;/h2&gt;
-
-&lt;h3 id=&quot;because-they-are-extensively-used-in-the-scala-api&quot;&gt;Because they are extensively used in the Scala API&lt;/h3&gt;
-
-&lt;p&gt;Really. For instance, the root of all collections (the trait Traversable) defines the method&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pf&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;X&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Traversable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;that allows to create a List[Y] from some elements of a List[X]. Knowing the API will let you have more choices when tackling a problem and surely be a better developer.&lt;/p&gt;
-
-&lt;h3 id=&quot;because-they-are-efficient&quot;&gt;Because they are efficient&lt;/h3&gt;
-
-&lt;p&gt;Consider the function &lt;em&gt;f: x.toString&lt;/em&gt; where &lt;em&gt;x &amp;gt; 0&lt;/em&gt; similar to the one I mentioned above. This could be expressed as: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;positivesAsStrings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-      &lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;But there is something nasty about it. After the filter call, Scala will create an intermediate collection on which it will apply the map call. If your intermediate collection is large (let’s say you have a million of integers and a high percentage is positive) you will waste time creating this discardable intermediate object.
-However, if using collect(partialFunction) instead, we will be populating the the final collection right away. Think of the amount of garbage collection you could save!&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;positivesAsStringsPF&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toString&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;positivesAsStrings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-      &lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;positivesAsStringsPF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;because-they-ease-modularization-and-can-be-combined&quot;&gt;Because they ease modularization and can be combined&lt;/h3&gt;
-
-&lt;p&gt;When using pattern matching we use blocks like this one:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parameter&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;asString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;None&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;default&quot;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Here we provide the domain on which we want to apply a function (on defined monads, and also undefined monads in this case), and the function itself for each case. For the sake of modularization, this can be expressed as a set of partial functions combined together:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pfForSome&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;asString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pfForNone&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;None&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pfForSomeAndNone&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-      &lt;span class=&quot;n&quot;&gt;pfForSome&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orElse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pfForNone&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultAsOption&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; 
-      &lt;span class=&quot;n&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pfForSomeAndNone&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;want-to-know-more&quot;&gt;Want to know more?&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://blog.bruchez.name/2011/10/scala-partial-functions-without-phd.html&quot;&gt;I really liked this post&lt;/a&gt;, I encourage you to take a look.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Won&amp;#39;t you partial-function-ize anything?&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Sep 2016 00:00:00 +0200</pubDate>
-        <link>http://mauriciojost.github.io/2016/09/01/partial-functions-in-scala.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2016/09/01/partial-functions-in-scala.html</guid>
-        
-        <category>scala</category>
-        
-        <category>partial</category>
-        
-        <category>functions</category>
-        
-        <category>collect</category>
-        
-        <category>collections</category>
         
         
       </item>

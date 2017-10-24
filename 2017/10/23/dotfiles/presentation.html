@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>
+      
+        Dotfiles | Mauricio Jost
+      
+    </title>
+
+    <meta name="author" content="" />
+
+    <!-- Description -->
+    
+      <meta name="description" content="">
+    
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="/reveal.js/css/reveal.css"/>
+    
+      <link rel="stylesheet" href="/reveal.js/css/theme/white.css" id="theme"/>
+    
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="/reveal.js/lib/css/zenburn.css"/>
+
+    <style>
+      .reveal pre { font-size: 100%; }
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '/reveal.js/css/print/pdf.css' : '/reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="canonical" href="http://mauriciojost.github.io/2017/10/23/dotfiles/presentation.html">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+  
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown
+                 data-separator="<!--slide-next-->"
+                 data-separator-vertical="<!--slide-down-->"
+                 start-ignore-separator="<!--slide-ignore-begin-->"
+                 end-ignore-separator="<!--slide-ignore-end-->">
+          <script type="text/template">
+            <h2 id="dotfiles-me">Dotfiles? Me?</h2>
+
+<p>Keep reading if you are a:</p>
+
+<ul>
+<li>Linux user</li>
+<li>MacOS user or</li>
+<li>Cygwin user (over Windows)</li>
+</ul>
+
+<!--slide-down-->
+
+<p>That often:</p>
+
+<ul>
+<li><strong>loses configs</strong> of your apps (vim, htop, ...)</li>
+<li>‎<strong>can&#39;t remember commands</strong> and flags (&quot;du -sh&quot;, ...)</li>
+<li>uses <strong>hostile shell</strong> in remote hosts:</li>
+</ul>
+<div class="highlight"><pre><code class="language-" data-lang="">&gt; _
+</code></pre></div>
+<!--slide-next-->
+
+<!--more-->
+
+<h2 id="dotfiles-to-the-rescue">Dotfiles to the rescue!</h2>
+
+<p><a href="https://dotfiles.github.io/">Dotfiles is an initiative proposed by Github</a> to
+keep configuration files (and more) in a versioned repository for
+<strong>better customisation</strong> and <strong>easier reuse</strong>.</p>
+
+<!--slide-next-->
+
+<h2 id="who-actually-use-dotfiles">Who actually use dotfiles?</h2>
+
+<p>There is a big community!</p>
+
+<p>Only <a href="https://github.com/mathiasbynens/dotfiles">Mathias <code>dotfiles</code> project</a>
+has more Github stars than <a href="https://github.com/apache/spark">Apache Spark</a>!!!</p>
+
+<p>Many flavors, you fork your favorite one!</p>
+
+<!--slide-next-->
+
+<h2 id="what-can-my-dotfiles-contain">What can my dotfiles contain?</h2>
+
+<ul>
+<li>Shell aliases and functions</li>
+<li>‎Any <code>.file</code> in your home (<code>.bashrc</code>, ...)</li>
+<li>‎Any directory in <code>~/.config</code></li>
+<li>‎Useful libraries (like <code>stderred</code>)</li>
+<li>‎Documentation</li>
+<li>‎Code snippets</li>
+<li>...</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="how-to-get-started-with-dotfiles">How to get started with dotfiles?</h2>
+
+<ul>
+<li>Choose your <a href="https://dotfiles.github.io/">mainstream</a></li>
+<li><code>git clone ...</code></li>
+<li>Follow <code>README.md</code>:</li>
+</ul>
+<div class="highlight"><pre><code class="language-" data-lang=""># Something like
+cd dotfiles
+bash bootstrap.sh
+</code></pre></div>
+<!--slide-next-->
+
+<h1 id="enjoy">Enjoy!</h1>
+
+<p>That&#39;s all!</p>
+
+          </script>
+        </section>
+      </div>
+    </div>
+
+    <script src="/reveal.js/lib/js/head.min.js"></script>
+    <script src="/reveal.js/js/reveal.js"></script>
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        
+
+        // Display controls in the bottom right corner
+        
+
+        // Display a presentation progress bar
+        
+
+        // Push each slide change to the browser history
+        
+
+        // Vertical centering of slides
+        
+          center: 'true',
+        
+
+        // Transition style
+        
+
+        // Optional reveal.js plugins
+        dependencies: [
+           // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+          { src: '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+          // Interpret Markdown in <section> elements
+          { src: '/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+          // Syntax highlight for <code> elements
+          { src: '/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // Zoom in and out with Alt+click
+          { src: '/reveal.js/plugin/zoom-js/zoom.js', async: true },
+
+          // Speaker notes
+          { src: '/reveal.js/plugin/notes/notes.js', async: true },
+
+          // MathJax
+          { src: '/reveal.js/plugin/math/math.js', async: true }
+        ]
+      });
+
+    </script>
+    
+  </body>
+</html>
