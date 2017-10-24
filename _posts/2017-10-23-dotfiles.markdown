@@ -1,0 +1,85 @@
+---
+layout: [presentation]
+title:  "Dotfiles"
+date:   2017-10-23 00:00:00 +0200
+reveal:
+  theme: white
+  center: true
+tags:
+- dotfiles
+- shell
+comments: true
+---
+
+## Dotfiles? Me?
+
+Keep reading if you are a:
+
+- Linux user
+- MacOS user or
+- Cygwin user (over Windows)
+
+<!--slide-down-->
+
+That often:
+
+- **loses configs** of your apps (vim, htop, ...)
+- ‎**can't remember commands** and flags ("du -sh", ...)
+- uses **hostile shell** in remote hosts:
+
+```
+> _
+```
+
+<!--slide-next-->
+
+<!--more-->
+
+## Dotfiles to the rescue!
+
+[Dotfiles is an initiative proposed by Github](https://dotfiles.github.io/) to
+keep configuration files (and more) in a versioned repository for
+**better customisation** and **easier reuse**.
+
+<!--slide-next-->
+
+## Who actually use dotfiles?
+
+There is a big community!
+
+Only [Mathias `dotfiles` project](https://github.com/mathiasbynens/dotfiles)
+has more Github stars than [Apache Spark](https://github.com/apache/spark)!!!
+
+Many flavors, you fork your favorite one!
+
+<!--slide-next-->
+
+## What can my dotfiles contain?
+
+- Shell aliases and functions
+- ‎Any `.file` in your home (`.bashrc`, ...)
+- ‎Any directory in `~/.config`
+- ‎Useful libraries (like `stderred`)
+- ‎Documentation
+- ‎Code snippets
+- ...
+
+<!--slide-next-->
+
+## How to get started with dotfiles?
+
+- Choose your [mainstream](https://dotfiles.github.io/)
+- `git clone ...`
+- Follow `README.md`:
+
+```
+# Something like
+cd dotfiles
+bash bootstrap.sh
+```
+
+<!--slide-next-->
+
+# Enjoy!
+
+That's all!
