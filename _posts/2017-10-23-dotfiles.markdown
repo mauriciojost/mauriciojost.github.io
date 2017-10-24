@@ -8,24 +8,26 @@ reveal:
 tags:
 - dotfiles
 - shell
+- linux
+- macos
 comments: true
 ---
 
 ## Dotfiles? Me?
 
-Keep reading if you are a:
+Keep reading if you use:
 
-- Linux user
-- MacOS user or
-- Cygwin user (over Windows)
+- Linux
+- MacOS or
+- Cygwin (over Windows)
 
 <!--slide-down-->
 
-That often:
+And if often you:
 
-- **loses configs** of your apps (vim, htop, ...)
-- ‎**can't remember commands** and flags ("du -sh", ...)
-- uses **hostile shell** in remote hosts:
+- **lose configs** of your apps (vim, htop, ...)
+- ‎**can't remember commands** and flags (`du -sh`, ...)
+- use **hostile shell** in remote hosts:
 
 ```
 > _
@@ -72,8 +74,8 @@ Many flavors, you fork your favorite one!
 - `git clone ...`
 - Follow `README.md`:
 
-```
-# Something like
+```sh
+# something like
 cd dotfiles
 bash bootstrap.sh
 ```
@@ -82,4 +84,3 @@ bash bootstrap.sh
 
 # Enjoy!
 
-That's all!
