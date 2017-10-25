@@ -5,32 +5,36 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 24 Oct 2017 09:16:23 +0200</pubDate>
-    <lastBuildDate>Tue, 24 Oct 2017 09:16:23 +0200</lastBuildDate>
+    <pubDate>Thu, 26 Oct 2017 00:15:35 +0200</pubDate>
+    <lastBuildDate>Thu, 26 Oct 2017 00:15:35 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
         <title>Dotfiles</title>
         <description>&lt;h2 id=&quot;dotfiles-me&quot;&gt;Dotfiles? Me?&lt;/h2&gt;
 
-&lt;p&gt;Keep reading if you are a:&lt;/p&gt;
+&lt;p&gt;Keep reading if you use:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Linux user&lt;/li&gt;
-&lt;li&gt;MacOS user or&lt;/li&gt;
-&lt;li&gt;Cygwin user (over Windows)&lt;/li&gt;
+&lt;li&gt;Linux&lt;/li&gt;
+&lt;li&gt;MacOS or&lt;/li&gt;
+&lt;li&gt;Cygwin (over Windows)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;!--slide-down--&gt;
+&lt;!--slide-next--&gt;
 
-&lt;p&gt;That often:&lt;/p&gt;
+&lt;p&gt;Also if you often:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;loses configs&lt;/strong&gt; of your apps (vim, htop, ...)&lt;/li&gt;
-&lt;li&gt;‎&lt;strong&gt;can&amp;#39;t remember commands&lt;/strong&gt; and flags (&amp;quot;du -sh&amp;quot;, ...)&lt;/li&gt;
-&lt;li&gt;uses &lt;strong&gt;hostile shell&lt;/strong&gt; in remote hosts:&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;lose configs&lt;/strong&gt; of your apps (&lt;code&gt;vim&lt;/code&gt;, &lt;code&gt;htop&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;‎&lt;strong&gt;can&amp;#39;t remember commands&lt;/strong&gt; and flags&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&amp;gt; _
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;git log --oneline --decorate --all --graph
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;use &lt;strong&gt;hostile shell&lt;/strong&gt; in remote hosts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&amp;gt;_
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;
 
@@ -38,33 +42,72 @@
 
 &lt;h2 id=&quot;dotfiles-to-the-rescue&quot;&gt;Dotfiles to the rescue!&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;Dotfiles is an initiative proposed by Github&lt;/a&gt; to
-keep configuration files (and more) in a versioned repository for
-&lt;strong&gt;better customisation&lt;/strong&gt; and &lt;strong&gt;easier reuse&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;Dotfiles is an initiative driven by Github&lt;/a&gt; to
+keep configuration files (and more) in a repository.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;who-actually-use-dotfiles&quot;&gt;Who actually use dotfiles?&lt;/h2&gt;
+&lt;h2 id=&quot;why-the-name-dotfiles&quot;&gt;Why the name dotfiles?&lt;/h2&gt;
 
-&lt;p&gt;There is a big community!&lt;/p&gt;
+&lt;p&gt;Files prefixed with a dot (like &lt;code&gt;$HOME/.bashrc&lt;/code&gt;) are hidden in Linux.&lt;/p&gt;
 
-&lt;p&gt;Only &lt;a href=&quot;https://github.com/mathiasbynens/dotfiles&quot;&gt;Mathias &lt;code&gt;dotfiles&lt;/code&gt; project&lt;/a&gt;
-has more Github stars than &lt;a href=&quot;https://github.com/apache/spark&quot;&gt;Apache Spark&lt;/a&gt;!!!&lt;/p&gt;
+&lt;p&gt;Files under &lt;code&gt;$HOME&lt;/code&gt; are often configuration files.&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;dotfiles-principles&quot;&gt;Dotfiles principles&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;customization&lt;/li&gt;
+&lt;li&gt;versioning&lt;/li&gt;
+&lt;li&gt;sharing&lt;/li&gt;
+&lt;li&gt;reusing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;who-uses-dotfiles&quot;&gt;Who uses dotfiles?&lt;/h2&gt;
+
+&lt;p&gt;In Github stars:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/mathiasbynens/dotfiles&quot;&gt;Mathias &lt;code&gt;dotfiles&lt;/code&gt;&lt;/a&gt; (one flavor): 17k&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/apache/spark&quot;&gt;Apache Spark&lt;/a&gt;: 14k&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;Many flavors, you fork your favorite one!&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;what-can-my-dotfiles-contain&quot;&gt;What can my dotfiles contain?&lt;/h2&gt;
+&lt;h2 id=&quot;what-can-dotfiles-contain&quot;&gt;What can dotfiles contain?&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Shell aliases and functions&lt;/li&gt;
-&lt;li&gt;‎Any &lt;code&gt;.file&lt;/code&gt; in your home (&lt;code&gt;.bashrc&lt;/code&gt;, ...)&lt;/li&gt;
-&lt;li&gt;‎Any directory in &lt;code&gt;~/.config&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;‎Useful libraries (like &lt;code&gt;stderred&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;‎Documentation&lt;/li&gt;
-&lt;li&gt;‎Code snippets&lt;/li&gt;
-&lt;li&gt;...&lt;/li&gt;
+&lt;li&gt;‎Any file &lt;code&gt;.xxx&lt;/code&gt; under &lt;code&gt;$HOME&lt;/code&gt; (like &lt;code&gt;.bashrc&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;‎Any directory under &lt;code&gt;~/.config&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;what-ive-personally-added&quot;&gt;What I&amp;#39;ve personally added?&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Window managers&lt;/strong&gt; settings (like &lt;code&gt;awesome&lt;/code&gt; &amp;amp; &lt;code&gt;xfce&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cron job&lt;/strong&gt; to &lt;code&gt;renice&lt;/code&gt; Intellij&lt;/li&gt;
+&lt;li&gt;Integration with &lt;strong&gt;&lt;a href=&quot;https://github.com/kepkin/dev-shell-essentials&quot;&gt;dev-shell-essentials&lt;/a&gt;&lt;/strong&gt;
+&lt;code&gt;
+echo &amp;quot;a cat&amp;quot; | highlight green a | highlight red cat
+&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;‎Stderr in &lt;span &lt;span style=&quot;color:red&quot;&gt;red&lt;/span&gt;&lt;/strong&gt; using &lt;a href=&quot;https://github.com/sickill/stderred&quot;&gt;&lt;code&gt;stderred&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;‎&lt;strong&gt;Code snippets&lt;/strong&gt; (for Bash specially)&lt;/li&gt;
+&lt;li&gt;‎&lt;strong&gt;How-To&amp;#39;s&lt;/strong&gt; (set up servers like ssh, nfs, ldap)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tag with &lt;code&gt;$SESSION_ID&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tag with &lt;code&gt;$PWD&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -72,19 +115,27 @@ has more Github stars than &lt;a href=&quot;https://github.com/apache/spark&quot
 &lt;h2 id=&quot;how-to-get-started-with-dotfiles&quot;&gt;How to get started with dotfiles?&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Choose your &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;mainstream&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;git clone ...&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Follow &lt;code&gt;README.md&lt;/code&gt;:&lt;/li&gt;
+&lt;li&gt;Choose your &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;flavor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use it!&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;# Something like
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot; data-trim contenteditable&gt;
+# clone your flavor
+git clone \
+  https://github.om/mathiasbynens/dotfiles.git
+# install it
 cd dotfiles
 bash bootstrap.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+# done!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;demo&quot;&gt;Demo&lt;/h1&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
-
-&lt;p&gt;That&amp;#39;s all!&lt;/p&gt;
 </description>
         <pubDate>Mon, 23 Oct 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/10/23/dotfiles/presentation.html</link>
@@ -93,6 +144,10 @@ bash bootstrap.sh
         <category>dotfiles</category>
         
         <category>shell</category>
+        
+        <category>linux</category>
+        
+        <category>macos</category>
         
         
       </item>

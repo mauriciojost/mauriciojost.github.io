@@ -63,24 +63,28 @@
           <script type="text/template">
             <h2 id="dotfiles-me">Dotfiles? Me?</h2>
 
-<p>Keep reading if you are a:</p>
+<p>Keep reading if you use:</p>
 
 <ul>
-<li>Linux user</li>
-<li>MacOS user or</li>
-<li>Cygwin user (over Windows)</li>
+<li>Linux</li>
+<li>MacOS or</li>
+<li>Cygwin (over Windows)</li>
 </ul>
 
-<!--slide-down-->
+<!--slide-next-->
 
-<p>That often:</p>
+<p>Also if you often:</p>
 
 <ul>
-<li><strong>loses configs</strong> of your apps (vim, htop, ...)</li>
-<li>‎<strong>can&#39;t remember commands</strong> and flags (&quot;du -sh&quot;, ...)</li>
-<li>uses <strong>hostile shell</strong> in remote hosts:</li>
+<li><strong>lose configs</strong> of your apps (<code>vim</code>, <code>htop</code>)</li>
+<li>‎<strong>can&#39;t remember commands</strong> and flags</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">&gt; _
+<div class="highlight"><pre><code class="language-" data-lang="">git log --oneline --decorate --all --graph
+</code></pre></div>
+<ul>
+<li>use <strong>hostile shell</strong> in remote hosts</li>
+</ul>
+<div class="highlight"><pre><code class="language-" data-lang="">&gt;_
 </code></pre></div>
 <!--slide-next-->
 
@@ -88,33 +92,72 @@
 
 <h2 id="dotfiles-to-the-rescue">Dotfiles to the rescue!</h2>
 
-<p><a href="https://dotfiles.github.io/">Dotfiles is an initiative proposed by Github</a> to
-keep configuration files (and more) in a versioned repository for
-<strong>better customisation</strong> and <strong>easier reuse</strong>.</p>
+<p><a href="https://dotfiles.github.io/">Dotfiles is an initiative driven by Github</a> to
+keep configuration files (and more) in a repository.</p>
 
 <!--slide-next-->
 
-<h2 id="who-actually-use-dotfiles">Who actually use dotfiles?</h2>
+<h2 id="why-the-name-dotfiles">Why the name dotfiles?</h2>
 
-<p>There is a big community!</p>
+<p>Files prefixed with a dot (like <code>$HOME/.bashrc</code>) are hidden in Linux.</p>
 
-<p>Only <a href="https://github.com/mathiasbynens/dotfiles">Mathias <code>dotfiles</code> project</a>
-has more Github stars than <a href="https://github.com/apache/spark">Apache Spark</a>!!!</p>
+<p>Files under <code>$HOME</code> are often configuration files.</p>
+
+<!--slide-next-->
+
+<h2 id="dotfiles-principles">Dotfiles principles</h2>
+
+<ul>
+<li>customization</li>
+<li>versioning</li>
+<li>sharing</li>
+<li>reusing</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="who-uses-dotfiles">Who uses dotfiles?</h2>
+
+<p>In Github stars:</p>
+
+<ul>
+<li><a href="https://github.com/mathiasbynens/dotfiles">Mathias <code>dotfiles</code></a> (one flavor): 17k</li>
+<li><a href="https://github.com/apache/spark">Apache Spark</a>: 14k</li>
+</ul>
 
 <p>Many flavors, you fork your favorite one!</p>
 
 <!--slide-next-->
 
-<h2 id="what-can-my-dotfiles-contain">What can my dotfiles contain?</h2>
+<h2 id="what-can-dotfiles-contain">What can dotfiles contain?</h2>
 
 <ul>
 <li>Shell aliases and functions</li>
-<li>‎Any <code>.file</code> in your home (<code>.bashrc</code>, ...)</li>
-<li>‎Any directory in <code>~/.config</code></li>
-<li>‎Useful libraries (like <code>stderred</code>)</li>
-<li>‎Documentation</li>
-<li>‎Code snippets</li>
-<li>...</li>
+<li>‎Any file <code>.xxx</code> under <code>$HOME</code> (like <code>.bashrc</code>)</li>
+<li>‎Any directory under <code>~/.config</code></li>
+</ul>
+
+<!--slide-down-->
+
+<h3 id="what-ive-personally-added">What I&#39;ve personally added?</h3>
+
+<ul>
+<li><strong>Window managers</strong> settings (like <code>awesome</code> &amp; <code>xfce</code>)</li>
+<li><strong>Cron job</strong> to <code>renice</code> Intellij</li>
+<li>Integration with <strong><a href="https://github.com/kepkin/dev-shell-essentials">dev-shell-essentials</a></strong>
+<code>
+echo &quot;a cat&quot; | highlight green a | highlight red cat
+</code></li>
+</ul>
+
+<!--slide-down-->
+
+<ul>
+<li><strong>‎Stderr in <span <span style="color:red">red</span></strong> using <a href="https://github.com/sickill/stderred"><code>stderred</code></a></li>
+<li>‎<strong>Code snippets</strong> (for Bash specially)</li>
+<li>‎<strong>How-To&#39;s</strong> (set up servers like ssh, nfs, ldap)</li>
+<li><strong>Tag with <code>$SESSION_ID</code></strong> commands in history</li>
+<li><strong>Tag with <code>$PWD</code></strong> commands in history</li>
 </ul>
 
 <!--slide-next-->
@@ -122,19 +165,27 @@ has more Github stars than <a href="https://github.com/apache/spark">Apache Spar
 <h2 id="how-to-get-started-with-dotfiles">How to get started with dotfiles?</h2>
 
 <ul>
-<li>Choose your <a href="https://dotfiles.github.io/">mainstream</a></li>
-<li><code>git clone ...</code></li>
-<li>Follow <code>README.md</code>:</li>
+<li>Choose your <a href="https://dotfiles.github.io/">flavor</a></li>
+<li>Use it!</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang=""># Something like
+
+<pre><code class="bash" data-trim contenteditable>
+# clone your flavor
+git clone \
+  https://github.om/mathiasbynens/dotfiles.git
+# install it
 cd dotfiles
 bash bootstrap.sh
-</code></pre></div>
+# done!
+</code></pre>
+
+<!--slide-next-->
+
+<h1 id="demo">Demo</h1>
+
 <!--slide-next-->
 
 <h1 id="enjoy">Enjoy!</h1>
-
-<p>That&#39;s all!</p>
 
           </script>
         </section>
