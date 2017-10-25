@@ -21,16 +21,21 @@ Keep reading if you use:
 - MacOS or
 - Cygwin (over Windows)
 
-<!--slide-down-->
+<!--slide-next-->
 
-And if often you:
+Also if you often:
 
-- **lose configs** of your apps (vim, htop, ...)
-- ‎**can't remember commands** and flags (`du -sh`, ...)
-- use **hostile shell** in remote hosts:
+- **lose configs** of your apps (`vim`, `htop`)
+- ‎**can't remember commands** and flags
 
 ```
-> _
+git log --oneline --decorate --all --graph
+```
+
+- use **hostile shell** in remote hosts
+
+```
+>_
 ```
 
 <!--slide-next-->
@@ -39,46 +44,84 @@ And if often you:
 
 ## Dotfiles to the rescue!
 
-[Dotfiles is an initiative proposed by Github](https://dotfiles.github.io/) to
-keep configuration files (and more) in a versioned repository for
-**better customisation** and **easier reuse**.
+[Dotfiles is an initiative driven by Github](https://dotfiles.github.io/) to
+keep configuration files (and more) in a repository.
 
 <!--slide-next-->
 
-## Who actually use dotfiles?
+## Why the name dotfiles?
 
-There is a big community!
+Files prefixed with a dot (like `$HOME/.bashrc`) are hidden in Linux.
 
-Only [Mathias `dotfiles` project](https://github.com/mathiasbynens/dotfiles)
-has more Github stars than [Apache Spark](https://github.com/apache/spark)!!!
+Files under `$HOME` are often configuration files.
+
+<!--slide-next-->
+
+## Dotfiles principles
+
+- customization
+- versioning
+- sharing
+- reusing
+
+<!--slide-next-->
+
+## Who uses dotfiles?
+
+In Github stars:
+
+- [Mathias `dotfiles`](https://github.com/mathiasbynens/dotfiles) (one flavor): 17k
+- [Apache Spark](https://github.com/apache/spark): 14k
 
 Many flavors, you fork your favorite one!
 
 <!--slide-next-->
 
-## What can my dotfiles contain?
+## What can dotfiles contain?
 
 - Shell aliases and functions
-- ‎Any `.file` in your home (`.bashrc`, ...)
-- ‎Any directory in `~/.config`
-- ‎Useful libraries (like `stderred`)
-- ‎Documentation
-- ‎Code snippets
-- ...
+- ‎Any file `.xxx` under `$HOME` (like `.bashrc`)
+- ‎Any directory under `~/.config`
+
+<!--slide-down-->
+
+### What I've personally added?
+
+- **Window managers** settings (like `awesome` & `xfce`)
+- **Cron job** to `renice` Intellij
+- Integration with **[dev-shell-essentials](https://github.com/kepkin/dev-shell-essentials)**
+```
+echo "a cat" | highlight green a | highlight red cat
+```
+
+<!--slide-down-->
+
+- **‎Stderr in <span <span style="color:red">red</span>** using [`stderred`](https://github.com/sickill/stderred)
+- ‎**Code snippets** (for Bash specially)
+- ‎**How-To's** (set up servers like ssh, nfs, ldap)
+- **Tag with `$SESSION_ID`** commands in history
+- **Tag with `$PWD`** commands in history
 
 <!--slide-next-->
 
 ## How to get started with dotfiles?
 
-- Choose your [mainstream](https://dotfiles.github.io/)
-- `git clone ...`
-- Follow `README.md`:
+- Choose your [flavor](https://dotfiles.github.io/)
+- Use it!
 
-```sh
-# something like
+<pre><code class="bash" data-trim contenteditable>
+# clone your flavor
+git clone \
+  https://github.om/mathiasbynens/dotfiles.git
+# install it
 cd dotfiles
 bash bootstrap.sh
-```
+# done!
+</code></pre>
+
+<!--slide-next-->
+
+# Demo
 
 <!--slide-next-->
 
