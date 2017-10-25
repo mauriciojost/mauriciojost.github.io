@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 Oct 2017 00:15:35 +0200</pubDate>
-    <lastBuildDate>Thu, 26 Oct 2017 00:15:35 +0200</lastBuildDate>
+    <pubDate>Thu, 26 Oct 2017 00:18:15 +0200</pubDate>
+    <lastBuildDate>Thu, 26 Oct 2017 00:18:15 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
@@ -32,7 +32,7 @@
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;git log --oneline --decorate --all --graph
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
-&lt;li&gt;use &lt;strong&gt;hostile shell&lt;/strong&gt; in remote hosts&lt;/li&gt;
+&lt;li&gt;use &lt;strong&gt;hostile shell&lt;/strong&gt; in many remote hosts&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&amp;gt;_
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -94,12 +94,10 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Window managers&lt;/strong&gt; settings (like &lt;code&gt;awesome&lt;/code&gt; &amp;amp; &lt;code&gt;xfce&lt;/code&gt;)&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Cron job&lt;/strong&gt; to &lt;code&gt;renice&lt;/code&gt; Intellij&lt;/li&gt;
-&lt;li&gt;Integration with &lt;strong&gt;&lt;a href=&quot;https://github.com/kepkin/dev-shell-essentials&quot;&gt;dev-shell-essentials&lt;/a&gt;&lt;/strong&gt;
-&lt;code&gt;
-echo &amp;quot;a cat&amp;quot; | highlight green a | highlight red cat
-&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Integration with &lt;strong&gt;&lt;a href=&quot;https://github.com/kepkin/dev-shell-essentials&quot;&gt;dev-shell-essentials&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;echo &quot;a cat&quot; | highlight green a | highlight red cat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-down--&gt;
 
 &lt;ul&gt;
@@ -122,7 +120,7 @@ echo &amp;quot;a cat&amp;quot; | highlight green a | highlight red cat
 &lt;pre&gt;&lt;code class=&quot;bash&quot; data-trim contenteditable&gt;
 # clone your flavor
 git clone \
-  https://github.om/mathiasbynens/dotfiles.git
+  https://github.com/mathiasbynens/dotfiles.git
 # install it
 cd dotfiles
 bash bootstrap.sh
