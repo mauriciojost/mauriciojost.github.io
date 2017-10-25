@@ -44,7 +44,7 @@ git log --oneline --decorate --all --graph
 
 ## Dotfiles to the rescue!
 
-[Dotfiles is an initiative driven by Github](https://dotfiles.github.io/) to
+[Dotfiles is an initiative driven by GitHub](https://dotfiles.github.io/) to
 keep configuration files (and more) in a repository.
 
 <!--slide-next-->
@@ -68,12 +68,12 @@ Files under `$HOME` are often configuration files.
 
 ## Who uses dotfiles?
 
-In Github stars:
-
-- [Mathias `dotfiles`](https://github.com/mathiasbynens/dotfiles) (one flavor): 17k
-- [Apache Spark](https://github.com/apache/spark): 14k
+- [Mathias dotfiles](https://github.com/mathiasbynens/dotfiles): 17k GitHub stars (*)
+- [Apache Spark](https://github.com/apache/spark): 14k GitHub stars
 
 Many flavors, you fork your favorite one!
+
+(*) only one flavor!!!
 
 <!--slide-next-->
 
