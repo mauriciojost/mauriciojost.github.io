@@ -32,7 +32,7 @@ Also if you often:
 git log --oneline --decorate --all --graph
 ```
 
-- use **hostile shell** in remote hosts
+- use **hostile shell** in many remote hosts
 
 ```
 >_
@@ -90,6 +90,7 @@ Many flavors, you fork your favorite one!
 - **Window managers** settings (like `awesome` & `xfce`)
 - **Cron job** to `renice` Intellij
 - Integration with **[dev-shell-essentials](https://github.com/kepkin/dev-shell-essentials)**
+
 ```
 echo "a cat" | highlight green a | highlight red cat
 ```
@@ -112,7 +113,7 @@ echo "a cat" | highlight green a | highlight red cat
 <pre><code class="bash" data-trim contenteditable>
 # clone your flavor
 git clone \
-  https://github.om/mathiasbynens/dotfiles.git
+  https://github.com/mathiasbynens/dotfiles.git
 # install it
 cd dotfiles
 bash bootstrap.sh
