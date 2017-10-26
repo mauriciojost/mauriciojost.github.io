@@ -63,45 +63,43 @@
           <script type="text/template">
             <h2 id="dotfiles-me">Dotfiles? Me?</h2>
 
-<p>Keep reading if you use:</p>
+<p>You&#39;re eligible if you use:</p>
 
 <ul>
 <li>Linux</li>
-<li>MacOS or</li>
+<li>macOS</li>
 <li>Cygwin (over Windows)</li>
 </ul>
 
-<!--slide-next-->
+<!--slide-down-->
 
-<p>Also if you often:</p>
+<p>And if at least one of the below is true:</p>
 
 <ul>
-<li><strong>lose configs</strong> of your apps (<code>vim</code>, <code>htop</code>)</li>
-<li>‎<strong>can&#39;t remember commands</strong> and flags</li>
+<li>you often <strong>lose configs</strong> of your apps (<code>bash</code>, <code>htop</code>)</li>
+<li>you often ‎<strong>can&#39;t remember commands</strong> and flags</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">git log --oneline --decorate --all --graph
+<div class="highlight"><pre><code class="language-" data-lang="">git log --oneline \
+  --decorate --all \
+  --graph
 </code></pre></div>
 <ul>
-<li>use <strong>hostile shell</strong> in many remote hosts</li>
+<li>you often use <strong>hostile shell</strong> in many remote hosts</li>
 </ul>
 <div class="highlight"><pre><code class="language-" data-lang="">&gt;_
 </code></pre></div>
+<ul>
+<li>you envy your colleague&#39;s <strong><span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span></span><span style="color:yellow">ment</span></strong></li>
+</ul>
+
 <!--slide-next-->
 
 <!--more-->
 
 <h2 id="dotfiles-to-the-rescue">Dotfiles to the rescue!</h2>
 
-<p><a href="https://dotfiles.github.io/">Dotfiles is an initiative driven by GitHub</a> to
+<p>Dotfiles is an initiative <a href="https://dotfiles.github.io/">driven by GitHub</a> to
 keep configuration files (and more) in a repository.</p>
-
-<!--slide-next-->
-
-<h2 id="why-the-name-dotfiles">Why the name dotfiles?</h2>
-
-<p>Files prefixed with a dot (like <code>$HOME/.bashrc</code>) are hidden in Linux.</p>
-
-<p>Files under <code>$HOME</code> are often configuration files.</p>
 
 <!--slide-next-->
 
@@ -116,6 +114,19 @@ keep configuration files (and more) in a repository.</p>
 
 <!--slide-next-->
 
+<h2 id="why-the-name-dotfiles">Why the name dotfiles?</h2>
+
+<p>Files starting with <strong>dot</strong> are often configuration files:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">mjost@lapin:~$ ls -lAugh \.
+total 13M
+drwx------   4 mjost 4.0K Oct 21 09:51 .activator
+-rw-------   1 mjost 6.3K Oct 25 08:17 .aliases
+drwx------   3 mjost 4.0K Oct 21 09:51 .android
+drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
+...
+</code></pre></div>
+<!--slide-next-->
+
 <h2 id="who-uses-dotfiles">Who uses dotfiles?</h2>
 
 <ul>
@@ -125,7 +136,7 @@ keep configuration files (and more) in a repository.</p>
 
 <p>Many flavors, you fork your favorite one!</p>
 
-<p>(*) only one flavor!!!</p>
+<p><em>(*) only one flavor!!!</em></p>
 
 <!--slide-next-->
 
@@ -153,9 +164,17 @@ keep configuration files (and more) in a repository.</p>
 <ul>
 <li><strong>‎Stderr in <span <span style="color:red">red</span></strong> using <a href="https://github.com/sickill/stderred"><code>stderred</code></a></li>
 <li>‎<strong>Code snippets</strong> (for Bash specially)</li>
-<li>‎<strong>How-To&#39;s</strong> (set up servers like ssh, nfs, ldap)</li>
+<li>‎<strong>How-To&#39;s</strong> (set up servers like <code>ssh</code>, <code>nfs</code>, <code>ldap</code>)</li>
 <li><strong>Tag with <code>$SESSION_ID</code></strong> commands in history</li>
 <li><strong>Tag with <code>$PWD</code></strong> commands in history</li>
+</ul>
+
+<!--slide-down-->
+
+<ul>
+<li><strong>Aliases</strong> for commands like <code>git</code>, <code>grep</code> and others</li>
+<li><strong>Key Mappings</strong> for Intellij</li>
+<li>and much more!</li>
 </ul>
 
 <!--slide-next-->
@@ -164,7 +183,7 @@ keep configuration files (and more) in a repository.</p>
 
 <ul>
 <li>Choose your <a href="https://dotfiles.github.io/">flavor</a></li>
-<li>Use it!</li>
+<li>Install it and use it!</li>
 </ul>
 
 <pre><code class="bash" data-trim contenteditable>

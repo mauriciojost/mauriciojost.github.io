@@ -5,53 +5,51 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 Oct 2017 00:55:41 +0200</pubDate>
-    <lastBuildDate>Thu, 26 Oct 2017 00:55:41 +0200</lastBuildDate>
+    <pubDate>Thu, 26 Oct 2017 20:11:21 +0200</pubDate>
+    <lastBuildDate>Thu, 26 Oct 2017 20:11:21 +0200</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
         <title>Dotfiles</title>
         <description>&lt;h2 id=&quot;dotfiles-me&quot;&gt;Dotfiles? Me?&lt;/h2&gt;
 
-&lt;p&gt;Keep reading if you use:&lt;/p&gt;
+&lt;p&gt;You&amp;#39;re eligible if you use:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Linux&lt;/li&gt;
-&lt;li&gt;MacOS or&lt;/li&gt;
+&lt;li&gt;macOS&lt;/li&gt;
 &lt;li&gt;Cygwin (over Windows)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;!--slide-next--&gt;
+&lt;!--slide-down--&gt;
 
-&lt;p&gt;Also if you often:&lt;/p&gt;
+&lt;p&gt;And if at least one of the below is true:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;lose configs&lt;/strong&gt; of your apps (&lt;code&gt;vim&lt;/code&gt;, &lt;code&gt;htop&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;‎&lt;strong&gt;can&amp;#39;t remember commands&lt;/strong&gt; and flags&lt;/li&gt;
+&lt;li&gt;you often &lt;strong&gt;lose configs&lt;/strong&gt; of your apps (&lt;code&gt;bash&lt;/code&gt;, &lt;code&gt;htop&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;you often ‎&lt;strong&gt;can&amp;#39;t remember commands&lt;/strong&gt; and flags&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;git log --oneline --decorate --all --graph
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;git log --oneline \
+  --decorate --all \
+  --graph
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
-&lt;li&gt;use &lt;strong&gt;hostile shell&lt;/strong&gt; in many remote hosts&lt;/li&gt;
+&lt;li&gt;you often use &lt;strong&gt;hostile shell&lt;/strong&gt; in many remote hosts&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&amp;gt;_
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;you envy your colleague&amp;#39;s &lt;strong&gt;&lt;span style=&quot;color:green&quot;&gt;color&lt;/span&gt;&lt;span style=&quot;color:blue&quot;&gt;ful &lt;/span&gt;&lt;span style=&quot;color:red&quot;&gt;environ&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:yellow&quot;&gt;ment&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;!--more--&gt;
 
 &lt;h2 id=&quot;dotfiles-to-the-rescue&quot;&gt;Dotfiles to the rescue!&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;Dotfiles is an initiative driven by GitHub&lt;/a&gt; to
+&lt;p&gt;Dotfiles is an initiative &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;driven by GitHub&lt;/a&gt; to
 keep configuration files (and more) in a repository.&lt;/p&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;why-the-name-dotfiles&quot;&gt;Why the name dotfiles?&lt;/h2&gt;
-
-&lt;p&gt;Files prefixed with a dot (like &lt;code&gt;$HOME/.bashrc&lt;/code&gt;) are hidden in Linux.&lt;/p&gt;
-
-&lt;p&gt;Files under &lt;code&gt;$HOME&lt;/code&gt; are often configuration files.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -66,6 +64,19 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
+&lt;h2 id=&quot;why-the-name-dotfiles&quot;&gt;Why the name dotfiles?&lt;/h2&gt;
+
+&lt;p&gt;Files starting with &lt;strong&gt;dot&lt;/strong&gt; are often configuration files:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;mjost@lapin:~$ ls -lAugh \.
+total 13M
+drwx------   4 mjost 4.0K Oct 21 09:51 .activator
+-rw-------   1 mjost 6.3K Oct 25 08:17 .aliases
+drwx------   3 mjost 4.0K Oct 21 09:51 .android
+drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;!--slide-next--&gt;
+
 &lt;h2 id=&quot;who-uses-dotfiles&quot;&gt;Who uses dotfiles?&lt;/h2&gt;
 
 &lt;ul&gt;
@@ -75,7 +86,7 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 
 &lt;p&gt;Many flavors, you fork your favorite one!&lt;/p&gt;
 
-&lt;p&gt;(*) only one flavor!!!&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(*) only one flavor!!!&lt;/em&gt;&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -103,9 +114,17 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;‎Stderr in &lt;span &lt;span style=&quot;color:red&quot;&gt;red&lt;/span&gt;&lt;/strong&gt; using &lt;a href=&quot;https://github.com/sickill/stderred&quot;&gt;&lt;code&gt;stderred&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;‎&lt;strong&gt;Code snippets&lt;/strong&gt; (for Bash specially)&lt;/li&gt;
-&lt;li&gt;‎&lt;strong&gt;How-To&amp;#39;s&lt;/strong&gt; (set up servers like ssh, nfs, ldap)&lt;/li&gt;
+&lt;li&gt;‎&lt;strong&gt;How-To&amp;#39;s&lt;/strong&gt; (set up servers like &lt;code&gt;ssh&lt;/code&gt;, &lt;code&gt;nfs&lt;/code&gt;, &lt;code&gt;ldap&lt;/code&gt;)&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Tag with &lt;code&gt;$SESSION_ID&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Tag with &lt;code&gt;$PWD&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Aliases&lt;/strong&gt; for commands like &lt;code&gt;git&lt;/code&gt;, &lt;code&gt;grep&lt;/code&gt; and others&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Key Mappings&lt;/strong&gt; for Intellij&lt;/li&gt;
+&lt;li&gt;and much more!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -114,7 +133,7 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Choose your &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;flavor&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Use it!&lt;/li&gt;
+&lt;li&gt;Install it and use it!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;pre&gt;&lt;code class=&quot;bash&quot; data-trim contenteditable&gt;
