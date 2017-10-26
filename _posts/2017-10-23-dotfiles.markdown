@@ -25,7 +25,6 @@ You're eligible if you use:
 
 And if at least one of the below is true:
 
-- you often **lose configs** of your apps (`bash`, `htop`)
 - you often ‎**can't remember commands** and flags
 
 ```
@@ -34,13 +33,14 @@ git log --oneline \
   --graph
 ```
 
+- you often **lose configs** of your apps (`bash`, `htop`)
 - you often use **hostile shell** in many remote hosts
 
 ```
 >_
 ```
 
-- you envy your colleague's **<span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span></span><span style="color:yellow">ment</span>**
+- you happen to enjoy a very **<span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span></span><span style="color:yellow">ment</span>**
 
 <!--slide-next-->
 
