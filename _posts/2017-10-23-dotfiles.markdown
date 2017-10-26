@@ -15,28 +15,32 @@ comments: true
 
 ## Dotfiles? Me?
 
-Keep reading if you use:
+You're eligible if you use:
 
 - Linux
-- MacOS or
+- macOS
 - Cygwin (over Windows)
 
-<!--slide-next-->
+<!--slide-down-->
 
-Also if you often:
+And if at least one of the below is true:
 
-- **lose configs** of your apps (`vim`, `htop`)
-- ‎**can't remember commands** and flags
+- you often **lose configs** of your apps (`bash`, `htop`)
+- you often ‎**can't remember commands** and flags
 
 ```
-git log --oneline --decorate --all --graph
+git log --oneline \
+  --decorate --all \
+  --graph
 ```
 
-- use **hostile shell** in many remote hosts
+- you often use **hostile shell** in many remote hosts
 
 ```
 >_
 ```
+
+- you envy your colleague's **<span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span></span><span style="color:yellow">ment</span>**
 
 <!--slide-next-->
 
@@ -44,16 +48,8 @@ git log --oneline --decorate --all --graph
 
 ## Dotfiles to the rescue!
 
-[Dotfiles is an initiative driven by GitHub](https://dotfiles.github.io/) to
+Dotfiles is an initiative [driven by GitHub](https://dotfiles.github.io/) to
 keep configuration files (and more) in a repository.
-
-<!--slide-next-->
-
-## Why the name dotfiles?
-
-Files prefixed with a dot (like `$HOME/.bashrc`) are hidden in Linux.
-
-Files under `$HOME` are often configuration files.
 
 <!--slide-next-->
 
@@ -66,6 +62,22 @@ Files under `$HOME` are often configuration files.
 
 <!--slide-next-->
 
+## Why the name dotfiles?
+
+Files starting with **dot** are often configuration files:
+
+```
+mjost@lapin:~$ ls -lAugh \.
+total 13M
+drwx------   4 mjost 4.0K Oct 21 09:51 .activator
+-rw-------   1 mjost 6.3K Oct 25 08:17 .aliases
+drwx------   3 mjost 4.0K Oct 21 09:51 .android
+drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
+...
+```
+
+<!--slide-next-->
+
 ## Who uses dotfiles?
 
 - [Mathias dotfiles](https://github.com/mathiasbynens/dotfiles): 17k GitHub stars (*)
@@ -73,7 +85,7 @@ Files under `$HOME` are often configuration files.
 
 Many flavors, you fork your favorite one!
 
-(*) only one flavor!!!
+_(*) only one flavor!!!_
 
 <!--slide-next-->
 
@@ -99,16 +111,22 @@ echo "a cat" | highlight green a | highlight red cat
 
 - **‎Stderr in <span <span style="color:red">red</span>** using [`stderred`](https://github.com/sickill/stderred)
 - ‎**Code snippets** (for Bash specially)
-- ‎**How-To's** (set up servers like ssh, nfs, ldap)
+- ‎**How-To's** (set up servers like `ssh`, `nfs`, `ldap`)
 - **Tag with `$SESSION_ID`** commands in history
 - **Tag with `$PWD`** commands in history
+
+<!--slide-down-->
+
+- **Aliases** for commands like `git`, `grep` and others
+- **Key Mappings** for Intellij
+- and much more!
 
 <!--slide-next-->
 
 ## How to get started with dotfiles?
 
 - Choose your [flavor](https://dotfiles.github.io/)
-- Use it!
+- Install it and use it!
 
 <pre><code class="bash" data-trim contenteditable>
 # clone your flavor
