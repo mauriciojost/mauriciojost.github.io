@@ -15,8 +15,8 @@ body {
   background-color: #fff; }
 
 .reveal {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  font-size: 42px;
+  font-family: monospace;
+  font-size: 35px;
   font-weight: normal;
   color: #222; }
 
@@ -47,11 +47,11 @@ body {
   margin: 0 0 20px 0;
   color: #222;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
-  font-weight: 600;
+  font-weight: 100;
   line-height: 1.2;
   letter-spacing: normal;
   text-transform: uppercase;
-  text-shadow: none;
+  text-shadow: blue;
   word-wrap: break-word; }
 
 .reveal h1 {
@@ -157,7 +157,7 @@ body {
 
 .reveal code {
   color: #881111;
-  font-family: monospace; 
+  font-family: monospace;
   font-size: 0.75em;
 }
 
