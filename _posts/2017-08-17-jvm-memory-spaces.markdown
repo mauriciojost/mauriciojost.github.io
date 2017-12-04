@@ -166,7 +166,7 @@ end note;
 
 ### No PermGen Space in JDK 8?
 
-Exactly, no more `PermGen`. 
+Exactly, no more `PermGen`.
 
 In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.
 
@@ -192,7 +192,7 @@ You can use `jconsole` for that. This tool will show you:
 
 ### Example
 
-We will use the Scala REPL as an example: 
+We will use the Scala REPL as an example:
 
 ```bash
 scala
@@ -263,7 +263,7 @@ double check the version of the JVM it relates too.
 
 <!--slide-down-->
 
-Also, do not forget `man java`. If java was not installed properly via a package manager, you can still try to read the manual with `man`. For example: 
+Also, do not forget `man java`. If java was not installed properly via a package manager, you can still try to read the manual with `man`. For example:
 
 ```bash
 man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java

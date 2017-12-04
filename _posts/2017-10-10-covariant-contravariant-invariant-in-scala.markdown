@@ -219,9 +219,9 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 ## Use in the Scala library
 
-I invite you to take a look at the implementation of [the trait Function2 in Scala v2.12](https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala). 
+I invite you to take a look at the implementation of [the trait Function2 in Scala v2.12](https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala).
 
-See its declaration (ignore the `@specialized` annotation): 
+See its declaration (ignore the `@specialized` annotation):
 
 ```
 trait Function2[-T1, -T2, +R] extends ...
