@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="/reveal.js/css/reveal.css"/>
     
-      <link rel="stylesheet" href="/reveal.js/css/theme/white.css" id="theme"/>
+      <link rel="stylesheet" href="/reveal.js/css/theme/../../../css/theme/whiteish.css" id="theme"/>
     
 
     <!-- Code syntax highlighting -->
@@ -138,7 +138,7 @@ terms they can be divided into:</p>
 
 <h3 id="no-permgen-space-in-jdk-8">No PermGen Space in JDK 8?</h3>
 
-<p>Exactly, no more <code>PermGen</code>. </p>
+<p>Exactly, no more <code>PermGen</code>.</p>
 
 <p>In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.</p>
 
@@ -166,7 +166,7 @@ terms they can be divided into:</p>
 
 <h3 id="example">Example</h3>
 
-<p>We will use the Scala REPL as an example: </p>
+<p>We will use the Scala REPL as an example:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">scala
 </code></pre></div>
 <p>We will open <code>jconsole</code> and hook to the just launched JVM (using its PID).</p>
@@ -234,7 +234,7 @@ double check the version of the JVM it relates too.</p>
 
 <!--slide-down-->
 
-<p>Also, do not forget <code>man java</code>. If java was not installed properly via a package manager, you can still try to read the manual with <code>man</code>. For example: </p>
+<p>Also, do not forget <code>man java</code>. If java was not installed properly via a package manager, you can still try to read the manual with <code>man</code>. For example:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
 </code></pre></div>
 <!--slide-next-->
@@ -266,8 +266,12 @@ double check the version of the JVM it relates too.</p>
 
         // Push each slide change to the browser history
         
+          history: 'true',
+        
 
         // Vertical centering of slides
+        
+          center: 'true',
         
 
         // Transition style

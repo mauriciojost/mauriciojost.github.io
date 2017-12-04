@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 Oct 2017 22:23:22 +0200</pubDate>
-    <lastBuildDate>Thu, 26 Oct 2017 22:23:22 +0200</lastBuildDate>
+    <pubDate>Mon, 04 Dec 2017 18:46:07 +0100</pubDate>
+    <lastBuildDate>Mon, 04 Dec 2017 18:46:07 +0100</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
@@ -544,9 +544,9 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 &lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
 
-&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation): &lt;/p&gt;
+&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;trait Function2[-T1, -T2, +R] extends ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
@@ -779,9 +779,9 @@ val contrvarIsDog: Func[Dog, Boolean] =
 
 &lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
 
-&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation): &lt;/p&gt;
+&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;trait Function2[-T1, -T2, +R] extends ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
@@ -914,7 +914,7 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
 
-&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
 
@@ -942,7 +942,7 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
 
-&lt;p&gt;We will use the Scala REPL as an example: &lt;/p&gt;
+&lt;p&gt;We will use the Scala REPL as an example:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
@@ -1010,7 +1010,7 @@ double check the version of the JVM it relates too.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example: &lt;/p&gt;
+&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;
@@ -1113,7 +1113,7 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
 
-&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
 
@@ -1141,7 +1141,7 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
 
-&lt;p&gt;We will use the Scala REPL as an example: &lt;/p&gt;
+&lt;p&gt;We will use the Scala REPL as an example:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
@@ -1209,7 +1209,7 @@ double check the version of the JVM it relates too.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example: &lt;/p&gt;
+&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;
