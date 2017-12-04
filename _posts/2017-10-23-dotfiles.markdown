@@ -5,6 +5,7 @@ date:   2017-10-23 00:00:00 +0200
 reveal:
   theme: ../../../css/theme/whiteish
   center: true
+  history: true
 tags:
 - dotfiles
 - shell

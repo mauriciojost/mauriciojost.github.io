@@ -7,7 +7,7 @@ reveal:
   transition: slide
   controls: true
   progress: true
-  history: false
+  history: true
   center: true
 tags:
 - reveal

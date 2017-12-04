@@ -3,8 +3,9 @@ layout: [post, presentation]
 title:  "CoVariant, ContraVariant and InVariant... Variances in Scala"
 date:   2017-10-10 00:00:00 +0200
 reveal:
-  theme: white
+  theme: ../../../css/theme/whiteish
   center: true
+  history: true
 tags:
 - scala
 - types

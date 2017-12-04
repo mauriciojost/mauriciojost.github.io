@@ -5,6 +5,7 @@ date:   2017-11-08 00:00:00 +0200
 reveal:
   theme: ../../../css/theme/whiteish
   center: true
+  history: true
 tags:
 - scala
 - spark
