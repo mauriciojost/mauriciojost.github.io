@@ -17,10 +17,10 @@ tags:
 comments: true
 ---
 
-# Why Exception Handling (EH) in Spark?
+# Why Exception Handling (E.H.) in Spark?
 
 - **data is rarely ideal**
-- not all scenarios are not worth an **immediate** halt
+- some scenarios don't deserve an **immediate** halt
 - investigate newer scenarios as-per-priority (happier customers)
 - ease product evolution
 - understand application limitations
@@ -39,100 +39,115 @@ Exceptions are **failures** that **prevent our code from completing successfully
 
 Failures [can be classified as](https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/):
 
-- External (more related to external conditions)
-  - Expected (a parsing exception)
-  - Unexpected (a host down)
-- Internal
-  - Unexpected (a `NullPointerException`)
-  - Expected (a circuit breaker)
+- **Expected Internal** (a circuit breaker)
+- **Expected External** (a parsing exception)
+- **Unexpected Internal** (a `NullPointerException`)
+- **Unexpected External** (a host down)
 
 <!--slide-down-->
 
-In Scala, failures can be classified as:
+Failures can also be classified by importance:
 
-- `Fatal` or `NonFatal`
-- `Deterministic` or `Non deterministic`
-
-<!--slide-next-->
-
-## Spark Exception Handling (EH)
-
-We can classify exceptions in Spark in two groups:
-
-- Unexpected failures (mostly non-deterministic, fatal)
-- Expected failures (mostly deterministic, not fatal)
-
-<!--slide-next-->
-
-### Framework EH
-
-Unexpected failures are generally tackled by the framework via task retries.
-
-These represent non deterministic failures like network problems, memory exceptions, among others.
-
-<!--slide-next-->
-
-### Application EH
-
-Applications on top of Spark need to handle expected failures.
-
-These are generally `NonFatal` and `Deterministic`.
+- `NonFatal` (can be recovered)
+- `Fatal` (cannot be recovered)
 
 <!--slide-down-->
 
-We will focus on these from now on.
+Or by determinism:
+
+- `Deterministic` (can be reproduced consistently)
+- `Non deterministic`
 
 <!--slide-next-->
 
-# Application EH approaches
+## Spark Exception Handling (E.H.)
 
-EH specially applies to transformations done to unstructured data (`RDD`).
+Generally speaking, Spark exceptions can be divided in two groups:
+
+- **Unexpected failures**: generally non-deterministic, fatal or non fatal (Spark framework via task retries)
+- **Expected failures**: generally deterministic, non fatal (this post)
+
+<!--slide-next-->
+
+# Application E.H. approaches
+
+- The no-exception-handling approach
+- The try-catch and log approach
+- The `Try` / `Either` approach
+- The Accumulator approach
+- More evolved approaches
 
 <!--slide-next-->
 
 ## The no-exception-handling approach
 
-**The world has to be ideal, or bang.**
+**The world has to be ideal, or crash.**
 
-The Spark app will fail if upon retries a task of keeps failing.
+The Spark app will fail if upon retries a task keeps failing.
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String): String = {
+  cities(cityCode).get.country
+  // the city has to be found!
+}
+</code></pre>
 
 <!--slide-next-->
 
 ## The try-catch and log approach
 
-A transformation reports unexpected scenarios via logs, which can be analysed post-mortem.
+Report unexpected scenarios via logs.
 
-- **The world does not have to be ideal**
-- May generate significant amount of logs
-- May decrease the application performance significantly
-- Discard unexpected scenario? Recovery?
-- Mostly implemented in a not purely functional way
+- May generate significant amount of logs (performance!)
+- Generally not purely functional
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String): String = {
+  try {
+    cities(cityCode).get.country
+  } catch {
+    "UnknownCountry"
+  }
+}
+</code></pre>
 
 <!--slide-next-->
 
 ## The `Try` / `Either` approach
 
-A transformation returns `Try` / `Either` types whenever unexpected scenarios are found.
+Return `Try` / `Either` types always.
 
 - Purely functional
 - `Exception` reports are part of the output of a transformation
-- Discard unexpected scenario? Recovery?
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String): Try[String] = {
+  Try{cities(cityCode).get.country}
+}
+</code></pre>
 
 <!--slide-next-->
 
 ## The Accumulator approach
 
-Use the `Spark` `Accumulator` mechanism to report statistics on unexpected scenarios.
+Use the Spark `Accumulator` mechanism to report statistics on specific scenarios.
 
-A labeled counter is increased and aggregated upon action completion.
-
-- Purely functional
 - Not meant to retrieve detailed information about the failure
-- Discard unexpected scenario? Recovery?
+- Function argument is mutable (often seen as bad practice)
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String, ac: Accumulator): String = {
+  cities(cityCode) match {
+    case Some(city) => city.country
+    case None => {ac += 1; "UnknownCountry"}
+  }
+}
+</code></pre>
 
 <!--slide-next-->
 
 ## More evolved approaches
 
+To be completed.
 
 
