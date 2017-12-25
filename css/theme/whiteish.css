@@ -158,7 +158,8 @@ body {
 .reveal code {
   color: #881111;
   font-family: monospace;
-  font-size: 0.75em;
+  font-weight: bold;
+  font-size: 0.95em;
 }
 
 .reveal pre code {

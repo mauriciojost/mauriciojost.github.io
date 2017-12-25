@@ -5,9 +5,475 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 Dec 2017 18:46:07 +0100</pubDate>
-    <lastBuildDate>Mon, 04 Dec 2017 18:46:07 +0100</lastBuildDate>
+    <pubDate>Mon, 25 Dec 2017 12:56:00 +0100</pubDate>
+    <lastBuildDate>Mon, 25 Dec 2017 12:56:00 +0100</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
+    
+      <item>
+        <title>Exception Handling in Spark 2.x</title>
+        <description>&lt;h1 id=&quot;why-exception-handling-e-h-in-spark&quot;&gt;Why Exception Handling (E.H.) in Spark?&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;data is rarely ideal&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;some scenarios don&amp;#39;t deserve an &lt;strong&gt;immediate&lt;/strong&gt; halt&lt;/li&gt;
+&lt;li&gt;investigate newer scenarios as-per-priority (happier customers)&lt;/li&gt;
+&lt;li&gt;ease product evolution&lt;/li&gt;
+&lt;li&gt;understand application limitations&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;what-are-exceptions&quot;&gt;What are Exceptions?&lt;/h1&gt;
+
+&lt;p&gt;Exceptions are &lt;strong&gt;failures&lt;/strong&gt; that &lt;strong&gt;prevent our code from completing successfully an operation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Generally speaking, in the batch &amp;amp; streaming processing world, correctly handling exceptions
+gives the development team more time to evaluate logs and better decide how to handle different scenarios.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;types-of-failures&quot;&gt;Types of Failures&lt;/h1&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Failures &lt;a href=&quot;https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/&quot;&gt;can be classified as&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Expected Internal&lt;/strong&gt; (a circuit breaker)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Expected External&lt;/strong&gt; (a parsing exception)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unexpected Internal&lt;/strong&gt; (a &lt;code&gt;NullPointerException&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unexpected External&lt;/strong&gt; (a host down)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;Among others, failures can be classified by importance:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;NonFatal&lt;/code&gt; (can be recovered)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Fatal&lt;/code&gt; (cannot be recovered)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Or by determinism:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Deterministic&lt;/code&gt; (can be reproduced consistently)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Non deterministic&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;spark-exception-handling-e-h&quot;&gt;Spark Exception Handling (E.H.)&lt;/h2&gt;
+
+&lt;p&gt;Generally speaking, Spark exceptions can be divided in two groups:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Unexpected failures&lt;/strong&gt;: generally non-deterministic, fatal or non fatal (Spark framework via task retries)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Expected failures&lt;/strong&gt;: generally deterministic, non fatal -&amp;gt; &lt;strong&gt;this post&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;application-e-h-approaches&quot;&gt;Application E.H. approaches&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The no-exception-handling approach&lt;/li&gt;
+&lt;li&gt;The try-catch and log approach&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/li&gt;
+&lt;li&gt;The Accumulator approach&lt;/li&gt;
+&lt;li&gt;More evolved approaches&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-no-exception-handling-approach&quot;&gt;The no-exception-handling approach&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;The world has to be ideal, or crash.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The Spark app will fail if upon retries a task keeps failing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String): String = {
+  cities(cityCode).get.country
+  // the city has to be found!
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;When to use? Prototypes only.&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-try-catch-and-log-approach&quot;&gt;The try-catch and log approach&lt;/h2&gt;
+
+&lt;p&gt;Report unexpected scenarios via logs.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;May generate significant amount of logs (performance!)&lt;/li&gt;
+&lt;li&gt;Generally not purely functional&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String): String = {
+  try {
+    cities(cityCode).get.country
+  } catch {
+    Log.warn(s&quot;Unexpected city $cityCode&quot;)
+    &quot;UnknownCountry&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+
+&lt;p&gt;Not really appealing:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Requires the use of RM tools to retrieve logs (as not in HDFS)&lt;/li&gt;
+&lt;li&gt;Difficult to test&lt;/li&gt;
+&lt;li&gt;However provides by default multiple levels of seriousness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-try-either-approach&quot;&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/h2&gt;
+
+&lt;p&gt;Return &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; types always.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Purely functional&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Exception&lt;/code&gt; reports are part of the output of a transformation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String): Try[String] = {
+  Try{cities(cityCode).get.country}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+
+&lt;p&gt;Maybe the most appealing approach:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Results are stored in HDFS&lt;/li&gt;
+&lt;li&gt;Easy to test&lt;/li&gt;
+&lt;li&gt;Easy to reason about&lt;/li&gt;
+&lt;li&gt;Spark/Hadoop agnostic&lt;/li&gt;
+&lt;li&gt;Can be tricky to save simultaneously &lt;code&gt;Success&lt;/code&gt;/&lt;code&gt;Right&lt;/code&gt; and &lt;code&gt;Failure&lt;/code&gt;/&lt;code&gt;Left&lt;/code&gt; sides (could be slow, requiring multiple actions to be triggered)&lt;/li&gt;
+&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-accumulator-approach&quot;&gt;The Accumulator approach&lt;/h2&gt;
+
+&lt;p&gt;Use the Spark &lt;code&gt;Accumulator&lt;/code&gt; mechanism to report statistics on specific scenarios.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Not meant to retrieve detailed information about the failure&lt;/li&gt;
+&lt;li&gt;Function argument is mutable (often seen as bad practice)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String, ac: Accumulator): String = {
+  cities(cityCode) match {
+    case Some(city) =&gt; city.country
+    case None =&gt; {ac += 1; &quot;UnknownCountry&quot;}
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+
+&lt;p&gt;The Spark approach:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Results can be printed in &lt;code&gt;stdout&lt;/code&gt; or stored in HDFS easily&lt;/li&gt;
+&lt;li&gt;Relatively easy to test&lt;/li&gt;
+&lt;li&gt;Spark framework dependant&lt;/li&gt;
+&lt;li&gt;Should be very fast&lt;/li&gt;
+&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;more-evolved-approaches&quot;&gt;More evolved approaches&lt;/h2&gt;
+
+&lt;p&gt;Will be in a different post.&lt;/p&gt;
+
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
+
+&lt;p&gt;If you have any comments, let me know!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Nov 2017 23:00:00 +0100</pubDate>
+        <link>http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/post.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/post.html</guid>
+        
+        <category>scala</category>
+        
+        <category>spark</category>
+        
+        <category>error</category>
+        
+        <category>exception</category>
+        
+        <category>handling</category>
+        
+        <category>try</category>
+        
+        <category>catch</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Exception Handling in Spark 2.x</title>
+        <description>&lt;h1 id=&quot;why-exception-handling-e-h-in-spark&quot;&gt;Why Exception Handling (E.H.) in Spark?&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;data is rarely ideal&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;some scenarios don&amp;#39;t deserve an &lt;strong&gt;immediate&lt;/strong&gt; halt&lt;/li&gt;
+&lt;li&gt;investigate newer scenarios as-per-priority (happier customers)&lt;/li&gt;
+&lt;li&gt;ease product evolution&lt;/li&gt;
+&lt;li&gt;understand application limitations&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;what-are-exceptions&quot;&gt;What are Exceptions?&lt;/h1&gt;
+
+&lt;p&gt;Exceptions are &lt;strong&gt;failures&lt;/strong&gt; that &lt;strong&gt;prevent our code from completing successfully an operation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Generally speaking, in the batch &amp;amp; streaming processing world, correctly handling exceptions
+gives the development team more time to evaluate logs and better decide how to handle different scenarios.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;types-of-failures&quot;&gt;Types of Failures&lt;/h1&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;Failures &lt;a href=&quot;https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/&quot;&gt;can be classified as&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Expected Internal&lt;/strong&gt; (a circuit breaker)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Expected External&lt;/strong&gt; (a parsing exception)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unexpected Internal&lt;/strong&gt; (a &lt;code&gt;NullPointerException&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unexpected External&lt;/strong&gt; (a host down)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;p&gt;Among others, failures can be classified by importance:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;NonFatal&lt;/code&gt; (can be recovered)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Fatal&lt;/code&gt; (cannot be recovered)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Or by determinism:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Deterministic&lt;/code&gt; (can be reproduced consistently)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Non deterministic&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;spark-exception-handling-e-h&quot;&gt;Spark Exception Handling (E.H.)&lt;/h2&gt;
+
+&lt;p&gt;Generally speaking, Spark exceptions can be divided in two groups:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Unexpected failures&lt;/strong&gt;: generally non-deterministic, fatal or non fatal (Spark framework via task retries)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Expected failures&lt;/strong&gt;: generally deterministic, non fatal -&amp;gt; &lt;strong&gt;this post&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h1 id=&quot;application-e-h-approaches&quot;&gt;Application E.H. approaches&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The no-exception-handling approach&lt;/li&gt;
+&lt;li&gt;The try-catch and log approach&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/li&gt;
+&lt;li&gt;The Accumulator approach&lt;/li&gt;
+&lt;li&gt;More evolved approaches&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-no-exception-handling-approach&quot;&gt;The no-exception-handling approach&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;The world has to be ideal, or crash.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The Spark app will fail if upon retries a task keeps failing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String): String = {
+  cities(cityCode).get.country
+  // the city has to be found!
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;When to use? Prototypes only.&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-try-catch-and-log-approach&quot;&gt;The try-catch and log approach&lt;/h2&gt;
+
+&lt;p&gt;Report unexpected scenarios via logs.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;May generate significant amount of logs (performance!)&lt;/li&gt;
+&lt;li&gt;Generally not purely functional&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String): String = {
+  try {
+    cities(cityCode).get.country
+  } catch {
+    Log.warn(s&quot;Unexpected city $cityCode&quot;)
+    &quot;UnknownCountry&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+
+&lt;p&gt;Not really appealing:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Requires the use of RM tools to retrieve logs (as not in HDFS)&lt;/li&gt;
+&lt;li&gt;Difficult to test&lt;/li&gt;
+&lt;li&gt;However provides by default multiple levels of seriousness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-try-either-approach&quot;&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/h2&gt;
+
+&lt;p&gt;Return &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; types always.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Purely functional&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Exception&lt;/code&gt; reports are part of the output of a transformation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String): Try[String] = {
+  Try{cities(cityCode).get.country}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+
+&lt;p&gt;Maybe the most appealing approach:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Results are stored in HDFS&lt;/li&gt;
+&lt;li&gt;Easy to test&lt;/li&gt;
+&lt;li&gt;Easy to reason about&lt;/li&gt;
+&lt;li&gt;Spark/Hadoop agnostic&lt;/li&gt;
+&lt;li&gt;Can be tricky to save simultaneously &lt;code&gt;Success&lt;/code&gt;/&lt;code&gt;Right&lt;/code&gt; and &lt;code&gt;Failure&lt;/code&gt;/&lt;code&gt;Left&lt;/code&gt; sides (could be slow, requiring multiple actions to be triggered)&lt;/li&gt;
+&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;the-accumulator-approach&quot;&gt;The Accumulator approach&lt;/h2&gt;
+
+&lt;p&gt;Use the Spark &lt;code&gt;Accumulator&lt;/code&gt; mechanism to report statistics on specific scenarios.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Not meant to retrieve detailed information about the failure&lt;/li&gt;
+&lt;li&gt;Function argument is mutable (often seen as bad practice)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+def country(cityCode: String, ac: Accumulator): String = {
+  cities(cityCode) match {
+    case Some(city) =&gt; city.country
+    case None =&gt; {ac += 1; &quot;UnknownCountry&quot;}
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+
+&lt;p&gt;The Spark approach:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Results can be printed in &lt;code&gt;stdout&lt;/code&gt; or stored in HDFS easily&lt;/li&gt;
+&lt;li&gt;Relatively easy to test&lt;/li&gt;
+&lt;li&gt;Spark framework dependant&lt;/li&gt;
+&lt;li&gt;Should be very fast&lt;/li&gt;
+&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;more-evolved-approaches&quot;&gt;More evolved approaches&lt;/h2&gt;
+
+&lt;p&gt;Will be in a different post.&lt;/p&gt;
+
+&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
+
+&lt;p&gt;If you have any comments, let me know!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Nov 2017 23:00:00 +0100</pubDate>
+        <link>http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/presentation.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/presentation.html</guid>
+        
+        <category>scala</category>
+        
+        <category>spark</category>
+        
+        <category>error</category>
+        
+        <category>exception</category>
+        
+        <category>handling</category>
+        
+        <category>try</category>
+        
+        <category>catch</category>
+        
+        
+      </item>
     
       <item>
         <title>Dotfiles</title>
@@ -1298,215 +1764,6 @@ Help yourself and fork it if you like the idea.&lt;/p&gt;
         <category>collections</category>
         
         <category>jmh</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Sorting Anything Cleanly with Scala</title>
-        <description>&lt;h2 id=&quot;why-sorting&quot;&gt;Why sorting?&lt;/h2&gt;
-
-&lt;p&gt;Sorting requirements are present in the vast majority of data processing applications. As Scala provides very good tools for addressing them, I thought it would be interesting to dive a bit into them to improve our code.&lt;/p&gt;
-
-&lt;p&gt;Here are some of the patterns that you may feel tempted to use, and what I consider is a better alternative. Leave a comment if you have even a better one!&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;basic-sorting&quot;&gt;Basic sorting&lt;/h2&gt;
-
-&lt;p&gt;Let&amp;#39;s use the below as our example collection (you can try this out in the scala-shell):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;get-an-extreme-value-max&quot;&gt;Get an extreme value: &lt;code&gt;max&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;If you feel tempted to do:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toSeq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sorted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;just don&amp;#39;t, &lt;strong&gt;you better do&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Why?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Apart from being simpler and easier to read, it&amp;#39;s also more efficient
-(as no intermediate collection will be created).&lt;/p&gt;
-
-&lt;h3 id=&quot;keep-sorted&quot;&gt;Keep sorted&lt;/h3&gt;
-
-&lt;p&gt;Some usecases require to keep a collection sorted at all times.&lt;/p&gt;
-
-&lt;p&gt;If you feel tempted to do:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seq&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toSeq&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sorted&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sorted&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;just don&amp;#39;t, &lt;strong&gt;you better do&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scala.collection.SortedSet&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SortedSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sorted
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sorted3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sorted
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Why?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Apart from being cleaner, it&amp;#39;s also more efficient as (no intermediate non-sorted collections are created).&lt;/p&gt;
-
-&lt;p&gt;Mind though, that &lt;code&gt;Set&lt;/code&gt; is not suitable if you need your collection to keep duplicate elements.&lt;/p&gt;
-
-&lt;h2 id=&quot;sorting-complex-types-ordering&quot;&gt;Sorting complex types: &lt;code&gt;Ordering&lt;/code&gt;&lt;/h2&gt;
-
-&lt;p&gt;Many scenarios with more complex types require some sort of functional definition of the ordering.&lt;/p&gt;
-
-&lt;p&gt;What if we have more complex types? For instance: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;n&quot;&gt;savings&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
-   &lt;span class=&quot;n&quot;&gt;surname&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
-   &lt;span class=&quot;n&quot;&gt;hasKids&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Iterable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Adam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
-   &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Charles&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
-   &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Adam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We can say that &lt;em&gt;there is no implicit Ordering defined for Person&lt;/em&gt;. As Person is part of our business,
-it’s up to us to define its &lt;em&gt;Ordering&lt;/em&gt;, which we can do easily as follows: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOnSavings&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOnSavings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Person(-1, &quot;Adam&quot;, true)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Keep in mind that there is an implicit ordering defined for the type &lt;code&gt;Int&lt;/code&gt; and that&amp;#39;s why this works. 
-Scala also has an implicit ordering defined for tuples of types for which there is an implicit ordering, which includes
-primitive types such as &lt;code&gt;Int&lt;/code&gt;, &lt;code&gt;String&lt;/code&gt;, &lt;code&gt;Double&lt;/code&gt; and so on.&lt;/p&gt;
-
-&lt;p&gt;Thanks to this we can specify a multi-field ordering with a given priority, as follows:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderingOSavingsAndSurname&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt;
-      &lt;span class=&quot;nc&quot;&gt;Ordering&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;surname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// uses imp. ordering
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderingOSavingsAndSurname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Person(1, &quot;Charles&quot;, true)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Using &lt;strong&gt;Orderings&lt;/strong&gt; your code will become:
- - much cleaner,
- - robust,
- - reusable and
- - testable&lt;/p&gt;
-
-&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
-</description>
-        <pubDate>Tue, 28 Feb 2017 23:00:00 +0100</pubDate>
-        <link>http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2017/02/28/sorting-anything-cleanly-with-scala.html</guid>
-        
-        <category>scala</category>
-        
-        <category>sorting</category>
-        
-        <category>orderings</category>
-        
-        <category>api</category>
-        
-        <category>max</category>
-        
-        <category>min</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Serializing (almost) Anything with Kryo (for Spark)</title>
-        <description>&lt;h2 id=&quot;what-is-kryo&quot;&gt;What is Kryo?&lt;/h2&gt;
-
-&lt;p&gt;Kryo serialization is one of the fastest on-JVM serialization libraries, and it is certainly the most popular in the Spark world.&lt;/p&gt;
-
-&lt;p&gt;To get the most out of this algorithm you must register the few classes that will have to be serialized. This will help to decrease the size of serialized objects, as their serialization will be tailor-made optimized by Kryo.&lt;/p&gt;
-
-&lt;p&gt;Registering your classes with Kryo in Spark is done this way:&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sparkConf&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sparkConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;registerKryoClasses&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-       &lt;span class=&quot;c1&quot;&gt;// your classes here
-&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;how-to-serialize-unaccessible-classes&quot;&gt;How to serialize unaccessible classes?&lt;/h2&gt;
-
-&lt;p&gt;It all goes fine until you hit private classes, or arrays of classes. If you tried to serialize classes from the Joda library probably you know what I am talking about. However there are a few tricks that will help you serialize almost anything:  &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// scala basic classes
-&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;scala.collection.immutable.$colon$colon&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;scala.collection.immutable.Nil$&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Tuple2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;,&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]]&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// arrays of primitive classes
-&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// monads of primitive classes
-&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// case objects
-&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;scala.None$&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// protected static final classes
-&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;ClassTag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.roaringbitmap.RoaringArray$Element&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runtimeClass&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// public static class FakeFileStatus
-&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;s&quot;&gt;&quot;org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;ClassTag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;s&quot;&gt;&quot;org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runtimeClass&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// joda classes
-&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;org.joda.time.tz.DateTimeZoneBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;classOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;org.joda.time.tz.FixedDateTimeZone&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.DateTimeZoneBuilder$PrecalculatedZone&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.DateTimeZoneBuilder$DSTZone&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.DateTimeZoneBuilder$Recurrence&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.DateTimeZoneBuilder$OfYear&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.CachedDateTimeZone$Info&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;ClassTag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;s&quot;&gt;&quot;org.joda.time.tz.CachedDateTimeZone$Info&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runtimeClass&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Won&amp;#39;t you serialize anything?&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 31 Oct 2016 23:00:00 +0100</pubDate>
-        <link>http://mauriciojost.github.io/2016/10/31/serializing-almost-anything-with-kryo.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2016/10/31/serializing-almost-anything-with-kryo.html</guid>
-        
-        <category>spark</category>
-        
-        <category>kryo</category>
-        
-        <category>serialization</category>
-        
-        <category>register</category>
-        
-        <category>class</category>
-        
-        <category>private</category>
         
         
       </item>

@@ -2,6 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/post.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/presentation.html</loc>
+    </url>
+    
+    <url>
         <loc>http://mauriciojost.github.io/2017/10/23/dotfiles/presentation.html</loc>
     </url>
     

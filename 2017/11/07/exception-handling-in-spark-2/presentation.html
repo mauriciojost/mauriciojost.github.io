@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>
+      
+        Exception Handling in Spark 2.x | Mauricio Jost
+      
+    </title>
+
+    <meta name="author" content="" />
+
+    <!-- Description -->
+    
+      <meta name="description" content="">
+    
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="/reveal.js/css/reveal.css"/>
+    
+      <link rel="stylesheet" href="/reveal.js/css/theme/../../../css/theme/whiteish.css" id="theme"/>
+    
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="/reveal.js/lib/css/zenburn.css"/>
+
+    <style>
+      .reveal pre { font-size: 100%; }
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '/reveal.js/css/print/pdf.css' : '/reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="canonical" href="http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/presentation.html">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+  
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown
+                 data-separator="<!--slide-next-->"
+                 data-separator-vertical="<!--slide-down-->"
+                 start-ignore-separator="<!--slide-ignore-begin-->"
+                 end-ignore-separator="<!--slide-ignore-end-->">
+          <script type="text/template">
+            <h1 id="why-exception-handling-e-h-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
+
+<ul>
+<li><strong>data is rarely ideal</strong></li>
+<li>some scenarios don&#39;t deserve an <strong>immediate</strong> halt</li>
+<li>investigate newer scenarios as-per-priority (happier customers)</li>
+<li>ease product evolution</li>
+<li>understand application limitations</li>
+</ul>
+
+<!--slide-next-->
+
+<!--more-->
+
+<h1 id="what-are-exceptions">What are Exceptions?</h1>
+
+<p>Exceptions are <strong>failures</strong> that <strong>prevent our code from completing successfully an operation</strong>.</p>
+
+<!--slide-ignore-begin-->
+
+<p>Generally speaking, in the batch &amp; streaming processing world, correctly handling exceptions
+gives the development team more time to evaluate logs and better decide how to handle different scenarios.</p>
+
+<!--slide-ignore-end-->
+
+<!--slide-next-->
+
+<h1 id="types-of-failures">Types of Failures</h1>
+
+<!--slide-ignore-begin-->
+
+<p>Failures <a href="https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/">can be classified as</a>:</p>
+
+<ul>
+<li><strong>Expected Internal</strong> (a circuit breaker)</li>
+<li><strong>Expected External</strong> (a parsing exception)</li>
+<li><strong>Unexpected Internal</strong> (a <code>NullPointerException</code>)</li>
+<li><strong>Unexpected External</strong> (a host down)</li>
+</ul>
+
+<!--slide-ignore-end-->
+
+<p>Among others, failures can be classified by importance:</p>
+
+<ul>
+<li><code>NonFatal</code> (can be recovered)</li>
+<li><code>Fatal</code> (cannot be recovered)</li>
+</ul>
+
+<!--slide-down-->
+
+<p>Or by determinism:</p>
+
+<ul>
+<li><code>Deterministic</code> (can be reproduced consistently)</li>
+<li><code>Non deterministic</code></li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="spark-exception-handling-e-h">Spark Exception Handling (E.H.)</h2>
+
+<p>Generally speaking, Spark exceptions can be divided in two groups:</p>
+
+<ul>
+<li><strong>Unexpected failures</strong>: generally non-deterministic, fatal or non fatal (Spark framework via task retries)</li>
+<li><strong>Expected failures</strong>: generally deterministic, non fatal -&gt; <strong>this post</strong></li>
+</ul>
+
+<!--slide-next-->
+
+<h1 id="application-e-h-approaches">Application E.H. approaches</h1>
+
+<ul>
+<li>The no-exception-handling approach</li>
+<li>The try-catch and log approach</li>
+<li>The <code>Try</code> / <code>Either</code> approach</li>
+<li>The Accumulator approach</li>
+<li>More evolved approaches</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="the-no-exception-handling-approach">The no-exception-handling approach</h2>
+
+<p><strong>The world has to be ideal, or crash.</strong></p>
+
+<p>The Spark app will fail if upon retries a task keeps failing.</p>
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String): String = {
+  cities(cityCode).get.country
+  // the city has to be found!
+}
+</code></pre>
+
+<!--slide-down-->
+
+<p>When to use? Prototypes only.</p>
+
+<!--slide-next-->
+
+<h2 id="the-try-catch-and-log-approach">The try-catch and log approach</h2>
+
+<p>Report unexpected scenarios via logs.</p>
+
+<ul>
+<li>May generate significant amount of logs (performance!)</li>
+<li>Generally not purely functional</li>
+</ul>
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String): String = {
+  try {
+    cities(cityCode).get.country
+  } catch {
+    Log.warn(s"Unexpected city $cityCode")
+    "UnknownCountry"
+  }
+}
+</code></pre>
+
+<!--slide-down-->
+
+<h3 id="when-to-use">When to use?</h3>
+
+<p>Not really appealing:</p>
+
+<ul>
+<li>Requires the use of RM tools to retrieve logs (as not in HDFS)</li>
+<li>Difficult to test</li>
+<li>However provides by default multiple levels of seriousness</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="the-try-either-approach">The <code>Try</code> / <code>Either</code> approach</h2>
+
+<p>Return <code>Try</code> / <code>Either</code> types always.</p>
+
+<ul>
+<li>Purely functional</li>
+<li><code>Exception</code> reports are part of the output of a transformation</li>
+</ul>
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String): Try[String] = {
+  Try{cities(cityCode).get.country}
+}
+</code></pre>
+
+<!--slide-down-->
+
+<h3 id="when-to-use">When to use?</h3>
+
+<p>Maybe the most appealing approach:</p>
+
+<ul>
+<li>Results are stored in HDFS</li>
+<li>Easy to test</li>
+<li>Easy to reason about</li>
+<li>Spark/Hadoop agnostic</li>
+<li>Can be tricky to save simultaneously <code>Success</code>/<code>Right</code> and <code>Failure</code>/<code>Left</code> sides (could be slow, requiring multiple actions to be triggered)</li>
+<li>Does not provide support for levels of seriousness</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="the-accumulator-approach">The Accumulator approach</h2>
+
+<p>Use the Spark <code>Accumulator</code> mechanism to report statistics on specific scenarios.</p>
+
+<ul>
+<li>Not meant to retrieve detailed information about the failure</li>
+<li>Function argument is mutable (often seen as bad practice)</li>
+</ul>
+
+<pre><code class="scala" data-trim contenteditable>
+def country(cityCode: String, ac: Accumulator): String = {
+  cities(cityCode) match {
+    case Some(city) => city.country
+    case None => {ac += 1; "UnknownCountry"}
+  }
+}
+</code></pre>
+
+<!--slide-down-->
+
+<h3 id="when-to-use">When to use?</h3>
+
+<p>The Spark approach:</p>
+
+<ul>
+<li>Results can be printed in <code>stdout</code> or stored in HDFS easily</li>
+<li>Relatively easy to test</li>
+<li>Spark framework dependant</li>
+<li>Should be very fast</li>
+<li>Does not provide support for levels of seriousness</li>
+</ul>
+
+<!--slide-next-->
+
+<h2 id="more-evolved-approaches">More evolved approaches</h2>
+
+<p>Will be in a different post.</p>
+
+<h1 id="enjoy">Enjoy!</h1>
+
+<p>If you have any comments, let me know!</p>
+
+          </script>
+        </section>
+      </div>
+    </div>
+
+    <script src="/reveal.js/lib/js/head.min.js"></script>
+    <script src="/reveal.js/js/reveal.js"></script>
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        
+
+        // Display controls in the bottom right corner
+        
+
+        // Display a presentation progress bar
+        
+
+        // Push each slide change to the browser history
+        
+          history: 'true',
+        
+
+        // Vertical centering of slides
+        
+
+        // Transition style
+        
+
+        // Optional reveal.js plugins
+        dependencies: [
+           // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+          { src: '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+          // Interpret Markdown in <section> elements
+          { src: '/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+          // Syntax highlight for <code> elements
+          { src: '/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // Zoom in and out with Alt+click
+          { src: '/reveal.js/plugin/zoom-js/zoom.js', async: true },
+
+          // Speaker notes
+          { src: '/reveal.js/plugin/notes/notes.js', async: true },
+
+          // MathJax
+          { src: '/reveal.js/plugin/math/math.js', async: true }
+        ]
+      });
+
+    </script>
+    
+  </body>
+</html>
