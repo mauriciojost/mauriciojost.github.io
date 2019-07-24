@@ -20,6 +20,8 @@ This application simply will create a huge amount of `UUID` instances. If we ana
 
 Put in `Main.scala` the following:
 
+<!--more-->
+
 ```
 package com.mauritania
 
