@@ -5,9 +5,107 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 25 Dec 2017 12:59:03 +0100</pubDate>
-    <lastBuildDate>Mon, 25 Dec 2017 12:59:03 +0100</lastBuildDate>
-    <generator>Jekyll v3.6.0</generator>
+    <pubDate>Wed, 24 Jul 2019 08:26:02 +0200</pubDate>
+    <lastBuildDate>Wed, 24 Jul 2019 08:26:02 +0200</lastBuildDate>
+    <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Dump your JVM</title>
+        <description>&lt;h1 id=&quot;java&quot;&gt;JAVA&lt;/h1&gt;
+
+&lt;p&gt;This is a ultra-short post on JVM debugging tools. Did you get an &lt;code&gt;OutOfMemoryError&lt;/code&gt; and have no idea how to proceed? This post is for you.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-dummy-example-application&quot;&gt;A dummy example application&lt;/h2&gt;
+
+&lt;p&gt;I&amp;#39;d like to start with a dummy application as example. We will make it run and analyse it.&lt;/p&gt;
+
+&lt;p&gt;This application simply will create a huge amount of &lt;code&gt;UUID&lt;/code&gt; instances. If we analyse it correctly, we should see them somewhere in our memory heap.&lt;/p&gt;
+
+&lt;p&gt;Put in &lt;code&gt;Main.scala&lt;/code&gt; the following:&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mauritania&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UUID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;randomUUID&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Main&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Myuids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Myuids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;randomUUID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3600&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Launch it as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;scalac Main.scala
+scala com.mauritania Main 1500000
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Let&amp;#39;s now analyse it.&lt;/p&gt;
+
+&lt;h2 id=&quot;jvm-memory-analysis-local&quot;&gt;JVM Memory analysis (local)&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;#39;s say you can launch the JVM locally. Then do:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Download the standalone Eclipse Memory Analyser (EMA, or &lt;code&gt;mat&lt;/code&gt; as they call it).&lt;/li&gt;
+&lt;li&gt;Open &lt;code&gt;mat&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Get the memory dump of the just started JVM. 
+a. You can get it with &lt;code&gt;jmap -dump:format=b,file=heap.hprof &amp;lt;pid&amp;gt;&lt;/code&gt;
+b. Or you can acquire it from &lt;code&gt;mat&lt;/code&gt; itself.&lt;/li&gt;
+&lt;li&gt;Choose the &lt;code&gt;component report&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Point to the right package you&amp;#39;re monitoring (in a regex), for instance &lt;code&gt;com\.mauritania\..*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Now you must see a pie chart.&lt;/li&gt;
+&lt;li&gt;Click on &lt;code&gt;Top Consumers&lt;/code&gt;, see their size in MB.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Note: you can also open it with &lt;code&gt;jhat&lt;/code&gt; but I haven&amp;#39;t tried it myself yet. Leave a message if any comments about it.&lt;/p&gt;
+
+&lt;p&gt;That is all.&lt;/p&gt;
+
+&lt;h2 id=&quot;jvm-memory-analysis-remote&quot;&gt;JVM Memory analysis (remote)&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;#39;s say you can&amp;#39;t launch the JVM locally (it&amp;#39;s running in a cluster because it has data dependencies for example). Then proceed as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Add the following settings to your JVM:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+StartAttachListener -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:FlightRecorderOptio  ns=defaultrecording=true,dumponexit=true,dumponexitpath=/tmp/jfr/,repository=/tmp/jfr/,disk=true -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDump  Path=/tmp/heap.dump/&quot;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;This will create upon OOM
+
+&lt;ul&gt;
+&lt;li&gt;A report under &lt;code&gt;/tmp/jfr/hotspot-pid-32537-id-0-2019_06_07_10_08_40.jfr&lt;/code&gt; (which did not have memory heap exhaustive information)&lt;/li&gt;
+&lt;li&gt;A heap dump under &lt;code&gt;/tmp/heap.dump/java_pid15538.hprof&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;To open the .jfr, open Java Mission Control (tool from jdk: jmc)&lt;/li&gt;
+&lt;li&gt;To open the .hprof heap dump, you can use &lt;code&gt;jhat&lt;/code&gt; or &lt;code&gt;jvisualvm&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I will add example images in updates of this post.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 20 Jul 2019 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html</guid>
+        
+        <category>jvm</category>
+        
+        <category>java</category>
+        
+        <category>heap</category>
+        
+        
+      </item>
     
       <item>
         <title>Exception Handling in Spark 2.x</title>
@@ -1481,7 +1579,7 @@ double check the version of the JVM it relates too.&lt;/p&gt;
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;
 
@@ -1680,7 +1778,7 @@ double check the version of the JVM it relates too.&lt;/p&gt;
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man --manpath /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;!--slide-next--&gt;
 
@@ -1699,75 +1797,6 @@ double check the version of the JVM it relates too.&lt;/p&gt;
         <category>memory</category>
         
         <category>permgen</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Measuring the Performance of Anything In Scala</title>
-        <description>&lt;h2 id=&quot;why-benchmarking&quot;&gt;Why benchmarking?&lt;/h2&gt;
-
-&lt;p&gt;Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don&amp;#39;t really know what is happening under the JVM hood.&lt;/p&gt;
-
-&lt;p&gt;A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). &lt;/p&gt;
-
-&lt;p&gt;Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you&amp;#39;re interested.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;what-is-the-problem-with-benchmarking&quot;&gt;What is the problem with benchmarking?&lt;/h2&gt;
-
-&lt;p&gt;With benchmarking we can determine the performance of an algorithm. However getting meaningful data is tricky.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Nope, benchmarking is not so trivial, specially on top of JVM. Scala by itself applies more than 
-&lt;a href=&quot;https://wiki.scala-lang.org/display/SIW/Overview+of+Compiler+Phases&quot;&gt;15 phases&lt;/a&gt; when 
-compiling trying to optimize the algorithm, and the JVM can also apply very clever optimizations at run time, leading to a fooled conclusion.&lt;/p&gt;
-
-&lt;p&gt;For instance, try to explain why the comparative benchmark set
-&lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;org.mauritania.minibenchmark.catalog.IdentityTricky&lt;/a&gt; 
-below (the suspiciously even one) yields such unexpected results for 
-&lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark/blob/master/src/main/scala/org/mauritania/minibenchmark/catalog/IdentityTricky.scala&quot;&gt;these very different algorithms&lt;/a&gt;. 
-Found the reason?&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;&lt;img src=&quot;/images/posts/scala-benchmark.png&quot; alt=&quot;Project&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;and-the-solution&quot;&gt;And the solution?&lt;/h2&gt;
-
-&lt;p&gt;The one I recommend is to use &lt;a href=&quot;http://openjdk.java.net/projects/code-tools/jmh/&quot;&gt;JMH&lt;/a&gt;, the harness for Java benchmarking that is exploitable from Scala thanks to &lt;a href=&quot;https://github.com/ktoso/sbt-jmh&quot;&gt;sbt-jmh&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;There is also &lt;a href=&quot;https://scalameter.github.io/&quot;&gt;ScalaMeter&lt;/a&gt; that should be taken into account, I haven&amp;#39;t personally used it yet at the moment of writing this post. &lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-get-started-right-now&quot;&gt;How to get started right now?&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;I&amp;#39;ve set up a &lt;a href=&quot;https://github.com/mauriciojost/scala-benchmark&quot;&gt;project github/scala-benchmark&lt;/a&gt; which 
-renders &lt;a href=&quot;https://mauriciojost.github.io/scala-benchmark/&quot;&gt;visual reports&lt;/a&gt; that GitHub can display via GitHub pages.&lt;/strong&gt; 
-Help yourself and fork it if you like the idea.&lt;/p&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;Also if you want to know more, I really recommend &lt;a href=&quot;http://tutorials.jenkov.com/java-performance/jmh.html&quot;&gt;this read about JMH&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
-</description>
-        <pubDate>Wed, 19 Apr 2017 00:00:00 +0200</pubDate>
-        <link>http://mauriciojost.github.io/2017/04/19/benchmarking-in-scala.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2017/04/19/benchmarking-in-scala.html</guid>
-        
-        <category>scala</category>
-        
-        <category>performance</category>
-        
-        <category>benchmark</category>
-        
-        <category>api</category>
-        
-        <category>collections</category>
-        
-        <category>jmh</category>
         
         
       </item>

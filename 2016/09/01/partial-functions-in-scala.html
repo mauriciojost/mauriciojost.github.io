@@ -62,13 +62,13 @@
 <!--more-->
 
 <p>The previous example would be expressed as: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">div</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">]</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span>
-    <span class="k">def</span> <span class="n">isDefinedAt</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">div</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span>
+    <span class="k">def</span> <span class="nf">isDefinedAt</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span>
 <span class="o">}</span>
 </code></pre></div>
 <p>Or more concisely (using pattern matching):</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">positives</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">positives</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
     <span class="k">case</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="kt">if</span> <span class="kt">x</span> <span class="kt">&gt;</span> <span class="err">0</span> <span class="o">=&gt;</span> <span class="n">x</span>
 <span class="o">}</span>
 </code></pre></div>
@@ -77,46 +77,46 @@
 <h3 id="because-they-are-extensively-used-in-the-scala-api">Because they are extensively used in the Scala API</h3>
 
 <p>Really. For instance, the root of all collections (the trait Traversable) defines the method</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">collect</span><span class="o">[</span><span class="kt">Y</span><span class="o">](</span><span class="n">pf</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">X</span>, <span class="kt">Y</span><span class="o">])</span><span class="k">:</span> <span class="kt">Traversable</span><span class="o">[</span><span class="kt">Y</span><span class="o">]</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">collect</span><span class="o">[</span><span class="kt">Y</span><span class="o">](</span><span class="n">pf</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">X</span>, <span class="kt">Y</span><span class="o">])</span><span class="k">:</span> <span class="kt">Traversable</span><span class="o">[</span><span class="kt">Y</span><span class="o">]</span>
 </code></pre></div>
 <p>that allows to create a List[Y] from some elements of a List[X]. Knowing the API will let you have more choices when tackling a problem and surely be a better developer.</p>
 
 <h3 id="because-they-are-efficient">Because they are efficient</h3>
 
 <p>Consider the function <em>f: x.toString</em> where <em>x &gt; 0</em> similar to the one I mentioned above. This could be expressed as: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> 
-      <span class="n">numbers</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">positivesAsStrings</span> <span class="k">=</span> 
+      <span class="nv">numbers</span><span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="nv">x</span><span class="o">.</span><span class="py">toString</span><span class="o">)</span>
 </code></pre></div>
 <p>But there is something nasty about it. After the filter call, Scala will create an intermediate collection on which it will apply the map call. If your intermediate collection is large (let’s say you have a million of integers and a high percentage is positive) you will waste time creating this discardable intermediate object.
 However, if using collect(partialFunction) instead, we will be populating the the final collection right away. Think of the amount of garbage collection you could save!</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">positivesAsStringsPF</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-    <span class="k">case</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="kt">if</span> <span class="kt">x</span> <span class="kt">&gt;</span> <span class="err">0</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">toString</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">positivesAsStringsPF</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="kt">if</span> <span class="kt">x</span> <span class="kt">&gt;</span> <span class="err">0</span> <span class="o">=&gt;</span> <span class="nv">x</span><span class="o">.</span><span class="py">toString</span>
 <span class="o">}</span>
-<span class="k">val</span> <span class="n">positivesAsStrings</span> <span class="k">=</span> 
-      <span class="n">numbers</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">positivesAsStringsPF</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">positivesAsStrings</span> <span class="k">=</span> 
+      <span class="nv">numbers</span><span class="o">.</span><span class="py">collect</span><span class="o">(</span><span class="n">positivesAsStringsPF</span><span class="o">)</span>
 </code></pre></div>
 <h3 id="because-they-ease-modularization-and-can-be-combined">Because they ease modularization and can be combined</h3>
 
 <p>When using pattern matching we use blocks like this one:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">result</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">parameter</span> <span class="k">match</span> <span class="o">{</span>
-    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">asString</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">result</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">parameter</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">asString</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
     <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="s">"default"</span>
 <span class="o">}</span>
 </code></pre></div>
 <p>Here we provide the domain on which we want to apply a function (on defined monads, and also undefined monads in this case), and the function itself for each case. For the sake of modularization, this can be expressed as a set of partial functions combined together:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">pfForSome</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">asString</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">pfForSome</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">asString</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
 <span class="o">}</span>
 
-<span class="k">val</span> <span class="n">pfForNone</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+<span class="k">val</span> <span class="nv">pfForNone</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
     <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="n">default</span>
 <span class="o">}</span>
 
-<span class="k">val</span> <span class="n">pfForSomeAndNone</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> 
-      <span class="n">pfForSome</span><span class="o">.</span><span class="n">orElse</span><span class="o">(</span><span class="n">pfForNone</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">pfForSomeAndNone</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> 
+      <span class="nv">pfForSome</span><span class="o">.</span><span class="py">orElse</span><span class="o">(</span><span class="n">pfForNone</span><span class="o">)</span>
 
-<span class="k">val</span> <span class="n">resultAsOption</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> 
-      <span class="n">parameter</span><span class="o">.</span><span class="n">collect</span><span class="o">(</span><span class="n">pfForSomeAndNone</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">resultAsOption</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> 
+      <span class="nv">parameter</span><span class="o">.</span><span class="py">collect</span><span class="o">(</span><span class="n">pfForSomeAndNone</span><span class="o">)</span>
 </code></pre></div>
 <h2 id="want-to-know-more">Want to know more?</h2>
 

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Mauricio Jost">
+  <meta name="theme-color" content="#284a5e">
+  <title>Dump your JVM</title>
+  <meta name="description" content="JAVA">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html">
+  <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://mauriciojost.github.io/feed.xml">
+</head>
+
+<body>
+	<div id="container">
+		<div id="row">
+			<header id="sidebar">
+  <a href="/"/>
+    <img src="/images/mjost-profile-photo.jpg" class="avatar" alt="Mauricio Jost" />
+  </a>
+
+  <h1>
+    <strong>I am Mauricio</strong><br />and these are my two cents</h1> 
+
+  <nav class="site-nav vspace">
+    <a href="/" class="navlink">Blog</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/archives" class="navlink">Archives</a>
+    <span style="font-size: 10px;">&nbsp;&bull;&nbsp;</span>
+    <a href="/about" class="navlink">About</a>
+  </nav>
+
+  <ul class="icons vspace">
+    <li><a href="https://www.linkedin.com/in/mauriciojost/" class="icon fa-linkedin" title="Linkedin profile"><span class="label">Linkedin</span></a></li>
+    <li><a href="https://github.com/mauriciojost" class="icon fa-github" title="Github profile"><span class="label">Github</span></a></li>
+    <li><a href="http://stackoverflow.com/users/1554927/mauriciojost" class="icon fa-stack-overflow" title="Stackoverflow profile"><span class="label">Stack Overflow</span></a></li>
+  </ul>
+</header>
+
+			<section id="page-content">
+				<div id="content">
+					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2019-07-20T00:00:00+02:00" itemprop="datePublished">Jul 20, 2019</time></p>
+    <h1 class="post-title" itemprop="name headline">Dump your JVM</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="java">JAVA</h1>
+
+<p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
+
+<h2 id="a-dummy-example-application">A dummy example application</h2>
+
+<p>I&#39;d like to start with a dummy application as example. We will make it run and analyse it.</p>
+
+<p>This application simply will create a huge amount of <code>UUID</code> instances. If we analyse it correctly, we should see them somewhere in our memory heap.</p>
+
+<p>Put in <code>Main.scala</code> the following:</p>
+
+<!--more-->
+<div class="highlight"><pre><code class="language-" data-lang=""><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">mauritania</span>
+
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">randomUUID</span>
+
+<span class="n">object</span> <span class="n">Main</span> <span class="p">{</span>
+
+  <span class="k">case</span> <span class="n">class</span> <span class="n">Myuids</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="k">String</span><span class="p">)</span>
+
+  <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="k">Array</span><span class="p">[</span><span class="k">String</span><span class="p">]):</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+
+    <span class="n">val</span> <span class="n">u</span> <span class="p">=</span> <span class="p">(</span><span class="m">1</span> <span class="k">to</span> <span class="n">args</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">toInt</span><span class="p">).</span><span class="n">map</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Myuids</span><span class="p">(</span><span class="n">randomUUID</span><span class="p">().</span><span class="n">toString</span><span class="p">))</span>
+
+    <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="n">Thread</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="m">3600</span> <span class="p">*</span> <span class="m">1000</span><span class="p">)</span>
+
+    <span class="n">u</span><span class="p">.</span><span class="n">foreach</span><span class="p">(</span><span class="n">println</span><span class="p">)</span>
+
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<p>Launch it as follows:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">scalac Main.scala
+scala com.mauritania Main 1500000
+
+</code></pre></div>
+<p>Let&#39;s now analyse it.</p>
+
+<h2 id="jvm-memory-analysis-local">JVM Memory analysis (local)</h2>
+
+<p>Let&#39;s say you can launch the JVM locally. Then do:</p>
+
+<ol>
+<li>Download the standalone Eclipse Memory Analyser (EMA, or <code>mat</code> as they call it).</li>
+<li>Open <code>mat</code></li>
+<li>Get the memory dump of the just started JVM. 
+a. You can get it with <code>jmap -dump:format=b,file=heap.hprof &lt;pid&gt;</code>
+b. Or you can acquire it from <code>mat</code> itself.</li>
+<li>Choose the <code>component report</code></li>
+<li>Point to the right package you&#39;re monitoring (in a regex), for instance <code>com\.mauritania\..*</code></li>
+<li>Now you must see a pie chart.</li>
+<li>Click on <code>Top Consumers</code>, see their size in MB.</li>
+</ol>
+
+<p>Note: you can also open it with <code>jhat</code> but I haven&#39;t tried it myself yet. Leave a message if any comments about it.</p>
+
+<p>That is all.</p>
+
+<h2 id="jvm-memory-analysis-remote">JVM Memory analysis (remote)</h2>
+
+<p>Let&#39;s say you can&#39;t launch the JVM locally (it&#39;s running in a cluster because it has data dependencies for example). Then proceed as follows:</p>
+
+<ol>
+<li>Add the following settings to your JVM:</li>
+</ol>
+<div class="highlight"><pre><code class="language-" data-lang="">-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+StartAttachListener -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:FlightRecorderOptio  ns=defaultrecording=true,dumponexit=true,dumponexitpath=/tmp/jfr/,repository=/tmp/jfr/,disk=true -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDump  Path=/tmp/heap.dump/"
+
+</code></pre></div>
+<ol>
+<li>This will create upon OOM
+
+<ul>
+<li>A report under <code>/tmp/jfr/hotspot-pid-32537-id-0-2019_06_07_10_08_40.jfr</code> (which did not have memory heap exhaustive information)</li>
+<li>A heap dump under <code>/tmp/heap.dump/java_pid15538.hprof</code></li>
+</ul></li>
+<li>To open the .jfr, open Java Mission Control (tool from jdk: jmc)</li>
+<li>To open the .hprof heap dump, you can use <code>jhat</code> or <code>jvisualvm</code>.</li>
+</ol>
+
+<p>I will add example images in updates of this post.</p>
+
+  </div>
+
+  <hr/>
+
+  <div itemprop="keywords">
+    Tags:
+    
+      <a href="http://www.google.com/search?q=jvm&btnI=I%27m%20feeling%20lucky">jvm</a>, 
+    
+      <a href="http://www.google.com/search?q=java&btnI=I%27m%20feeling%20lucky">java</a>, 
+    
+      <a href="http://www.google.com/search?q=heap&btnI=I%27m%20feeling%20lucky">heap</a>
+    
+  </div>
+</article>
+
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        var disqus_shortname = 'mauriciojost-github-io';
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+				</div>
+			</section>
+		</div>
+	</div>
+	<script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

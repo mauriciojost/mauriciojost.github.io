@@ -1,18 +1,22 @@
 # mauriciojost.github.io
 
+
+[![github.io](https://img.shields.io/badge/github-io-22bb22.svg)](https://mauriciojost.github.io/)
+
 ## Installation
 
 To install execute:
 
 ```bash
-# Install ruby
-# sudo apt-get install ruby2.4
+# Install ruby 2.4 or 2.5
+sudo apt-get install ruby2.4
+sudo apt-get install ruby2.5
 
 # Install jekyll for blog generation from static files
-gem install jekyll
+sudo gem install jekyll
 
 # Install redcarpet markdown interpreter
-gem install redcarpet
+sudo gem install redcarpet
 
 # Ensure all submodules to this project are properly cloned too
 git submodule update --init --recursive
@@ -25,6 +29,7 @@ Preview is available during development if content was served by Jekyll:
 
 ```bash
 jekyll serve
+jekyll serve --drafts
 ```
 
 Default output folder is `_site/`.
