@@ -17,28 +17,31 @@ comments: true
 
 This is a ultra-short post on JVM debugging tools. Did you get an `OutOfMemoryError` and have no idea how to proceed? This post is for you.
   
-## A dummy example application
+## An example
 
 I'd like to start with a dummy application as example. We will make it run and analyse it.
 
-This application simply will create a huge amount of `UUID` instances. If we analyse it correctly, we should see them somewhere in our memory heap.
+This application simply will create a huge amount of `UUID` instances and keep them in memory for a while. 
+If we analyse it correctly, we should see them somewhere in our memory heap.
 
 Put in `Main.scala` the following:
 
 <!--more-->
 
-```
+```scala
 package com.mauritania
 
 import java.util.UUID.randomUUID
 
 object Main {
 
-  case class Myuids(ui: String) // my unique id string dummy class
+   // my unique id string dummy class
+  case class Myuids(ui: String)
 
   def main(args: Array[String]): Unit = {
 
-    val u = (1 to args(0).toInt).map(_ => Myuids(randomUUID().toString))
+    val u = (1 to args(0).toInt).
+      map(_ => Myuids(randomUUID().toString))
 
     java.lang.Thread.sleep(3600 * 1000)
 
@@ -50,6 +53,7 @@ object Main {
 ```
 
 Clearly we're allocating many `Myuids` instances.
+
 Launch it as follows (using `scalac` 2.11.7 here):
 
 ```
@@ -58,11 +62,9 @@ scala com.mauritania.Main 1500000
 
 ```
 
-Let's now analyse it.
-
 ## Generating heap dumps
 
-There are two ways of generating heap dumps (`.hprof` files):
+There are sevaral ways to generate heap dumps (`.hprof` files) before we can analyse them:
 
  1. Using `jmap` JDK's tool as follows:
 
@@ -104,11 +106,13 @@ The easiest way is using `mat` tool.
 
 ![Top](/images/posts/dump-jvm/mat-top-consumers.png)
 
-The chart shows how `Myuids` instances are occupying the heap.
+The chart shows how `Myuids` instances are occupying the heap, just as expected.
 
 Note: normally you can also open `.hprof` files with `jhat`.
 
 ### JVM Memory analysis (with `jmc`)
+
+Let's now use `jmc`.
 
 1. Add the following settings to your JVM:
 
@@ -126,7 +130,10 @@ Note: normally you can also open `.hprof` files with `jhat`.
 -XX:HeapDumpPath=/tmp/heap.dump/
 ```
 
-For our example I had to launch our application as follows: 
+2. Upon an `OutOfMemoryError` the `HeapDump*` settings will make the JVM create a heap dump under `/tmp/heap.dump/java_pidXXXXX.hprof`
+3. Upon exit the `FlightRecorder*` settings will make the JVM create a report under `/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr` (which does not have memory heap exhaustive information, but more general indicators)
+
+Regarding our own applicatino, it was enough to launch our application as follows as all I wanted is to connect to the JVM without dump files: 
 
 ```
 java -cp .:<path-to>/scala/lib/scala-library.jar \
@@ -134,24 +141,33 @@ java -cp .:<path-to>/scala/lib/scala-library.jar \
   -XX:+FlightRecorder \
   com.mauritania.Main 1500000
 ```
-2. Upon an `OutOfMemoryError` the `HeapDump*` settings will make the JVM create a heap dump under `/tmp/heap.dump/java_pidXXXXX.hprof`
-3. Upon exit the `FlightRecorder*` settings will make the JVM create a report under `/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr` (which does not have memory heap exhaustive information, but more general indicators)
+
 4. You can open the `.hprof` heap dump as seen in the sections above.
 5. To open the `.jfr` you need to use `Java Mission Control` (tool from jdk: `jmc`)
-6. Also instead of opening an existent `.jfr` you can make `jmc` connect to an existent JVM, as follows:
+6. Instead of opening an existent `.jfr` you can make `jmc` connect to an existent JVM, as follows:
 
 a. Create a new connection
+
 ![Connect](/images/posts/dump-jvm/jmc-connect.png)
+
 b. Set up the recording settings 
+
 ![Save](/images/posts/dump-jvm/jmc-save.png)
 ![Save](/images/posts/dump-jvm/jmc-settings.png)
+
 c. Interestingly you can request `jmc` to record certain events from the JVM, like `file open` event. This can be useful if you consider your application is slow because it has too much IO. 
+
 ![Event](/images/posts/dump-jvm/jmc-event-recording-settings.png)
+
 d. Start recording
+
 ![Start](/images/posts/dump-jvm/jmc-start.png)
 ![Rec](/images/posts/dump-jvm/jmc-recording.png)
+
 e. See general performance indicators, their evolution in time too
+
 ![Stats](/images/posts/dump-jvm/jmc-stats1.png)
+
 f. Go deeper into memory consumption under package `org.mauritania`
 
 ![Stats](/images/posts/dump-jvm/jmc-object-statistics.png)
