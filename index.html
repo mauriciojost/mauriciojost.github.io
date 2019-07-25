@@ -51,15 +51,14 @@
       <a href="/2019/07/20/dump-your-jvm.html">Dump your JVM (post)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <h1 id="java">JAVA</h1>
+      <p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
 
-<p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
-
-<h2 id="a-dummy-example-application">A dummy example application</h2>
+<h2 id="an-example">An example</h2>
 
 <p>I&#39;d like to start with a dummy application as example. We will make it run and analyse it.</p>
 
-<p>This application simply will create a huge amount of <code>UUID</code> instances. If we analyse it correctly, we should see them somewhere in our memory heap.</p>
+<p>This application simply will create a huge amount of <code>UUID</code> instances and keep them in memory for a while. 
+If we analyse it correctly, we should see them somewhere in our memory heap.</p>
 
 <p>Put in <code>Main.scala</code> the following:</p>
 

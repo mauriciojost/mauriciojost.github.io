@@ -7,7 +7,7 @@
   <meta name="author" content="Mauricio Jost">
   <meta name="theme-color" content="#284a5e">
   <title>Dump your JVM</title>
-  <meta name="description" content="JAVA">
+  <meta name="description" content="This is a ultra-short post on JVM debugging tools. Did you get an OutOfMemoryError and have no idea how to proceed? This post is for you.An example">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html">
   <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://mauriciojost.github.io/feed.xml">
@@ -49,89 +49,170 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="java">JAVA</h1>
+    <p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
 
-<p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
-
-<h2 id="a-dummy-example-application">A dummy example application</h2>
+<h2 id="an-example">An example</h2>
 
 <p>I&#39;d like to start with a dummy application as example. We will make it run and analyse it.</p>
 
-<p>This application simply will create a huge amount of <code>UUID</code> instances. If we analyse it correctly, we should see them somewhere in our memory heap.</p>
+<p>This application simply will create a huge amount of <code>UUID</code> instances and keep them in memory for a while. 
+If we analyse it correctly, we should see them somewhere in our memory heap.</p>
 
 <p>Put in <code>Main.scala</code> the following:</p>
 
 <!--more-->
-<div class="highlight"><pre><code class="language-" data-lang=""><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">mauritania</span>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">package</span> <span class="nn">com.mauritania</span>
 
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">randomUUID</span>
+<span class="k">import</span> <span class="nn">java.util.UUID.randomUUID</span>
 
-<span class="n">object</span> <span class="n">Main</span> <span class="p">{</span>
+<span class="k">object</span> <span class="nc">Main</span> <span class="o">{</span>
 
-  <span class="k">case</span> <span class="n">class</span> <span class="n">Myuids</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="k">String</span><span class="p">)</span>
+   <span class="c1">// my unique id string dummy class
+</span>  <span class="k">case</span> <span class="k">class</span> <span class="nc">Myuids</span><span class="o">(</span><span class="n">ui</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
 
-  <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="k">Array</span><span class="p">[</span><span class="k">String</span><span class="p">]):</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+  <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
 
-    <span class="n">val</span> <span class="n">u</span> <span class="p">=</span> <span class="p">(</span><span class="m">1</span> <span class="k">to</span> <span class="n">args</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">toInt</span><span class="p">).</span><span class="n">map</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Myuids</span><span class="p">(</span><span class="n">randomUUID</span><span class="p">().</span><span class="n">toString</span><span class="p">))</span>
+    <span class="k">val</span> <span class="nv">u</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="nf">args</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">toInt</span><span class="o">).</span>
+      <span class="nf">map</span><span class="o">(</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="nc">Myuids</span><span class="o">(</span><span class="nf">randomUUID</span><span class="o">().</span><span class="py">toString</span><span class="o">))</span>
 
-    <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="n">Thread</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="m">3600</span> <span class="p">*</span> <span class="m">1000</span><span class="p">)</span>
+    <span class="nv">java</span><span class="o">.</span><span class="py">lang</span><span class="o">.</span><span class="py">Thread</span><span class="o">.</span><span class="py">sleep</span><span class="o">(</span><span class="mi">3600</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">)</span>
 
-    <span class="n">u</span><span class="p">.</span><span class="n">foreach</span><span class="p">(</span><span class="n">println</span><span class="p">)</span>
+    <span class="nv">u</span><span class="o">.</span><span class="py">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">)</span>
 
-  <span class="p">}</span>
+  <span class="o">}</span>
 
-<span class="p">}</span>
+<span class="o">}</span>
 </code></pre></div>
-<p>Launch it as follows:</p>
+<p>Clearly we&#39;re allocating many <code>Myuids</code> instances.</p>
+
+<p>Launch it as follows (using <code>scalac</code> 2.11.7 here):</p>
 <div class="highlight"><pre><code class="language-" data-lang="">scalac Main.scala
-scala com.mauritania Main 1500000
+scala com.mauritania.Main 1500000
 
 </code></pre></div>
-<p>Let&#39;s now analyse it.</p>
+<h2 id="generating-heap-dumps">Generating heap dumps</h2>
 
-<h2 id="jvm-memory-analysis-local">JVM Memory analysis (local)</h2>
-
-<p>Let&#39;s say you can launch the JVM locally. Then do:</p>
+<p>There are sevaral ways to generate heap dumps (<code>.hprof</code> files) before we can analyse them:</p>
 
 <ol>
-<li>Download the standalone Eclipse Memory Analyser (EMA, or <code>mat</code> as they call it).</li>
+<li>Using <code>jmap</code> JDK&#39;s tool as follows:</li>
+</ol>
+<div class="highlight"><pre><code class="language-" data-lang=""> jmap -dump:format=b,file=heap.hprof &lt;pid-of-running-jvm&gt;
+</code></pre></div>
+<ol>
+<li>Connecting to JVM via <code>mat</code> tool</li>
+<li>Connecting to JVM via <code>jmc</code> tool</li>
+<li>Connecting to JVM via <code>jvisualvm</code> tool</li>
+<li>Requesting the JVM to dump the heap on OOM using the following JVM settings:</li>
+</ol>
+<div class="highlight"><pre><code class="language-" data-lang="">-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/tmp/heap.dump/
+</code></pre></div>
+<h2 id="analysing-heap-dumps">Analysing heap dumps</h2>
+
+<h3 id="eclipse-memory-analyser-with-mat">Eclipse Memory Analyser (with <code>mat</code>)</h3>
+
+<p>The easiest way is using <code>mat</code> tool.</p>
+
+<ol>
+<li>Download the standalone Eclipse Memory Analyser (EMA, or <code>mat</code>).</li>
 <li>Open <code>mat</code></li>
-<li>Get the memory dump of the just started JVM. 
-a. You can get it with <code>jmap -dump:format=b,file=heap.hprof &lt;pid&gt;</code>
-b. Or you can acquire it from <code>mat</code> itself.</li>
-<li>Choose the <code>component report</code></li>
-<li>Point to the right package you&#39;re monitoring (in a regex), for instance <code>com\.mauritania\..*</code></li>
+</ol>
+
+<p><img src="/images/posts/dump-jvm/mat-init.png" alt="Mat"></p>
+
+<ol>
+<li>Get the memory dump of the just started JVM, it must be an <code>hprof</code> file.</li>
+<li>Choose the <code>Component report</code></li>
+</ol>
+
+<p><img src="/images/posts/dump-jvm/mat-choose-component.png" alt="Component"></p>
+
+<ol>
+<li>Point to the package you&#39;re monitoring (in a regex), for instance <code>com\.mauritania\..*</code></li>
 <li>Now you must see a pie chart.</li>
+</ol>
+
+<p><img src="/images/posts/dump-jvm/mat-pie-chart.png" alt="Pie"></p>
+
+<ol>
 <li>Click on <code>Top Consumers</code>, see their size in MB.</li>
 </ol>
 
-<p>Note: you can also open it with <code>jhat</code> but I haven&#39;t tried it myself yet. Leave a message if any comments about it.</p>
+<p><img src="/images/posts/dump-jvm/mat-top-consumers.png" alt="Top"></p>
 
-<p>That is all.</p>
+<p>The chart shows how <code>Myuids</code> instances are occupying the heap, just as expected.</p>
 
-<h2 id="jvm-memory-analysis-remote">JVM Memory analysis (remote)</h2>
+<p>Note: normally you can also open <code>.hprof</code> files with <code>jhat</code>.</p>
 
-<p>Let&#39;s say you can&#39;t launch the JVM locally (it&#39;s running in a cluster because it has data dependencies for example). Then proceed as follows:</p>
+<h3 id="jvm-memory-analysis-with-jmc">JVM Memory analysis (with <code>jmc</code>)</h3>
+
+<p>Let&#39;s now use <code>jmc</code>.</p>
 
 <ol>
 <li>Add the following settings to your JVM:</li>
 </ol>
-<div class="highlight"><pre><code class="language-" data-lang="">-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+StartAttachListener -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:FlightRecorderOptio  ns=defaultrecording=true,dumponexit=true,dumponexitpath=/tmp/jfr/,repository=/tmp/jfr/,disk=true -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDump  Path=/tmp/heap.dump/"
-
+<div class="highlight"><pre><code class="language-" data-lang="">-XX:+StartAttachListener
+-XX:+UnlockCommercialFeatures
+-XX:+FlightRecorder
+-XX:FlightRecorderOptions=
+  defaultrecording=true,
+  dumponexit=true,
+  dumponexitpath=/tmp/jfr/,
+  repository=/tmp/jfr/,
+  disk=true
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/tmp/heap.dump/
 </code></pre></div>
 <ol>
-<li>This will create upon OOM
-
-<ul>
-<li>A report under <code>/tmp/jfr/hotspot-pid-32537-id-0-2019_06_07_10_08_40.jfr</code> (which did not have memory heap exhaustive information)</li>
-<li>A heap dump under <code>/tmp/heap.dump/java_pid15538.hprof</code></li>
-</ul></li>
-<li>To open the .jfr, open Java Mission Control (tool from jdk: jmc)</li>
-<li>To open the .hprof heap dump, you can use <code>jhat</code> or <code>jvisualvm</code>.</li>
+<li>Upon an <code>OutOfMemoryError</code> the <code>HeapDump*</code> settings will make the JVM create a heap dump under <code>/tmp/heap.dump/java_pidXXXXX.hprof</code></li>
+<li>Upon exit the <code>FlightRecorder*</code> settings will make the JVM create a report under <code>/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr</code> (which does not have memory heap exhaustive information, but more general indicators)</li>
 </ol>
 
-<p>I will add example images in updates of this post.</p>
+<p>Regarding our own applicatino, it was enough to launch our application as follows as all I wanted is to connect to the JVM without dump files: </p>
+<div class="highlight"><pre><code class="language-" data-lang="">java -cp .:&lt;path-to&gt;/scala/lib/scala-library.jar \
+  -XX:+UnlockCommercialFeatures \
+  -XX:+FlightRecorder \
+  com.mauritania.Main 1500000
+</code></pre></div>
+<ol>
+<li>You can open the <code>.hprof</code> heap dump as seen in the sections above.</li>
+<li>To open the <code>.jfr</code> you need to use <code>Java Mission Control</code> (tool from jdk: <code>jmc</code>)</li>
+<li>Instead of opening an existent <code>.jfr</code> you can make <code>jmc</code> connect to an existent JVM, as follows:</li>
+</ol>
 
+<p>a. Create a new connection</p>
+
+<p><img src="/images/posts/dump-jvm/jmc-connect.png" alt="Connect"></p>
+
+<p>b. Set up the recording settings </p>
+
+<p><img src="/images/posts/dump-jvm/jmc-save.png" alt="Save">
+<img src="/images/posts/dump-jvm/jmc-settings.png" alt="Save"></p>
+
+<p>c. Interestingly you can request <code>jmc</code> to record certain events from the JVM, like <code>file open</code> event. This can be useful if you consider your application is slow because it has too much IO. </p>
+
+<p><img src="/images/posts/dump-jvm/jmc-event-recording-settings.png" alt="Event"></p>
+
+<p>d. Start recording</p>
+
+<p><img src="/images/posts/dump-jvm/jmc-start.png" alt="Start">
+<img src="/images/posts/dump-jvm/jmc-recording.png" alt="Rec"></p>
+
+<p>e. See general performance indicators, their evolution in time too</p>
+
+<p><img src="/images/posts/dump-jvm/jmc-stats1.png" alt="Stats"></p>
+
+<p>f. Go deeper into memory consumption under package <code>org.mauritania</code></p>
+
+<p><img src="/images/posts/dump-jvm/jmc-object-statistics.png" alt="Stats"></p>
+
+<h2 id="extra-notes">Extra notes</h2>
+
+<p>Use the following JVM settings to get garbage collection activities logs. </p>
+<div class="highlight"><pre><code class="language-" data-lang="">-XX:+PrintGCDetails 
+-XX:+PrintGCTimeStamps
+</code></pre></div>
   </div>
 
   <hr/>
@@ -142,6 +223,18 @@ b. Or you can acquire it from <code>mat</code> itself.</li>
       <a href="http://www.google.com/search?q=jvm&btnI=I%27m%20feeling%20lucky">jvm</a>, 
     
       <a href="http://www.google.com/search?q=java&btnI=I%27m%20feeling%20lucky">java</a>, 
+    
+      <a href="http://www.google.com/search?q=scala&btnI=I%27m%20feeling%20lucky">scala</a>, 
+    
+      <a href="http://www.google.com/search?q=oom&btnI=I%27m%20feeling%20lucky">oom</a>, 
+    
+      <a href="http://www.google.com/search?q=jmc&btnI=I%27m%20feeling%20lucky">jmc</a>, 
+    
+      <a href="http://www.google.com/search?q=mat&btnI=I%27m%20feeling%20lucky">mat</a>, 
+    
+      <a href="http://www.google.com/search?q=eclipse&btnI=I%27m%20feeling%20lucky">eclipse</a>, 
+    
+      <a href="http://www.google.com/search?q=jdk&btnI=I%27m%20feeling%20lucky">jdk</a>, 
     
       <a href="http://www.google.com/search?q=heap&btnI=I%27m%20feeling%20lucky">heap</a>
     
