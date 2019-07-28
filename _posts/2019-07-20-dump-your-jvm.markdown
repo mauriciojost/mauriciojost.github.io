@@ -17,12 +17,11 @@ comments: true
 
 This is a ultra-short post on JVM debugging tools. Did you get an `OutOfMemoryError` and have no idea how to proceed? This post is for you.
   
-## An example
+## An example for memory analysis
 
-I'd like to start with a dummy application as example. We will make it run and analyse it.
+I'd like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.
 
-This application simply will create a huge amount of `UUID` instances and keep them in memory for a while. 
-If we analyse it correctly, we should see them somewhere in our memory heap.
+This application simply will create a huge amount of `UUID` instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let's get started.
 
 Put in `Main.scala` the following:
 
@@ -34,13 +33,14 @@ package com.mauritania
 import java.util.UUID.randomUUID
 
 object Main {
+  val Nb = 1500000
 
    // my unique id string dummy class
   case class Myuids(ui: String)
 
   def main(args: Array[String]): Unit = {
 
-    val u = (1 to args(0).toInt).
+    val u = (1 to Nb).
       map(_ => Myuids(randomUUID().toString))
 
     java.lang.Thread.sleep(3600 * 1000)
@@ -58,7 +58,7 @@ Launch it as follows (using `scalac` 2.11.7 here):
 
 ```
 scalac Main.scala
-scala com.mauritania.Main 1500000
+scala com.mauritania.Main
 
 ```
 
@@ -83,9 +83,9 @@ There are sevaral ways to generate heap dumps (`.hprof` files) before we can ana
 
 ## Analysing heap dumps
 
-### Eclipse Memory Analyser (with `mat`)
+### Eclipse Memory Analyser (`mat`)
 
-The easiest way is using `mat` tool.
+The easiest way of analysing memory heaps is using `mat` tool.
 
 1. Download the standalone Eclipse Memory Analyser (EMA, or `mat`).
 2. Open `mat`
@@ -110,7 +110,7 @@ The chart shows how `Myuids` instances are occupying the heap, just as expected.
 
 Note: normally you can also open `.hprof` files with `jhat`.
 
-### JVM Memory analysis (with `jmc`)
+### Java Mission Control (`jmc`)
 
 Let's now use `jmc`.
 
@@ -133,13 +133,13 @@ Let's now use `jmc`.
 2. Upon an `OutOfMemoryError` the `HeapDump*` settings will make the JVM create a heap dump under `/tmp/heap.dump/java_pidXXXXX.hprof`
 3. Upon exit the `FlightRecorder*` settings will make the JVM create a report under `/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr` (which does not have memory heap exhaustive information, but more general indicators)
 
-Regarding our own applicatino, it was enough to launch our application as follows as all I wanted is to connect to the JVM without dump files: 
+Regarding our own application, it is enough to launch our application as follows, as all I wanted is to connect to the JVM without dump files: 
 
 ```
 java -cp .:<path-to>/scala/lib/scala-library.jar \
   -XX:+UnlockCommercialFeatures \
   -XX:+FlightRecorder \
-  com.mauritania.Main 1500000
+  com.mauritania.Main
 ```
 
 4. You can open the `.hprof` heap dump as seen in the sections above.
