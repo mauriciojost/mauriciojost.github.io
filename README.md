@@ -1,7 +1,8 @@
 # mauriciojost.github.io
 
-
 [![github.io](https://img.shields.io/badge/github-io-22bb22.svg)](https://mauriciojost.github.io/)
+
+Simply my technical notes made posts. 
 
 ## Installation
 
