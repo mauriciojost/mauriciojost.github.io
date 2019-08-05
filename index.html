@@ -53,12 +53,11 @@
     <div class="post-content" itemprop="articleBody">
       <p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
 
-<h2 id="an-example">An example</h2>
+<h2 id="an-example-for-memory-analysis">An example for memory analysis</h2>
 
-<p>I&#39;d like to start with a dummy application as example. We will make it run and analyse it.</p>
+<p>I&#39;d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.</p>
 
-<p>This application simply will create a huge amount of <code>UUID</code> instances and keep them in memory for a while. 
-If we analyse it correctly, we should see them somewhere in our memory heap.</p>
+<p>This application simply will create a huge amount of <code>UUID</code> instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let&#39;s get started.</p>
 
 <p>Put in <code>Main.scala</code> the following:</p>
 

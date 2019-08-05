@@ -130,7 +130,7 @@
 	 */
 	function slidify( markdown, options ) {
 
-		var ignoreRegex = new RegExp(options.startIgnoreSeparator + "([\\s\\S]+?)" + options.endIgnoreSeparator, "mg");
+		var ignoreRegex = new RegExp(options.startIgnoreSeparator + "([\\s\\S]+)" + options.endIgnoreSeparator, "g");
 
 		options = getSlidifyOptions( options );
 
@@ -158,7 +158,7 @@
 
 			// pluck slide content from markdown input
 			content = markdown.substring( lastIndex, matches.index )
-			content = content.replace(ignoreRegex, '');
+			content = content.replace(ignoreRegex, '<!--' + '$1' + '-->');
 
 			if( isHorizontal && wasHorizontal ) {
 				// add to horizontal stack

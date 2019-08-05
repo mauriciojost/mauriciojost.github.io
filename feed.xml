@@ -5,20 +5,19 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 25 Jul 2019 23:36:48 +0200</pubDate>
-    <lastBuildDate>Thu, 25 Jul 2019 23:36:48 +0200</lastBuildDate>
+    <pubDate>Mon, 05 Aug 2019 20:04:41 +0200</pubDate>
+    <lastBuildDate>Mon, 05 Aug 2019 20:04:41 +0200</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>Dump your JVM</title>
         <description>&lt;p&gt;This is a ultra-short post on JVM debugging tools. Did you get an &lt;code&gt;OutOfMemoryError&lt;/code&gt; and have no idea how to proceed? This post is for you.&lt;/p&gt;
 
-&lt;h2 id=&quot;an-example&quot;&gt;An example&lt;/h2&gt;
+&lt;h2 id=&quot;an-example-for-memory-analysis&quot;&gt;An example for memory analysis&lt;/h2&gt;
 
-&lt;p&gt;I&amp;#39;d like to start with a dummy application as example. We will make it run and analyse it.&lt;/p&gt;
+&lt;p&gt;I&amp;#39;d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.&lt;/p&gt;
 
-&lt;p&gt;This application simply will create a huge amount of &lt;code&gt;UUID&lt;/code&gt; instances and keep them in memory for a while. 
-If we analyse it correctly, we should see them somewhere in our memory heap.&lt;/p&gt;
+&lt;p&gt;This application simply will create a huge amount of &lt;code&gt;UUID&lt;/code&gt; instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let&amp;#39;s get started.&lt;/p&gt;
 
 &lt;p&gt;Put in &lt;code&gt;Main.scala&lt;/code&gt; the following:&lt;/p&gt;
 
@@ -28,13 +27,14 @@ If we analyse it correctly, we should see them somewhere in our memory heap.&lt;
 &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.UUID.randomUUID&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Main&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Nb&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1500000&lt;/span&gt;
 
    &lt;span class=&quot;c1&quot;&gt;// my unique id string dummy class
 &lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Myuids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;toInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Nb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;
       &lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Myuids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randomUUID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
 
     &lt;span class=&quot;nv&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3600&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -49,7 +49,7 @@ If we analyse it correctly, we should see them somewhere in our memory heap.&lt;
 
 &lt;p&gt;Launch it as follows (using &lt;code&gt;scalac&lt;/code&gt; 2.11.7 here):&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;scalac Main.scala
-scala com.mauritania.Main 1500000
+scala com.mauritania.Main
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id=&quot;generating-heap-dumps&quot;&gt;Generating heap dumps&lt;/h2&gt;
@@ -72,9 +72,9 @@ scala com.mauritania.Main 1500000
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id=&quot;analysing-heap-dumps&quot;&gt;Analysing heap dumps&lt;/h2&gt;
 
-&lt;h3 id=&quot;eclipse-memory-analyser-with-mat&quot;&gt;Eclipse Memory Analyser (with &lt;code&gt;mat&lt;/code&gt;)&lt;/h3&gt;
+&lt;h3 id=&quot;eclipse-memory-analyser-mat&quot;&gt;Eclipse Memory Analyser (&lt;code&gt;mat&lt;/code&gt;)&lt;/h3&gt;
 
-&lt;p&gt;The easiest way is using &lt;code&gt;mat&lt;/code&gt; tool.&lt;/p&gt;
+&lt;p&gt;The easiest way of analysing memory heaps is using &lt;code&gt;mat&lt;/code&gt; tool.&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Download the standalone Eclipse Memory Analyser (EMA, or &lt;code&gt;mat&lt;/code&gt;).&lt;/li&gt;
@@ -107,7 +107,7 @@ scala com.mauritania.Main 1500000
 
 &lt;p&gt;Note: normally you can also open &lt;code&gt;.hprof&lt;/code&gt; files with &lt;code&gt;jhat&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;jvm-memory-analysis-with-jmc&quot;&gt;JVM Memory analysis (with &lt;code&gt;jmc&lt;/code&gt;)&lt;/h3&gt;
+&lt;h3 id=&quot;java-mission-control-jmc&quot;&gt;Java Mission Control (&lt;code&gt;jmc&lt;/code&gt;)&lt;/h3&gt;
 
 &lt;p&gt;Let&amp;#39;s now use &lt;code&gt;jmc&lt;/code&gt;.&lt;/p&gt;
 
@@ -131,11 +131,11 @@ scala com.mauritania.Main 1500000
 &lt;li&gt;Upon exit the &lt;code&gt;FlightRecorder*&lt;/code&gt; settings will make the JVM create a report under &lt;code&gt;/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr&lt;/code&gt; (which does not have memory heap exhaustive information, but more general indicators)&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Regarding our own applicatino, it was enough to launch our application as follows as all I wanted is to connect to the JVM without dump files: &lt;/p&gt;
+&lt;p&gt;Regarding our own application, it is enough to launch our application as follows, as all I wanted is to connect to the JVM without dump files: &lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;java -cp .:&amp;lt;path-to&amp;gt;/scala/lib/scala-library.jar \
   -XX:+UnlockCommercialFeatures \
   -XX:+FlightRecorder \
-  com.mauritania.Main 1500000
+  com.mauritania.Main
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ol&gt;
 &lt;li&gt;You can open the &lt;code&gt;.hprof&lt;/code&gt; heap dump as seen in the sections above.&lt;/li&gt;
