@@ -1,11 +1,57 @@
 # TODO
 
-- Write about dotfiles for work. 
-- Make partial functions a presentation.
-- Improve ordering post and make it a presentation too.
-- Write a simple post about Hadoop & Spark for beginners.
+- [x] Write about dotfiles for work
+- [x] Make partial functions a presentation
+- [x] Change the color of the slides to white
+- [x] Make the code blocks font (in the slides) smaller
+- [x] Improve ordering post and make it a presentation too
+- [~] Write a simple post about Hadoop & Spark for beginners
+- [ ] Quick presentation on `enumeratum`
+  - problems with Scala Enums
+    - exhaustiveness checks
+  - problems with regular Scala ADTs
+    - parsing
+    - listing
+    - conversions
+  - examples
+  - integrations
+    - pureconfig
+- [ ] Quick presentation on `pureconfig` use as parameters for an application
+  - what our configuration management code often looks like
+  - what could it look like
+  - quick intro to pureconfig
+  - quick intro to the use of pureconfig for args 
+  - example
+- [ ] Quick presentation on `flamegraph` use
+  - quick introduction to an use case: my app is very slow, where?
+  - simple example of an app
+  - use of flamegraph
+  - display of some results
+- [ ] Quick presentation on `arduino`
+  - what is arduino
+  - why is some interesting
+    - it does actual stuff (moves, lights, ...)
+    - can be low power / portable
+    - cheap
+    - lots of transductors: temperature, luminosity, humidity, pressure, rfid, mic, buttons, motors, servos, lasers, ...
+- [ ] Quick presentation on `refined`
+  - why type safety matters
+  - where Scala default types fall short
+  - where `refined` helps
+  - examples
+    - show the lack of stupid checks (nullity, greater than zero, port in [0-65535], ...)
+  - integrations
+    - pureconfig
+- [ ] Quick presentation on `Scala Steward`
+  - the beauty of libraries upgraded
+    - improved features
+    - less bugs
+    - in sync with developpers / more support
+  - steps to upgrade your dependencies
+  - enters S. Steward
+    - monitors your scala project
+    - matches dependencies versions vs existent
+    - proposes upgrades
+    - 
 
-# DONE
-- Change the color of the slides to white.
-- Make the code blocks font (in the slides) smaller.
 
