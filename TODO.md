@@ -13,12 +13,18 @@
     - parsing
     - listing
     - conversions
+  - advantages of enumeratum
+    - no dependencies, 
+    - even faster than `Enumeration` (from standard library!)
+    - enums can be objects with methods, attributes, etc.
+    - no use of reflection at runtime (so fast)
+    - ... others
   - examples
-  - integrations
-    - pureconfig
+    - [here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
 - [ ] Quick presentation on `pureconfig` use as parameters for an application
   - what our configuration management code often looks like
   - what could it look like
+  - overwrite configuration settings, example
   - quick intro to pureconfig
   - quick intro to the use of pureconfig for args 
   - example
