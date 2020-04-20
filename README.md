@@ -14,7 +14,7 @@ sudo apt-get install ruby2.4
 sudo apt-get install ruby2.5
 
 # Install jekyll for blog generation from static files
-sudo gem install jekyll
+sudo gem install jekyll -v 3.6
 
 # Install redcarpet markdown interpreter
 sudo gem install redcarpet
