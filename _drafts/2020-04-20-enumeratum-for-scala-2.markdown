@@ -15,10 +15,11 @@ comments: true
  
 ## Enumeratum: why should I care?
 
+- Enums are useful
 - Scala 2 native enums are **flawed**
-- you want to **be safe** (type safety)
-- you depend on **pattern matching**
-- you need **less maintenance**
+- You wish to **be safe** (type safety)
+- You love **pattern matching**
+- You wish **less maintenance**
 
 <!--more-->
 <!--slide-next-->
@@ -52,21 +53,22 @@ object Color extends Enumeration {
 
 <!--slide-down-->
 
-#### Drawbacks I
+#### Evaluation I
 
-- Cannot do method overloading
+- (-) Cannot do method overloading
 
 ```
 def take(c: Color)
 def take(c: Animal)
 // Error: double definition ...
 ```
+<img src="https://www.kindpng.com/picc/b/88/883319.png">
 
 <!--slide-down-->
 
-#### Drawbacks II
+#### Evaluation II
 
-- Do not benefit from exhaustiveness checks
+- (-) No exhaustiveness checks
 
 ```
 color match {
@@ -75,11 +77,13 @@ color match {
 // no warning, nothing...
 ```
 
+<img src="https://www.pngitem.com/pimgs/m/10-104820_oh-god-why-png-oh-my-god-cartoon.png" height="300" width="300">
+
 <!--slide-down-->
 
-#### Drawbacks III
+#### Evaluation III
 
-- Its `withName` method is mean
+- (-) Its `withName` method is mean
 
 ```
 Color.withName("chucknorris")
@@ -88,11 +92,12 @@ Color.withName("chucknorris")
 
 <!--slide-down-->
 
-#### Drawbacks IV
+#### Evaluation IV
 
 - Does not support extra fields
 
 ```
+// Could not code this
 //       r g b
 // Red   1 0 0 
 // Green 0 1 0
@@ -106,30 +111,33 @@ Color.withName("chucknorris")
 ### 2. Using Scala `sealed case`
 
 ```
-sealed abstract class Color(
-  val r: Float,
-  val g: Float,
-  val b: Float
-)
+sealed abstract class Color
 object Color extends Enum {
-  case object Red   extends Color(1, 0, 0)
-  case object Green extends Color(0, 1, 0)
-  case object Blue  extends Color(0, 0, 1)
+  case object Red   extends Color
+  case object Green extends Color
+  case object Blue  extends Color
 }
 ```
 
 <!--slide-down-->
 
-#### Drawbacks
+#### Evaluation
 
-- no parsing (missing `Color.withName`)
-- no listing (missing `Color.values`)
+- (+) native
+- (+) supports attributes
+- (+) supports functions
+- (+) exhaustive pattern matching
+- (-) missing `Color.withName`
+- (-) missing `Color.values`
 
 <!--slide-next-->
 
 ### 3. Switching to Scala 3
 
   - Scala 3 / `dotty` addresses this issue, see [this](http://dotty.epfl.ch/docs/reference/enums/enums.html) for more info)
+  - Evaluation
+    - (+) Great!
+    - (-) Scala 3 [not ready](https://dotty.epfl.ch/docs/)!
 
 <!--slide-next-->
 
@@ -140,11 +148,32 @@ object Color extends Enum {
 - Faster than `scala.Enumeration` (from standard library!)
 - Enums can be objects with methods, attributes, etc.
 - No use of reflection at runtime (so fast)
+- Integration with pureconfig, among other libs
 - ... others
 
 <!--slide-down-->
 
-#### Examples
+#### Examples I
+
+```
+import enumeratum._
+sealed trait Color extends EnumEntry
+object Color extends Enum[Color] {
+  val values = findValues // magic
+  case object Red extends Color
+  case object Green extends Color
+  case object Blue extends Color
+}
+```
+
+<!--slide-down-->
+
+#### Examples II (with attributes)
+
+[See here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
+
+
+#### Examples III: pureconfig
 
 [See here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
 
