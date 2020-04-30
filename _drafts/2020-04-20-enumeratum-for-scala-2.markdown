@@ -12,34 +12,56 @@ tags:
 - enum
 comments: true
 ---
- 
-## Enumeratum: why should I care?
 
-- Enums are useful
-- Scala 2 native enums are **flawed**
-- You wish to **be safe** (type safety)
-- You love **pattern matching**
-- You wish **less maintenance**
+# Enumeratum
+
+Enumerations for _Scala_
+
+<!--slide-down-->
+ 
+## Why should I care?
+
+<!--slide-down-->
+
+- Enumerations are the basis of programming
+- You ambition **less maintenance**
+  - Find bugs at compile time
+  - Code easy to understand
+  - Meaningful data types
+
+_"Let the compiler help you!!!"_
+
+<!--slide-down-->
+
+- Many code smells come from enums
+  - [Primitive obsession](https://refactoring.guru/smells/primitive-obsession) (`readMode: String`)
+  - [Change preventers](https://refactoring.guru/refactoring/smells/change-preventers)
+- _Scala 2_ native enums are **flawed**
 
 <!--more-->
-<!--slide-next-->
-
-## What is an ADT?
-
-**Algebraic Data Type**
-
-- Two basic categories
-  - **Sum types** (enums)
-  - **Product types** (case classes)
-
-[(more info)](https://nrinaudo.github.io/scala-best-practices/definitions/adt.html)
 
 <!--slide-next-->
 
-## Let's focus on **Sum types**
+## Enumerations
 
-- How to code them?
-- There are many ways...
+- How to code them in Scala?
+
+<!--slide-next-->
+
+## What to wish?
+
+<img src="https://i.pinimg.com/236x/29/06/1e/29061ea2855d7036d66507a674e799eb--macarons-th-birthday.jpg" height="300" width="300">
+
+<!--slide-down-->
+
+- Exhaustive pattern matching (**safety**)
+- No type erasure (**method overloading**)
+- Default methods for (safe) **serialization/deserialization**
+- **List all** possible values
+- Values to have **extra fields**
+- Values to be provided an **ordering**
+
+(from [here](https://pedrorijo.com/blog/scala-enums/))
 
 <!--slide-next-->
 
@@ -53,51 +75,57 @@ object Color extends Enumeration {
 
 <!--slide-down-->
 
-#### Evaluation I
-
-- (-) Cannot do method overloading
-
-```
-def take(c: Color)
-def take(c: Animal)
-// Error: double definition ...
-```
-<img src="https://www.kindpng.com/picc/b/88/883319.png">
+#### Evaluation
 
 <!--slide-down-->
 
-#### Evaluation II
-
+- (+) native
 - (-) No exhaustiveness checks
 
 ```
-color match {
-  case Red => "red"
+def asString(c: Color.Value) = c match {
+  case Color.Blue => "blue"
+  // and other colors??? (!!!)
 }
 // no warning, nothing...
 ```
 
-<img src="https://www.pngitem.com/pimgs/m/10-104820_oh-god-why-png-oh-my-god-cartoon.png" height="300" width="300">
+<img src="https://pngimage.net/wp-content/uploads/2018/06/oh-my-god-png-8.png" height="200" width="200">
 
 <!--slide-down-->
 
-#### Evaluation III
+- (-) Cannot do method overloading (type erasure)
 
-- (-) Its `withName` method is mean
+```
+def take(c: Color.Value)
+def take(c: Animal.Value)
+// take(Enumeration.this.Value)Unit is 
+//   already defined in the scope
+```
+
+<img src="https://www.kindpng.com/picc/b/88/883319.png" height="300" width="300">
+
+<!--slide-down-->
+
+(on serialization / deserialization)
+
+- (+) Built-in `.toString`
+- (-) Its `.withName` method is mean
 
 ```
 Color.withName("chucknorris")
-// NoSuchElementException
+// throws NoSuchElementException... 
+// :. No referentially transparent
 ```
 
 <!--slide-down-->
 
-#### Evaluation IV
-
-- Does not support extra fields
+- (+) Easy to list all values (`Color.values`)
+- (+) Values are provided an ordering
+- (-) Does not support extra fields
 
 ```
-// Could not code this
+// Could not code this:
 //       r g b
 // Red   1 0 0 
 // Green 0 1 0
@@ -123,37 +151,49 @@ object Color extends Enum {
 
 #### Evaluation
 
-- (+) native
-- (+) supports attributes
-- (+) supports functions
-- (+) exhaustive pattern matching
-- (-) missing `Color.withName`
-- (-) missing `Color.values`
+- (+) _Scala 2_ **native**
+- (+) **Exhaustive** pattern matching
+- (+) **No type erasure**
+- (-) Missing `.withName` method
+- (-) Missing `.values` method
+- (+) Values can have **attributes**
+- (+) Values can have **functions**
+- (-) Values are not provided with an ordering
+
 
 <!--slide-next-->
 
 ### 3. Switching to Scala 3
 
-  - Scala 3 / `dotty` addresses this issue, see [this](http://dotty.epfl.ch/docs/reference/enums/enums.html) for more info)
-  - Evaluation
-    - (+) Great!
+  - Scala 3 / `dotty` addresses this issue
+    - See [this](http://dotty.epfl.ch/docs/reference/enums/enums.html) for more info
     - (-) Scala 3 [not ready](https://dotty.epfl.ch/docs/)!
 
 <!--slide-next-->
 
 ### 4. Using `enumeratum`
 
-- [A library](https://github.com/lloydmeta/enumeratum)
-- No dependencies
-- Faster than `scala.Enumeration` (from standard library!)
-- Enums can be objects with methods, attributes, etc.
-- No use of reflection at runtime (so fast)
-- Integration with pureconfig, among other libs
-- ... others
+- (~) [A library](https://github.com/lloydmeta/enumeratum)
+  - (+) No dependencies
+- (+) **Exhaustive** pattern matching
+- (+) **No type erasure**
+- (+) Provides **`.withName` method**
+- (+) Provides **`.values` method**
+
+<!--slide-down-->
+
+- (+) Values can have **attributes**
+- (+) Values can have **methods**
+- (+) Values are provided an **ordering**
+- (+) **Faster** than `scala.Enumeration` (from the standard library!)
+- (+) **Integration with pureconfig**, among other libs
+- (+) And more!
 
 <!--slide-down-->
 
 #### Examples I
+
+Plain example: 
 
 ```
 import enumeratum._
@@ -168,18 +208,23 @@ object Color extends Enum[Color] {
 
 <!--slide-down-->
 
-#### Examples II (with attributes)
+#### Examples II
 
-[See here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
+Values with attributes: [here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala#L11)
 
+<!--slide-down-->
 
-#### Examples III: pureconfig
+#### Examples III
 
-[See here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
+[Pureconfig](https://github.com/pureconfig/pureconfig) integration: [here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
 
 <!--slide-next-->
 
 ## Thanks!
 
+<!--slide-next-->
 
+## Other posts
+
+- [From Pedro Rijo](https://pedrorijo.com/blog/scala-enums/)
 
