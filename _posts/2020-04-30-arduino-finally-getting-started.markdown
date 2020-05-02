@@ -14,10 +14,6 @@ tags:
 comments: true
 ---
 
-{% include toc.html %}
-
-<!--slide-down-->
-
 # Arduino
 
 <!--slide-ignore-begin-->
@@ -25,6 +21,10 @@ comments: true
 I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.
 
 <!--slide-ignore-end-->
+
+<!--slide-down-->
+
+{% include toc.html %}
 
 <!--slide-down-->
 
@@ -142,6 +142,20 @@ NOTE: Saw some videos making a big deal out of a Raspberry running on batteries 
 3. Some user interface/s
 4. A power supply
 5. A firmware
+
+<img src='https://g.gravizo.com/svg?
+@startuml;
+rectangle "Board" {;
+  rectangle "Firmware";
+};
+rectangle "Sensor";
+rectangle "Power"; 
+rectangle "UI";
+Sensor --> Firmware;
+Firmware --> UI;
+Power --> Board;
+@enduml
+'>
 
 <!--slide-down-->
 
