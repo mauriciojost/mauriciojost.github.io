@@ -9,9 +9,7 @@ sass:
   style: :compressed
 
 # Markdown syntax related settings
-markdown: redcarpet
-redcarpet:
-  extensions: ["strikethrough", "with_toc_data"]
+markdown: kramdown
 
 # Dist build settings
 include: ["reveal.js"]

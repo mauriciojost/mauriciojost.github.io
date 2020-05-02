@@ -39,6 +39,8 @@ Be careful, don't come to me and give me the chance to say _I told you_.
 
 <!--slide-ignore-end-->
 
+<!--slide-next-->
+
 <!--more-->
 
 ## What is Arduino?
@@ -151,8 +153,6 @@ _The component aboves are not the cheapest, but the simplest to get started with
 
 <!--slide-down-->
 
-### Procedure
-
 1. Install it from [here](https://docs.platformio.org/en/latest/core/installation.html)
 2. (optional) Install the IDE from [here](https://platformio.org/platformio-ide)
 3. See the documentation [here](https://docs.platformio.org/en/latest/core/index.html)
@@ -179,6 +179,8 @@ _The component aboves are not the cheapest, but the simplest to get started with
   - motors
   - servos
   - lasers
+
+<!--slide-next-->
 
 ## In my pipeline
 
