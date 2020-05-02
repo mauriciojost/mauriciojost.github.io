@@ -14,6 +14,10 @@ tags:
 comments: true
 ---
 
+{% include toc.html %}
+
+<!--slide-down-->
+
 # Arduino
 
 <!--slide-ignore-begin-->
