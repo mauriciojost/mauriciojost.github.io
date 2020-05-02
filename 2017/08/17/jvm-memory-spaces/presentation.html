@@ -95,18 +95,7 @@ Every time the GC claims memory, it executes these steps:</p>
 
 <!--slide-ignore-end-->
 
-<p>![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 1. The steps of the Garbage Collection (GC);
-scale max 900 width;
-;
-(<em>) -right-&gt; “1. Mark used memory” %23white;
--right-&gt; “2. Delete unused memory” %23white;
--right-&gt; “3. Compact used memory” %23white;
--right-&gt; (</em>);
-@enduml;
-)</p>
+<p><img src="https://g.gravizo.com/svg? @startuml; skinparam monochrome false; caption Figure 1. The steps of the Garbage Collection (GC); scale max 900 width; (*) -right-&gt; &quot;1. Mark used memory&quot; %23white; -right-&gt; &quot;2. Delete unused memory&quot; %23white; -right-&gt; &quot;3. Compact used memory&quot; %23white; -right-&gt; (*); @enduml; " /></p>
 
 <!--slide-ignore-begin-->
 
@@ -143,74 +132,7 @@ terms they can be divided into:</p>
 
 <!--slide-ignore-end-->
 
-<p>![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
-scale max 900 width;
-rectangle “JVM Memory” {;
-  rectangle “Heap” {;
-    rectangle “Young\nGeneration” {;
-      rectangle eden as “MP PS\nEden\nSpace” %23red;
-      rectangle survivor as “MP PS\nSurvivor\nSpace” %23orange;
-    };
-    rectangle “Old\nGeneration” {;
-      rectangle oldgen as “MP PS\nOld Gen” %23blue;
-    };
-  };
-  rectangle OffHeap {;
-    rectangle metaspace as “MP\nMetaspace”;
-    rectangle codecache as “MP\nCodecache”;
-    rectangle classspace as “MP\nCompressed\nClass Space”;
-  };
-};
-note right of OffHeap %23white;
-  Not subject to GC.;
-end note;
-;
-note right of Heap %23white;
-  All object instances;
-  are stored here,;
-  memory from this;
-  space is used whenever;
-  new is present in the;
-  code.;
-  Subject to GC.;
-end note;
-;
-note right of metaspace %23white;
-  It used to be;
-  PermGen before;
-  Java 8.;
-end note;
-;
-note right of codecache %23white;
-  Contains compiled;
-  native code, mostly;
-  used by the JIT.;
-end note;
-;
-note right of eden %23white;
-   Recently allocated;
-   objects, did not;
-   survive any GC yet.;
-end note;
-;
-note right of survivor %23white;
-   Objects that have;
-   survived at least;
-   one GC.;
-end note;
-;
-note right of oldgen %23white;
-  Also called Tenured,;
-  objects that have;
-  survived some time;
-  in the Survivor Space.;
-end note;
-;
-@enduml;
-)</p>
+<p><img src="https://g.gravizo.com/svg? @startuml; skinparam monochrome false; caption Figure 2. Java Memory Spaces (MP stands for Memory Pool); scale max 900 width; rectangle &quot;JVM Memory&quot; {;   rectangle &quot;Heap&quot; {;     rectangle &quot;Young\nGeneration&quot; {;       rectangle eden as &quot;MP PS\nEden\nSpace&quot; %23red;       rectangle survivor as &quot;MP PS\nSurvivor\nSpace&quot; %23orange;     };     rectangle &quot;Old\nGeneration&quot; {;       rectangle oldgen as &quot;MP PS\nOld Gen&quot; %23blue;     };   };   rectangle OffHeap {;     rectangle metaspace as &quot;MP\nMetaspace&quot;;     rectangle codecache as &quot;MP\nCodecache&quot;;     rectangle classspace as &quot;MP\nCompressed\nClass Space&quot;;   }; }; note right of OffHeap %23white;   Not subject to GC.; end note; ; note right of Heap %23white;   All object instances;   are stored here,;   memory from this;   space is used whenever;   new is present in the;   code.;   Subject to GC.; end note; ; note right of metaspace %23white;   It used to be;   PermGen before;   Java 8.; end note; ; note right of codecache %23white;   Contains compiled;   native code, mostly;   used by the JIT.; end note; ; note right of eden %23white;    Recently allocated;    objects, did not;    survive any GC yet.; end note; ; note right of survivor %23white;    Objects that have;    survived at least;    one GC.; end note; ; note right of oldgen %23white;   Also called Tenured,;   objects that have;   survived some time;   in the Survivor Space.; end note; ; @enduml; " /></p>
 
 <!--slide-down-->
 

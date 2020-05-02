@@ -7,7 +7,7 @@
   <meta name="author" content="Mauricio Jost">
   <meta name="theme-color" content="#284a5e">
   <title>Arduino: Finally getting started</title>
-  <meta name="description" content="  Table of Contents">
+  <meta name="description" content="Arduino">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/post.html">
   <link rel="alternate" type="application/rss+xml" title="Mauricio Jost" href="http://mauriciojost.github.io/feed.xml">
@@ -49,7 +49,17 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <nav>
+    <h1 id="arduino">Arduino</h1>
+
+<!--slide-ignore-begin-->
+
+<p>I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.</p>
+
+<!--slide-ignore-end-->
+
+<!--slide-down-->
+
+<nav>
   <h4>Table of Contents</h4>
 <ul id="markdown-toc">
   <li><a href="#arduino" id="markdown-toc-arduino">Arduino</a>    <ul>
@@ -73,16 +83,6 @@
 </ul>
 
 </nav>
-
-<!--slide-down-->
-
-<h1 id="arduino">Arduino</h1>
-
-<!--slide-ignore-begin-->
-
-<p>I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.</p>
-
-<!--slide-ignore-end-->
 
 <!--slide-down-->
 
@@ -221,6 +221,8 @@
   <li>A power supply</li>
   <li>A firmware</li>
 </ol>
+
+<p><img src="https://g.gravizo.com/svg? @startuml; rectangle &quot;Board&quot; {;   rectangle &quot;Firmware&quot;; }; rectangle &quot;Sensor&quot;; rectangle &quot;Power&quot;;  rectangle &quot;UI&quot;; Sensor --&gt; Firmware; Firmware --&gt; UI; Power --&gt; Board; @enduml " /></p>
 
 <!--slide-down-->
 

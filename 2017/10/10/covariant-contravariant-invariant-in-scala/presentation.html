@@ -80,14 +80,7 @@
 
 <p>Consider the following example:</p>
 
-<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 1. Example types;
-scale max 900 width;
-Animal &lt;|-- Dog;
-Animal &lt;|-- Cat;
-@enduml;" alt="Alt text" /></span></p>
+<p><img src="https://g.gravizo.com/svg? @startuml; skinparam monochrome false; caption Figure 1. Example types; scale max 900 width; Animal &lt;|-- Dog; Animal &lt;|-- Cat; @enduml; " /></p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Our pet classes
 sealed class Animal
@@ -296,18 +289,7 @@ val f6: Function2[Animal, Dog, Dog] = f
 
 <p>This is the result of applying variances:</p>
 
-<p><span style="display:block;text-align:center">![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Covariance and Contravariance;
-scale max 900 width;
-“List[Animal]” &lt;|– “List[Dog]”: “Covariance [+A]”;
-“List[Animal]” &lt;|– “List[Cat]”;
-“Funct[Dog]” &lt;|– “Funct[Animal]”: “Contravariance [-A]”;
-note left of “Funct[Animal]”: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance;
-note right of “List[Dog]”: Can be added\nto a List[Animal]\nthanks to\ncovariance;
-@enduml;
-)</span></p>
+<p><img src="https://g.gravizo.com/svg? @startuml; skinparam monochrome false; caption Figure 2. Covariance and Contravariance; scale max 900 width; &quot;List[Animal]&quot; &lt;|-- &quot;List[Dog]&quot;: &quot;Covariance [+A]&quot;; &quot;List[Animal]&quot; &lt;|-- &quot;List[Cat]&quot;; &quot;Funct[Dog]&quot; &lt;|-- &quot;Funct[Animal]&quot;: &quot;Contravariance [-A]&quot;; note left of &quot;Funct[Animal]&quot;: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance; note right of &quot;List[Dog]&quot;: Can be added\nto a List[Animal]\nthanks to\ncovariance; @enduml; " /></p>
 
 <!--slide-next-->
 

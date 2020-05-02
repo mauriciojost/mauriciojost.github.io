@@ -61,7 +61,17 @@
                  start-ignore-separator="<!--slide-ignore-begin-->"
                  end-ignore-separator="<!--slide-ignore-end-->">
           <script type="text/template">
-            <nav>
+            <h1 id="arduino">Arduino</h1>
+
+<!--slide-ignore-begin-->
+
+<p>I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.</p>
+
+<!--slide-ignore-end-->
+
+<!--slide-down-->
+
+<nav>
   <h4>Table of Contents</h4>
 <ul id="markdown-toc">
   <li><a href="#arduino" id="markdown-toc-arduino">Arduino</a>    <ul>
@@ -85,16 +95,6 @@
 </ul>
 
 </nav>
-
-<!--slide-down-->
-
-<h1 id="arduino">Arduino</h1>
-
-<!--slide-ignore-begin-->
-
-<p>I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.</p>
-
-<!--slide-ignore-end-->
 
 <!--slide-down-->
 
@@ -233,6 +233,8 @@
   <li>A power supply</li>
   <li>A firmware</li>
 </ol>
+
+<p><img src="https://g.gravizo.com/svg? @startuml; rectangle &quot;Board&quot; {;   rectangle &quot;Firmware&quot;; }; rectangle &quot;Sensor&quot;; rectangle &quot;Power&quot;;  rectangle &quot;UI&quot;; Sensor --&gt; Firmware; Firmware --&gt; UI; Power --&gt; Board; @enduml " /></p>
 
 <!--slide-down-->
 

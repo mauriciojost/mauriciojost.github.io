@@ -5,13 +5,23 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 May 2020 12:02:37 +0200</pubDate>
-    <lastBuildDate>Sat, 02 May 2020 12:02:37 +0200</lastBuildDate>
+    <pubDate>Sat, 02 May 2020 16:11:48 +0200</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 16:11:48 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>Arduino: Finally getting started</title>
-        <description>&lt;nav&gt;
+        <description>&lt;h1 id=&quot;arduino&quot;&gt;Arduino&lt;/h1&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;nav&gt;
   &lt;h4&gt;Table of Contents&lt;/h4&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#arduino&quot; id=&quot;markdown-toc-arduino&quot;&gt;Arduino&lt;/a&gt;    &lt;ul&gt;
@@ -35,16 +45,6 @@
 &lt;/ul&gt;
 
 &lt;/nav&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h1 id=&quot;arduino&quot;&gt;Arduino&lt;/h1&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -183,6 +183,8 @@
   &lt;li&gt;A power supply&lt;/li&gt;
   &lt;li&gt;A firmware&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg? @startuml; rectangle &amp;quot;Board&amp;quot; {;   rectangle &amp;quot;Firmware&amp;quot;; }; rectangle &amp;quot;Sensor&amp;quot;; rectangle &amp;quot;Power&amp;quot;;  rectangle &amp;quot;UI&amp;quot;; Sensor --&amp;gt; Firmware; Firmware --&amp;gt; UI; Power --&amp;gt; Board; @enduml &quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -262,7 +264,17 @@
     
       <item>
         <title>Arduino: Finally getting started</title>
-        <description>&lt;nav&gt;
+        <description>&lt;h1 id=&quot;arduino&quot;&gt;Arduino&lt;/h1&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;nav&gt;
   &lt;h4&gt;Table of Contents&lt;/h4&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#arduino&quot; id=&quot;markdown-toc-arduino&quot;&gt;Arduino&lt;/a&gt;    &lt;ul&gt;
@@ -286,16 +298,6 @@
 &lt;/ul&gt;
 
 &lt;/nav&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h1 id=&quot;arduino&quot;&gt;Arduino&lt;/h1&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -434,6 +436,8 @@
   &lt;li&gt;A power supply&lt;/li&gt;
   &lt;li&gt;A firmware&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg? @startuml; rectangle &amp;quot;Board&amp;quot; {;   rectangle &amp;quot;Firmware&amp;quot;; }; rectangle &amp;quot;Sensor&amp;quot;; rectangle &amp;quot;Power&amp;quot;;  rectangle &amp;quot;UI&amp;quot;; Sensor --&amp;gt; Firmware; Firmware --&amp;gt; UI; Power --&amp;gt; Board; @enduml &quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -1663,9 +1667,9 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;p&gt;Text written here appears in both the presentation and the post layouts.&lt;/p&gt;
 
-&lt;!--slide-ignore-begin--&gt;
-
 &lt;p&gt;Press &lt;code class=&quot;highlighter-rouge&quot;&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
 
 &lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
@@ -1680,7 +1684,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;h2 id=&quot;second-part-a&quot;&gt;Second part (A)&lt;/h2&gt;
 
-&lt;p&gt;You can add a vertical slide (I personally use them for continuation of the upper slide).&lt;/p&gt;
+&lt;p&gt;You can add a vertical slide.&lt;/p&gt;
+
+&lt;p&gt;Next horizontal slide = new paragraph.&lt;/p&gt;
+
+&lt;p&gt;Next vertical slide = new sentence.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -1718,7 +1726,7 @@ note left of MARKDOWN: example;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markdown file&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -1774,9 +1782,9 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;p&gt;Text written here appears in both the presentation and the post layouts.&lt;/p&gt;
 
-&lt;!--slide-ignore-begin--&gt;
-
 &lt;p&gt;Press &lt;code class=&quot;highlighter-rouge&quot;&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
+
+&lt;!--slide-ignore-begin--&gt;
 
 &lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
@@ -1791,7 +1799,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;h2 id=&quot;second-part-a&quot;&gt;Second part (A)&lt;/h2&gt;
 
-&lt;p&gt;You can add a vertical slide (I personally use them for continuation of the upper slide).&lt;/p&gt;
+&lt;p&gt;You can add a vertical slide.&lt;/p&gt;
+
+&lt;p&gt;Next horizontal slide = new paragraph.&lt;/p&gt;
+
+&lt;p&gt;Next vertical slide = new sentence.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -1829,7 +1841,7 @@ note left of MARKDOWN: example;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markdown file&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -1874,14 +1886,7 @@ note left of MARKDOWN: example;
 
 &lt;p&gt;Consider the following example:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 1. Example types;
-scale max 900 width;
-Animal &amp;lt;|-- Dog;
-Animal &amp;lt;|-- Cat;
-@enduml;&quot; alt=&quot;Alt text&quot; /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg? @startuml; skinparam monochrome false; caption Figure 1. Example types; scale max 900 width; Animal &amp;lt;|-- Dog; Animal &amp;lt;|-- Cat; @enduml; &quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our pet classes
 sealed class Animal
@@ -2090,18 +2095,7 @@ val f6: Function2[Animal, Dog, Dog] = f
 
 &lt;p&gt;This is the result of applying variances:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Covariance and Contravariance;
-scale max 900 width;
-“List[Animal]” &amp;lt;|– “List[Dog]”: “Covariance [+A]”;
-“List[Animal]” &amp;lt;|– “List[Cat]”;
-“Funct[Dog]” &amp;lt;|– “Funct[Animal]”: “Contravariance [-A]”;
-note left of “Funct[Animal]”: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance;
-note right of “List[Dog]”: Can be added\nto a List[Animal]\nthanks to\ncovariance;
-@enduml;
-)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg? @startuml; skinparam monochrome false; caption Figure 2. Covariance and Contravariance; scale max 900 width; &amp;quot;List[Animal]&amp;quot; &amp;lt;|-- &amp;quot;List[Dog]&amp;quot;: &amp;quot;Covariance [+A]&amp;quot;; &amp;quot;List[Animal]&amp;quot; &amp;lt;|-- &amp;quot;List[Cat]&amp;quot;; &amp;quot;Funct[Dog]&amp;quot; &amp;lt;|-- &amp;quot;Funct[Animal]&amp;quot;: &amp;quot;Contravariance [-A]&amp;quot;; note left of &amp;quot;Funct[Animal]&amp;quot;: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance; note right of &amp;quot;List[Dog]&amp;quot;: Can be added\nto a List[Animal]\nthanks to\ncovariance; @enduml; &quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
