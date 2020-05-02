@@ -281,7 +281,9 @@
 
 <!--slide-down-->
 
-<h4 id="examples-i">Examples I</h4>
+<h4 id="examples">Examples</h4>
+
+<!--slide-down-->
 
 <p>Plain example:</p>
 
@@ -297,15 +299,40 @@
 
 <!--slide-down-->
 
-<h4 id="examples-ii">Examples II</h4>
-
 <p>Values with attributes: <a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala#L11">here</a></p>
 
 <!--slide-down-->
 
-<h4 id="examples-iii">Examples III</h4>
+<p><a href="https://github.com/pureconfig/pureconfig">Pureconfig</a> integration:</p>
 
-<p><a href="https://github.com/pureconfig/pureconfig">Pureconfig</a> integration: <a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala">here</a></p>
+<ul>
+  <li><a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala">Enums here</a></li>
+  <li>Dedicated section for parsing <a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/helpers/ConfigLoader.scala#L29">transversal</a> (no parsing in business code)</li>
+  <li>Concerns remain separated</li>
+  <li>Clear error in case of unexpected value <code class="highlighter-rouge">XX</code>:</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Unable to parse the configuration: XX is not a member of Enum (R, W, RW, -).
+</code></pre></div></div>
+
+<!--slide-down-->
+
+<p><a href="https://circe.github.io/circe/">Circe</a> integration</p>
+
+<ul>
+  <li><a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/models/Device.scala#L63">Enums here</a></li>
+  <li>Encoding <a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/helpers/ConfigLoader.scala#L21">here</a></li>
+  <li>Such enums are encoded as JSON now</li>
+  <li>They are decoded too</li>
+</ul>
+
+<!--slide-down-->
+
+<ul>
+  <li>ScalaCheck (for properties testing)</li>
+  <li>Doobie (Functional database library)</li>
+  <li>and more…</li>
+</ul>
 
 <!--slide-next-->
 

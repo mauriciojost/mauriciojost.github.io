@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 May 2020 16:11:48 +0200</pubDate>
-    <lastBuildDate>Sat, 02 May 2020 16:11:48 +0200</lastBuildDate>
+    <pubDate>Sat, 02 May 2020 17:15:27 +0200</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 17:15:27 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -737,7 +737,9 @@
 
 &lt;!--slide-down--&gt;
 
-&lt;h4 id=&quot;examples-i&quot;&gt;Examples I&lt;/h4&gt;
+&lt;h4 id=&quot;examples&quot;&gt;Examples&lt;/h4&gt;
+
+&lt;!--slide-down--&gt;
 
 &lt;p&gt;Plain example:&lt;/p&gt;
 
@@ -753,15 +755,40 @@
 
 &lt;!--slide-down--&gt;
 
-&lt;h4 id=&quot;examples-ii&quot;&gt;Examples II&lt;/h4&gt;
-
 &lt;p&gt;Values with attributes: &lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala#L11&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h4 id=&quot;examples-iii&quot;&gt;Examples III&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/pureconfig/pureconfig&quot;&gt;Pureconfig&lt;/a&gt; integration:&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/pureconfig/pureconfig&quot;&gt;Pureconfig&lt;/a&gt; integration: &lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala&quot;&gt;Enums here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Dedicated section for parsing &lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/helpers/ConfigLoader.scala#L29&quot;&gt;transversal&lt;/a&gt; (no parsing in business code)&lt;/li&gt;
+  &lt;li&gt;Concerns remain separated&lt;/li&gt;
+  &lt;li&gt;Clear error in case of unexpected value &lt;code class=&quot;highlighter-rouge&quot;&gt;XX&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Unable to parse the configuration: XX is not a member of Enum (R, W, RW, -).
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://circe.github.io/circe/&quot;&gt;Circe&lt;/a&gt; integration&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/models/Device.scala#L63&quot;&gt;Enums here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Encoding &lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/helpers/ConfigLoader.scala#L21&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Such enums are encoded as JSON now&lt;/li&gt;
+  &lt;li&gt;They are decoded too&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ScalaCheck (for properties testing)&lt;/li&gt;
+  &lt;li&gt;Doobie (Functional database library)&lt;/li&gt;
+  &lt;li&gt;and more…&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
