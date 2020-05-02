@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>
+      
+        Quicky on Enumeratum for Scala 2 | Mauricio Jost
+      
+    </title>
+
+    <meta name="author" content="" />
+
+    <!-- Description -->
+    
+      <meta name="description" content="">
+    
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="/reveal.js/css/reveal.css"/>
+    
+      <link rel="stylesheet" href="/reveal.js/css/theme/../../../css/theme/whiteish.css" id="theme"/>
+    
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="/reveal.js/lib/css/zenburn.css"/>
+
+    <style>
+      .reveal pre { font-size: 100%; }
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '/reveal.js/css/print/pdf.css' : '/reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="canonical" href="http://mauriciojost.github.io/2020/04/20/enumeratum-for-scala-2/presentation.html">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+  
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown
+                 data-separator="<!--slide-next-->"
+                 data-separator-vertical="<!--slide-down-->"
+                 start-ignore-separator="<!--slide-ignore-begin-->"
+                 end-ignore-separator="<!--slide-ignore-end-->">
+          <script type="text/template">
+            <h1 id="enumeratum">Enumeratum</h1>
+
+<p>Enumerations for <em>Scala</em></p>
+
+<!--slide-down-->
+
+<nav>
+  <h4>Table of Contents</h4>
+<ul id="markdown-toc">
+  <li><a href="#enumeratum" id="markdown-toc-enumeratum">Enumeratum</a>    <ul>
+      <li><a href="#why-should-i-care" id="markdown-toc-why-should-i-care">Why should I care?</a></li>
+      <li><a href="#what-to-wish" id="markdown-toc-what-to-wish">What to wish?</a></li>
+      <li><a href="#how-to-code-them" id="markdown-toc-how-to-code-them">How to code them?</a>        <ul>
+          <li><a href="#1-using-scalaenumeration" id="markdown-toc-1-using-scalaenumeration">1. Using <code class="highlighter-rouge">scala.Enumeration</code></a></li>
+          <li><a href="#2-using-scala-sealed-case" id="markdown-toc-2-using-scala-sealed-case">2. Using Scala <code class="highlighter-rouge">sealed case</code></a></li>
+          <li><a href="#3-switching-to-scala-3" id="markdown-toc-3-switching-to-scala-3">3. Switching to Scala 3</a></li>
+          <li><a href="#4-using-enumeratum" id="markdown-toc-4-using-enumeratum">4. Using <code class="highlighter-rouge">enumeratum</code></a></li>
+        </ul>
+      </li>
+      <li><a href="#thanks" id="markdown-toc-thanks">Thanks!</a></li>
+      <li><a href="#other-posts" id="markdown-toc-other-posts">Other posts</a></li>
+    </ul>
+  </li>
+</ul>
+
+</nav>
+
+<!--slide-down-->
+
+<h2 id="why-should-i-care">Why should I care?</h2>
+
+<!--slide-down-->
+
+<ul>
+  <li>Enumerations are fundamental</li>
+  <li>You wish <strong>less maintenance</strong>
+    <ul>
+      <li>Find bugs at compile time</li>
+      <li>Code easy to understand</li>
+      <li>Meaningful data types</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>“Let the compiler help you!!!”</em></p>
+
+<!--slide-down-->
+
+<ul>
+  <li>Many code smells come from enums
+    <ul>
+      <li><a href="https://refactoring.guru/smells/primitive-obsession">Primitive obsession</a> (<code class="highlighter-rouge">readMode: String</code>)</li>
+      <li><a href="https://refactoring.guru/refactoring/smells/change-preventers">Change preventers</a></li>
+    </ul>
+  </li>
+  <li><em>Scala 2</em> native enums are <strong>flawed</strong></li>
+</ul>
+
+<!--more-->
+
+<!--slide-next-->
+
+<h2 id="what-to-wish">What to wish?</h2>
+
+<p><img src="https://i.pinimg.com/236x/29/06/1e/29061ea2855d7036d66507a674e799eb--macarons-th-birthday.jpg" height="300" width="300" /></p>
+
+<!--slide-down-->
+
+<ul>
+  <li>Exhaustive pattern matching (<strong>safety</strong>)</li>
+  <li>No type erasure (<strong>method overloading</strong>)</li>
+  <li>Default methods for <strong>de/serialization</strong></li>
+  <li><strong>List all</strong> possible values</li>
+  <li>Values to have <strong>extra fields</strong></li>
+  <li>Values to be provided an <strong>ordering</strong></li>
+</ul>
+
+<p>(from <a href="https://pedrorijo.com/blog/scala-enums/">here</a>)</p>
+
+<!--slide-next-->
+
+<h2 id="how-to-code-them">How to code them?</h2>
+
+<!--slide-next-->
+
+<h3 id="1-using-scalaenumeration">1. Using <code class="highlighter-rouge">scala.Enumeration</code></h3>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">Color</span> <span class="k">extends</span> <span class="nc">Enumeration</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">Red</span><span class="o">,</span> <span class="nc">Green</span><span class="o">,</span> <span class="nc">Blue</span> <span class="k">=</span> <span class="nc">Value</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<!--slide-down-->
+
+<ul>
+  <li>(+) native</li>
+  <li>(-) No exhaustiveness checks</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">asString</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">Color.Value</span><span class="o">)</span> <span class="k">=</span> <span class="n">c</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nv">Color</span><span class="o">.</span><span class="py">Blue</span> <span class="k">=&gt;</span> <span class="s">"blue"</span>
+  <span class="c1">// and other colors??? (!!!)</span>
+<span class="o">}</span>
+<span class="c1">// no warning, nothing...</span>
+</code></pre></div></div>
+
+<p><img src="https://pngimage.net/wp-content/uploads/2018/06/oh-my-god-png-8.png" height="200" width="200" /></p>
+
+<!--slide-down-->
+
+<ul>
+  <li>(-) Cannot do method overloading (type erasure)</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">take</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">Color.Value</span><span class="o">)</span>
+<span class="k">def</span> <span class="nf">take</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">Animal.Value</span><span class="o">)</span>
+<span class="c1">// take(Enumeration.this.Value)Unit is </span>
+<span class="c1">//   already defined in the scope</span>
+</code></pre></div></div>
+
+<p><img src="https://www.kindpng.com/picc/b/88/883319.png" height="300" width="300" /></p>
+
+<!--slide-down-->
+
+<p>(on de/serialization)</p>
+
+<ul>
+  <li>(+) Built-in <code class="highlighter-rouge">.toString</code></li>
+  <li>(-) Its <code class="highlighter-rouge">.withName</code> method is mean</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">Color</span><span class="o">.</span><span class="py">withName</span><span class="o">(</span><span class="s">"chucknorris"</span><span class="o">)</span>
+<span class="c1">// throws NoSuchElementException... </span>
+<span class="c1">// :. No referentially transparent</span>
+</code></pre></div></div>
+
+<!--slide-down-->
+
+<ul>
+  <li>(+) Easy to list all values (<code class="highlighter-rouge">Color.values</code>)</li>
+  <li>(+) Values are provided an ordering</li>
+  <li>(-) Does not support extra fields</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Could not code this:</span>
+<span class="c1">//       r g b</span>
+<span class="c1">// Red   1 0 0 </span>
+<span class="c1">// Green 0 1 0</span>
+<span class="c1">// Blue  0 0 1</span>
+</code></pre></div></div>
+
+<p><a href="https://medium.com/@yuriigorbylov/scala-enumerations-hell-5bdba2c1216">(more details)</a></p>
+
+<!--slide-next-->
+
+<h3 id="2-using-scala-sealed-case">2. Using Scala <code class="highlighter-rouge">sealed case</code></h3>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Color</span>
+<span class="k">object</span> <span class="nc">Color</span> <span class="k">extends</span> <span class="nc">Enum</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Red</span>   <span class="k">extends</span> <span class="nc">Color</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Green</span> <span class="k">extends</span> <span class="nc">Color</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Blue</span>  <span class="k">extends</span> <span class="nc">Color</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<!--slide-down-->
+
+<ul>
+  <li>(+) <em>Scala 2</em> <strong>native</strong></li>
+  <li>(+) <strong>Exhaustive</strong> pattern matching</li>
+  <li>(+) <strong>No type erasure</strong></li>
+  <li>(-) Missing <code class="highlighter-rouge">.withName</code> method</li>
+  <li>(-) Missing <code class="highlighter-rouge">.values</code> method</li>
+  <li>(+) Values can have <strong>attributes</strong></li>
+  <li>(+) Values can have <strong>functions</strong></li>
+  <li>(-) Values are not provided with an ordering</li>
+</ul>
+
+<!--slide-next-->
+
+<h3 id="3-switching-to-scala-3">3. Switching to Scala 3</h3>
+
+<ul>
+  <li>Scala 3 / <code class="highlighter-rouge">dotty</code> addresses this issue
+    <ul>
+      <li>See <a href="http://dotty.epfl.ch/docs/reference/enums/enums.html">this</a> for more info</li>
+      <li>(-) Scala 3 <a href="https://dotty.epfl.ch/docs/">not ready</a>!</li>
+    </ul>
+  </li>
+</ul>
+
+<!--slide-next-->
+
+<h3 id="4-using-enumeratum">4. Using <code class="highlighter-rouge">enumeratum</code></h3>
+
+<ul>
+  <li>(~) <a href="https://github.com/lloydmeta/enumeratum">A library</a>
+    <ul>
+      <li>(+) No dependencies</li>
+    </ul>
+  </li>
+  <li>(+) <strong>Exhaustive</strong> pattern matching</li>
+  <li>(+) <strong>No type erasure</strong></li>
+  <li>(+) Provides <strong><code class="highlighter-rouge">.withName</code> method</strong></li>
+  <li>(+) Provides <strong><code class="highlighter-rouge">.values</code> method</strong></li>
+</ul>
+
+<!--slide-down-->
+
+<ul>
+  <li>(+) Values can have <strong>attributes</strong></li>
+  <li>(+) Values can have <strong>methods</strong></li>
+  <li>(+) Values are provided an <strong>ordering</strong></li>
+  <li>(+) <strong>Faster</strong> than <code class="highlighter-rouge">scala.Enumeration</code> (from the standard library!)</li>
+  <li>(+) <strong>Integration with pureconfig</strong>, among other libs</li>
+  <li>(+) And more!</li>
+</ul>
+
+<!--slide-down-->
+
+<h4 id="examples-i">Examples I</h4>
+
+<p>Plain example:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">enumeratum._</span>
+<span class="k">sealed</span> <span class="k">trait</span> <span class="nc">Color</span> <span class="k">extends</span> <span class="nc">EnumEntry</span>
+<span class="k">object</span> <span class="nc">Color</span> <span class="k">extends</span> <span class="nc">Enum</span><span class="o">[</span><span class="kt">Color</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">values</span> <span class="k">=</span> <span class="n">findValues</span> <span class="c1">// magic</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Red</span> <span class="k">extends</span> <span class="nc">Color</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Green</span> <span class="k">extends</span> <span class="nc">Color</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Blue</span> <span class="k">extends</span> <span class="nc">Color</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<!--slide-down-->
+
+<h4 id="examples-ii">Examples II</h4>
+
+<p>Values with attributes: <a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala#L11">here</a></p>
+
+<!--slide-down-->
+
+<h4 id="examples-iii">Examples III</h4>
+
+<p><a href="https://github.com/pureconfig/pureconfig">Pureconfig</a> integration: <a href="https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala">here</a></p>
+
+<!--slide-next-->
+
+<h2 id="thanks">Thanks!</h2>
+
+<!--slide-next-->
+
+<h2 id="other-posts">Other posts</h2>
+
+<ul>
+  <li><a href="https://pedrorijo.com/blog/scala-enums/">From Pedro Rijo</a></li>
+</ul>
+
+
+          </script>
+        </section>
+      </div>
+    </div>
+
+    <script src="/reveal.js/js/reveal.js"></script>
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        
+
+        // Display controls in the bottom right corner
+        
+
+        // Display a presentation progress bar
+        
+
+        // Push each slide change to the browser history
+        
+          history: 'true',
+        
+
+        // Vertical centering of slides
+        
+          center: 'true',
+        
+
+        // Transition style
+        
+
+        // Optional reveal.js plugins
+        dependencies: [
+           // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+          { src: '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+          // Interpret Markdown in <section> elements
+          { src: '/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+          // Syntax highlight for <code> elements
+          { src: '/reveal.js/plugin/highlight/highlight.js', callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // Zoom in and out with Alt+click
+          { src: '/reveal.js/plugin/zoom-js/zoom.js'},
+
+          // Speaker notes
+          { src: '/reveal.js/plugin/notes/notes.js'},
+
+          // MathJax
+          { src: '/reveal.js/plugin/math/math.js'}
+        ]
+      });
+
+    </script>
+    
+  </body>
+</html>

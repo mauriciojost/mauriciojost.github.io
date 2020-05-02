@@ -5,9 +5,785 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 May 2020 12:01:38 +0200</pubDate>
-    <lastBuildDate>Sat, 02 May 2020 12:01:38 +0200</lastBuildDate>
+    <pubDate>Sat, 02 May 2020 12:02:37 +0200</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 12:02:37 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Arduino: Finally getting started</title>
+        <description>&lt;nav&gt;
+  &lt;h4&gt;Table of Contents&lt;/h4&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#arduino&quot; id=&quot;markdown-toc-arduino&quot;&gt;Arduino&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#overview&quot; id=&quot;markdown-toc-overview&quot;&gt;Overview&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#what-is-it&quot; id=&quot;markdown-toc-what-is-it&quot;&gt;What is it?&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#its-uses&quot; id=&quot;markdown-toc-its-uses&quot;&gt;Its uses?&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#arduino-vs-raspberry&quot; id=&quot;markdown-toc-arduino-vs-raspberry&quot;&gt;Arduino vs. Raspberry?&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#arduino-vs-&quot; id=&quot;markdown-toc-arduino-vs-&quot;&gt;Arduino vs. *?&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#why-so-trendy&quot; id=&quot;markdown-toc-why-so-trendy&quot;&gt;Why so trendy?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#how-to-get-started&quot; id=&quot;markdown-toc-how-to-get-started&quot;&gt;How to get started?&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#main-ingredients&quot; id=&quot;markdown-toc-main-ingredients&quot;&gt;Main ingredients&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#procedure&quot; id=&quot;markdown-toc-procedure&quot;&gt;Procedure&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#in-my-pipeline&quot; id=&quot;markdown-toc-in-my-pipeline&quot;&gt;In my pipeline&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#thanks&quot; id=&quot;markdown-toc-thanks&quot;&gt;Thanks!&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h1 id=&quot;arduino&quot;&gt;Arduino&lt;/h1&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Please, stay only if…&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you’re &lt;strong&gt;curious&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you’re looking for &lt;strong&gt;new hobbies&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you have some &lt;strong&gt;programming skills&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you’re at &lt;strong&gt;no risk of divorce&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;A &lt;strong&gt;real disclaimer&lt;/strong&gt;, arduino is a time sucker, same level as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;3D printing,&lt;/li&gt;
+  &lt;li&gt;video games,&lt;/li&gt;
+  &lt;li&gt;aeromodelling,&lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Be careful&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;what-is-it&quot;&gt;What is it?&lt;/h3&gt;
+
+&lt;p&gt;Arduino is a &lt;strong&gt;company and a community&lt;/strong&gt; that designs and manufactures &lt;strong&gt;single-board microcontrollers&lt;/strong&gt; and microcontroller kits for building &lt;strong&gt;digital devices&lt;/strong&gt; &amp;lt;&lt;em&gt;with the &lt;strong&gt;framework to program them&lt;/strong&gt;&lt;/em&gt;&amp;gt;.&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;its-uses&quot;&gt;Its uses?&lt;/h3&gt;
+
+&lt;p&gt;Mostly pocket-sized devices with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A specific purpose (&lt;em&gt;embedded system&lt;/em&gt;)&lt;/li&gt;
+  &lt;li&gt;A minimalistic or no user interface&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;High&lt;/em&gt; power efficiency&lt;/li&gt;
+  &lt;li&gt;Need for portability&lt;/li&gt;
+  &lt;li&gt;Low price&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;No Operating System&lt;/em&gt; needed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;NOTE: For those more into it already, keep in mind that all the items above are indicative. Sure you can have an arduino with 3 simple purposes, the user interface could be a color LCD still, maybe not efficient if you use no sleep features, no portability if you have a automatic window opening system, price can vary if you have a very expensive sensor, there are some so called operating systems for Arduino like Mongoose OS, …&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;arduino-vs-raspberry&quot;&gt;Arduino vs. Raspberry?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Also a pocket-size board&lt;/li&gt;
+  &lt;li&gt;It’s a full computer though&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Has an Operating System&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;More expensive than most Arduino boards (~30€ the cheapest on &lt;a href=&quot;https://www.amazon.fr/Raspberry-Plaque-mod%C3%A8le-Cortex-11811853/dp/B07KKBCXLY/ref=sr_1_3?__mk_fr_FR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&amp;amp;dchild=1&amp;amp;keywords=raspberry+pi&amp;amp;qid=1588318997&amp;amp;sr=8-3&quot;&gt;amazon.fr&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;could last a day&lt;/strong&gt; on batteries (maximum)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;OUT OF SCOPE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours.&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;arduino-vs-&quot;&gt;Arduino vs. *?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;FPGA&lt;/li&gt;
+  &lt;li&gt;ESPuma&lt;/li&gt;
+  &lt;li&gt;uPython&lt;/li&gt;
+  &lt;li&gt;Blynk&lt;/li&gt;
+  &lt;li&gt;Mongoose OS&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;OUT OF SCOPE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;why-so-trendy&quot;&gt;Why so trendy?&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Boards can be way cheaper than a laptop&lt;/li&gt;
+  &lt;li&gt;Lots of cool applications (IoT)
+    &lt;ul&gt;
+      &lt;li&gt;Smart Home&lt;/li&gt;
+      &lt;li&gt;Smart City&lt;/li&gt;
+      &lt;li&gt;Environment&lt;/li&gt;
+      &lt;li&gt;Security&lt;/li&gt;
+      &lt;li&gt;Industrial IoT&lt;/li&gt;
+      &lt;li&gt;…&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Wider scope than just programming&lt;/li&gt;
+  &lt;li&gt;Interact with the real world / physics
+    &lt;ul&gt;
+      &lt;li&gt;Actuators&lt;/li&gt;
+      &lt;li&gt;Sensors&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Build something useful&lt;/li&gt;
+  &lt;li&gt;Be creative&lt;/li&gt;
+  &lt;li&gt;Think out of the box&lt;/li&gt;
+  &lt;li&gt;Have fun&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;how-to-get-started&quot;&gt;How to get started?&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;main-ingredients&quot;&gt;Main ingredients&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;An arduino-compatible board&lt;/li&gt;
+  &lt;li&gt;Some sensor/s&lt;/li&gt;
+  &lt;li&gt;Some user interface/s&lt;/li&gt;
+  &lt;li&gt;A power supply&lt;/li&gt;
+  &lt;li&gt;A firmware&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Proposed ingredients (&lt;strong&gt;to buy&lt;/strong&gt;):&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Board: &lt;a href=&quot;https://www.amazon.fr/Yizhet-NodeMCU-ESP8266-ESP-12E-D%C3%A9veloppement/dp/B07XJWK5F4/ref=sr_1_3?dchild=1&amp;amp;keywords=ESP8266+nodeMCU&amp;amp;qid=1588339084&amp;amp;sr=8-3&quot;&gt;&lt;strong&gt;NodeMCU esp8266&lt;/strong&gt; (~5€)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Sensor: &lt;a href=&quot;https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_&quot;&gt;&lt;strong&gt;a button&lt;/strong&gt; (~3€ each)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;UI: &lt;a href=&quot;https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3&quot;&gt;&lt;strong&gt;some leds&lt;/strong&gt; (~3€)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Power: laptop &lt;a href=&quot;https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_&quot;&gt;(+ &lt;strong&gt;an usb cable&lt;/strong&gt; (~3€))&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;em&gt;The component aboves are not the cheapest, but the simplest to get started with!!!&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h3 id=&quot;procedure&quot;&gt;Procedure&lt;/h3&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Install &lt;a href=&quot;https://docs.platformio.org/en/latest/core/installation.html&quot;&gt;PlatformIO Core&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;(opt.) Install the &lt;a href=&quot;https://platformio.org/platformio-ide&quot;&gt;PlatformIO IDE&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Connect your laptop to the &lt;strong&gt;NodeMCU esp8266&lt;/strong&gt; using the &lt;strong&gt;usb cable&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Clone the &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led&quot;&gt;blinking led&lt;/a&gt; project&lt;/li&gt;
+  &lt;li&gt;Connect the leds to the board as described in &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led/blob/master/src/Pinout.h&quot;&gt;the Pinout.h header&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Launch &lt;code class=&quot;highlighter-rouge&quot;&gt;platformio run --target upload&lt;/code&gt; to load firmware&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;That’s it!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;in-my-pipeline&quot;&gt;In my pipeline&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Framework to facilitate
+    &lt;ul&gt;
+      &lt;li&gt;Properties setup&lt;/li&gt;
+      &lt;li&gt;Development&lt;/li&gt;
+      &lt;li&gt;Logs retrieval&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Projects
+    &lt;ul&gt;
+      &lt;li&gt;Botino&lt;/li&gt;
+      &lt;li&gt;Sleepino&lt;/li&gt;
+      &lt;li&gt;Bimbino (proto ready)&lt;/li&gt;
+      &lt;li&gt;Zino (to come)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h2 id=&quot;thanks&quot;&gt;Thanks!&lt;/h2&gt;
+
+</description>
+        <pubDate>Thu, 30 Apr 2020 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/presentation.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/presentation.html</guid>
+        
+        <category>arduino</category>
+        
+        <category>newbie</category>
+        
+        <category>esp8266</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Arduino: Finally getting started</title>
+        <description>&lt;nav&gt;
+  &lt;h4&gt;Table of Contents&lt;/h4&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#arduino&quot; id=&quot;markdown-toc-arduino&quot;&gt;Arduino&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#overview&quot; id=&quot;markdown-toc-overview&quot;&gt;Overview&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#what-is-it&quot; id=&quot;markdown-toc-what-is-it&quot;&gt;What is it?&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#its-uses&quot; id=&quot;markdown-toc-its-uses&quot;&gt;Its uses?&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#arduino-vs-raspberry&quot; id=&quot;markdown-toc-arduino-vs-raspberry&quot;&gt;Arduino vs. Raspberry?&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#arduino-vs-&quot; id=&quot;markdown-toc-arduino-vs-&quot;&gt;Arduino vs. *?&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#why-so-trendy&quot; id=&quot;markdown-toc-why-so-trendy&quot;&gt;Why so trendy?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#how-to-get-started&quot; id=&quot;markdown-toc-how-to-get-started&quot;&gt;How to get started?&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#main-ingredients&quot; id=&quot;markdown-toc-main-ingredients&quot;&gt;Main ingredients&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#procedure&quot; id=&quot;markdown-toc-procedure&quot;&gt;Procedure&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#in-my-pipeline&quot; id=&quot;markdown-toc-in-my-pipeline&quot;&gt;In my pipeline&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#thanks&quot; id=&quot;markdown-toc-thanks&quot;&gt;Thanks!&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h1 id=&quot;arduino&quot;&gt;Arduino&lt;/h1&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;I always wanted to write a post with some sort of help for those curious about the fascinating world of Arduino. Here it is. Finally my getting started guide.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Please, stay only if…&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you’re &lt;strong&gt;curious&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you’re looking for &lt;strong&gt;new hobbies&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you have some &lt;strong&gt;programming skills&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you’re at &lt;strong&gt;no risk of divorce&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-ignore-begin--&gt;
+
+&lt;p&gt;A &lt;strong&gt;real disclaimer&lt;/strong&gt;, arduino is a time sucker, same level as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;3D printing,&lt;/li&gt;
+  &lt;li&gt;video games,&lt;/li&gt;
+  &lt;li&gt;aeromodelling,&lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Be careful&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;!--slide-ignore-end--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;what-is-it&quot;&gt;What is it?&lt;/h3&gt;
+
+&lt;p&gt;Arduino is a &lt;strong&gt;company and a community&lt;/strong&gt; that designs and manufactures &lt;strong&gt;single-board microcontrollers&lt;/strong&gt; and microcontroller kits for building &lt;strong&gt;digital devices&lt;/strong&gt; &amp;lt;&lt;em&gt;with the &lt;strong&gt;framework to program them&lt;/strong&gt;&lt;/em&gt;&amp;gt;.&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;its-uses&quot;&gt;Its uses?&lt;/h3&gt;
+
+&lt;p&gt;Mostly pocket-sized devices with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A specific purpose (&lt;em&gt;embedded system&lt;/em&gt;)&lt;/li&gt;
+  &lt;li&gt;A minimalistic or no user interface&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;High&lt;/em&gt; power efficiency&lt;/li&gt;
+  &lt;li&gt;Need for portability&lt;/li&gt;
+  &lt;li&gt;Low price&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;No Operating System&lt;/em&gt; needed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;NOTE: For those more into it already, keep in mind that all the items above are indicative. Sure you can have an arduino with 3 simple purposes, the user interface could be a color LCD still, maybe not efficient if you use no sleep features, no portability if you have a automatic window opening system, price can vary if you have a very expensive sensor, there are some so called operating systems for Arduino like Mongoose OS, …&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;arduino-vs-raspberry&quot;&gt;Arduino vs. Raspberry?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Also a pocket-size board&lt;/li&gt;
+  &lt;li&gt;It’s a full computer though&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Has an Operating System&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;More expensive than most Arduino boards (~30€ the cheapest on &lt;a href=&quot;https://www.amazon.fr/Raspberry-Plaque-mod%C3%A8le-Cortex-11811853/dp/B07KKBCXLY/ref=sr_1_3?__mk_fr_FR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&amp;amp;dchild=1&amp;amp;keywords=raspberry+pi&amp;amp;qid=1588318997&amp;amp;sr=8-3&quot;&gt;amazon.fr&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;could last a day&lt;/strong&gt; on batteries (maximum)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;OUT OF SCOPE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours.&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;arduino-vs-&quot;&gt;Arduino vs. *?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;FPGA&lt;/li&gt;
+  &lt;li&gt;ESPuma&lt;/li&gt;
+  &lt;li&gt;uPython&lt;/li&gt;
+  &lt;li&gt;Blynk&lt;/li&gt;
+  &lt;li&gt;Mongoose OS&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;OUT OF SCOPE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;why-so-trendy&quot;&gt;Why so trendy?&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Boards can be way cheaper than a laptop&lt;/li&gt;
+  &lt;li&gt;Lots of cool applications (IoT)
+    &lt;ul&gt;
+      &lt;li&gt;Smart Home&lt;/li&gt;
+      &lt;li&gt;Smart City&lt;/li&gt;
+      &lt;li&gt;Environment&lt;/li&gt;
+      &lt;li&gt;Security&lt;/li&gt;
+      &lt;li&gt;Industrial IoT&lt;/li&gt;
+      &lt;li&gt;…&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Wider scope than just programming&lt;/li&gt;
+  &lt;li&gt;Interact with the real world / physics
+    &lt;ul&gt;
+      &lt;li&gt;Actuators&lt;/li&gt;
+      &lt;li&gt;Sensors&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Build something useful&lt;/li&gt;
+  &lt;li&gt;Be creative&lt;/li&gt;
+  &lt;li&gt;Think out of the box&lt;/li&gt;
+  &lt;li&gt;Have fun&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;how-to-get-started&quot;&gt;How to get started?&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h3 id=&quot;main-ingredients&quot;&gt;Main ingredients&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;An arduino-compatible board&lt;/li&gt;
+  &lt;li&gt;Some sensor/s&lt;/li&gt;
+  &lt;li&gt;Some user interface/s&lt;/li&gt;
+  &lt;li&gt;A power supply&lt;/li&gt;
+  &lt;li&gt;A firmware&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Proposed ingredients (&lt;strong&gt;to buy&lt;/strong&gt;):&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Board: &lt;a href=&quot;https://www.amazon.fr/Yizhet-NodeMCU-ESP8266-ESP-12E-D%C3%A9veloppement/dp/B07XJWK5F4/ref=sr_1_3?dchild=1&amp;amp;keywords=ESP8266+nodeMCU&amp;amp;qid=1588339084&amp;amp;sr=8-3&quot;&gt;&lt;strong&gt;NodeMCU esp8266&lt;/strong&gt; (~5€)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Sensor: &lt;a href=&quot;https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_&quot;&gt;&lt;strong&gt;a button&lt;/strong&gt; (~3€ each)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;UI: &lt;a href=&quot;https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3&quot;&gt;&lt;strong&gt;some leds&lt;/strong&gt; (~3€)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Power: laptop &lt;a href=&quot;https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_&quot;&gt;(+ &lt;strong&gt;an usb cable&lt;/strong&gt; (~3€))&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;em&gt;The component aboves are not the cheapest, but the simplest to get started with!!!&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h3 id=&quot;procedure&quot;&gt;Procedure&lt;/h3&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Install &lt;a href=&quot;https://docs.platformio.org/en/latest/core/installation.html&quot;&gt;PlatformIO Core&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;(opt.) Install the &lt;a href=&quot;https://platformio.org/platformio-ide&quot;&gt;PlatformIO IDE&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Connect your laptop to the &lt;strong&gt;NodeMCU esp8266&lt;/strong&gt; using the &lt;strong&gt;usb cable&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Clone the &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led&quot;&gt;blinking led&lt;/a&gt; project&lt;/li&gt;
+  &lt;li&gt;Connect the leds to the board as described in &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led/blob/master/src/Pinout.h&quot;&gt;the Pinout.h header&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Launch &lt;code class=&quot;highlighter-rouge&quot;&gt;platformio run --target upload&lt;/code&gt; to load firmware&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;That’s it!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;in-my-pipeline&quot;&gt;In my pipeline&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Framework to facilitate
+    &lt;ul&gt;
+      &lt;li&gt;Properties setup&lt;/li&gt;
+      &lt;li&gt;Development&lt;/li&gt;
+      &lt;li&gt;Logs retrieval&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Projects
+    &lt;ul&gt;
+      &lt;li&gt;Botino&lt;/li&gt;
+      &lt;li&gt;Sleepino&lt;/li&gt;
+      &lt;li&gt;Bimbino (proto ready)&lt;/li&gt;
+      &lt;li&gt;Zino (to come)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h2 id=&quot;thanks&quot;&gt;Thanks!&lt;/h2&gt;
+
+</description>
+        <pubDate>Thu, 30 Apr 2020 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/post.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/post.html</guid>
+        
+        <category>arduino</category>
+        
+        <category>newbie</category>
+        
+        <category>esp8266</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Quicky on Enumeratum for Scala 2</title>
+        <description>&lt;h1 id=&quot;enumeratum&quot;&gt;Enumeratum&lt;/h1&gt;
+
+&lt;p&gt;Enumerations for &lt;em&gt;Scala&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;nav&gt;
+  &lt;h4&gt;Table of Contents&lt;/h4&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumeratum&quot; id=&quot;markdown-toc-enumeratum&quot;&gt;Enumeratum&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#why-should-i-care&quot; id=&quot;markdown-toc-why-should-i-care&quot;&gt;Why should I care?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#what-to-wish&quot; id=&quot;markdown-toc-what-to-wish&quot;&gt;What to wish?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#how-to-code-them&quot; id=&quot;markdown-toc-how-to-code-them&quot;&gt;How to code them?&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#1-using-scalaenumeration&quot; id=&quot;markdown-toc-1-using-scalaenumeration&quot;&gt;1. Using &lt;code class=&quot;highlighter-rouge&quot;&gt;scala.Enumeration&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#2-using-scala-sealed-case&quot; id=&quot;markdown-toc-2-using-scala-sealed-case&quot;&gt;2. Using Scala &lt;code class=&quot;highlighter-rouge&quot;&gt;sealed case&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#3-switching-to-scala-3&quot; id=&quot;markdown-toc-3-switching-to-scala-3&quot;&gt;3. Switching to Scala 3&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#4-using-enumeratum&quot; id=&quot;markdown-toc-4-using-enumeratum&quot;&gt;4. Using &lt;code class=&quot;highlighter-rouge&quot;&gt;enumeratum&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#thanks&quot; id=&quot;markdown-toc-thanks&quot;&gt;Thanks!&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#other-posts&quot; id=&quot;markdown-toc-other-posts&quot;&gt;Other posts&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h2 id=&quot;why-should-i-care&quot;&gt;Why should I care?&lt;/h2&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Enumerations are fundamental&lt;/li&gt;
+  &lt;li&gt;You wish &lt;strong&gt;less maintenance&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Find bugs at compile time&lt;/li&gt;
+      &lt;li&gt;Code easy to understand&lt;/li&gt;
+      &lt;li&gt;Meaningful data types&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;“Let the compiler help you!!!”&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Many code smells come from enums
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://refactoring.guru/smells/primitive-obsession&quot;&gt;Primitive obsession&lt;/a&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;readMode: String&lt;/code&gt;)&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://refactoring.guru/refactoring/smells/change-preventers&quot;&gt;Change preventers&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Scala 2&lt;/em&gt; native enums are &lt;strong&gt;flawed&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--more--&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;what-to-wish&quot;&gt;What to wish?&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.pinimg.com/236x/29/06/1e/29061ea2855d7036d66507a674e799eb--macarons-th-birthday.jpg&quot; height=&quot;300&quot; width=&quot;300&quot; /&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Exhaustive pattern matching (&lt;strong&gt;safety&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;No type erasure (&lt;strong&gt;method overloading&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;Default methods for &lt;strong&gt;de/serialization&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;List all&lt;/strong&gt; possible values&lt;/li&gt;
+  &lt;li&gt;Values to have &lt;strong&gt;extra fields&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Values to be provided an &lt;strong&gt;ordering&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(from &lt;a href=&quot;https://pedrorijo.com/blog/scala-enums/&quot;&gt;here&lt;/a&gt;)&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;how-to-code-them&quot;&gt;How to code them?&lt;/h2&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h3 id=&quot;1-using-scalaenumeration&quot;&gt;1. Using &lt;code class=&quot;highlighter-rouge&quot;&gt;scala.Enumeration&lt;/code&gt;&lt;/h3&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Enumeration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Red&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Green&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Blue&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Value&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(+) native&lt;/li&gt;
+  &lt;li&gt;(-) No exhaustiveness checks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;asString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Color.Value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;Blue&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// and other colors??? (!!!)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// no warning, nothing...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://pngimage.net/wp-content/uploads/2018/06/oh-my-god-png-8.png&quot; height=&quot;200&quot; width=&quot;200&quot; /&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(-) Cannot do method overloading (type erasure)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Color.Value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Animal.Value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// take(Enumeration.this.Value)Unit is &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//   already defined in the scope&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.kindpng.com/picc/b/88/883319.png&quot; height=&quot;300&quot; width=&quot;300&quot; /&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;(on de/serialization)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(+) Built-in &lt;code class=&quot;highlighter-rouge&quot;&gt;.toString&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;(-) Its &lt;code class=&quot;highlighter-rouge&quot;&gt;.withName&lt;/code&gt; method is mean&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;withName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;chucknorris&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// throws NoSuchElementException... &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// :. No referentially transparent&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(+) Easy to list all values (&lt;code class=&quot;highlighter-rouge&quot;&gt;Color.values&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;(+) Values are provided an ordering&lt;/li&gt;
+  &lt;li&gt;(-) Does not support extra fields&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Could not code this:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//       r g b&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Red   1 0 0 &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Green 0 1 0&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Blue  0 0 1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://medium.com/@yuriigorbylov/scala-enumerations-hell-5bdba2c1216&quot;&gt;(more details)&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h3 id=&quot;2-using-scala-sealed-case&quot;&gt;2. Using Scala &lt;code class=&quot;highlighter-rouge&quot;&gt;sealed case&lt;/code&gt;&lt;/h3&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Enum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Red&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Green&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Blue&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(+) &lt;em&gt;Scala 2&lt;/em&gt; &lt;strong&gt;native&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) &lt;strong&gt;Exhaustive&lt;/strong&gt; pattern matching&lt;/li&gt;
+  &lt;li&gt;(+) &lt;strong&gt;No type erasure&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(-) Missing &lt;code class=&quot;highlighter-rouge&quot;&gt;.withName&lt;/code&gt; method&lt;/li&gt;
+  &lt;li&gt;(-) Missing &lt;code class=&quot;highlighter-rouge&quot;&gt;.values&lt;/code&gt; method&lt;/li&gt;
+  &lt;li&gt;(+) Values can have &lt;strong&gt;attributes&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) Values can have &lt;strong&gt;functions&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(-) Values are not provided with an ordering&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h3 id=&quot;3-switching-to-scala-3&quot;&gt;3. Switching to Scala 3&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Scala 3 / &lt;code class=&quot;highlighter-rouge&quot;&gt;dotty&lt;/code&gt; addresses this issue
+    &lt;ul&gt;
+      &lt;li&gt;See &lt;a href=&quot;http://dotty.epfl.ch/docs/reference/enums/enums.html&quot;&gt;this&lt;/a&gt; for more info&lt;/li&gt;
+      &lt;li&gt;(-) Scala 3 &lt;a href=&quot;https://dotty.epfl.ch/docs/&quot;&gt;not ready&lt;/a&gt;!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h3 id=&quot;4-using-enumeratum&quot;&gt;4. Using &lt;code class=&quot;highlighter-rouge&quot;&gt;enumeratum&lt;/code&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(~) &lt;a href=&quot;https://github.com/lloydmeta/enumeratum&quot;&gt;A library&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;(+) No dependencies&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;(+) &lt;strong&gt;Exhaustive&lt;/strong&gt; pattern matching&lt;/li&gt;
+  &lt;li&gt;(+) &lt;strong&gt;No type erasure&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) Provides &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.withName&lt;/code&gt; method&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) Provides &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.values&lt;/code&gt; method&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(+) Values can have &lt;strong&gt;attributes&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) Values can have &lt;strong&gt;methods&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) Values are provided an &lt;strong&gt;ordering&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;(+) &lt;strong&gt;Faster&lt;/strong&gt; than &lt;code class=&quot;highlighter-rouge&quot;&gt;scala.Enumeration&lt;/code&gt; (from the standard library!)&lt;/li&gt;
+  &lt;li&gt;(+) &lt;strong&gt;Integration with pureconfig&lt;/strong&gt;, among other libs&lt;/li&gt;
+  &lt;li&gt;(+) And more!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h4 id=&quot;examples-i&quot;&gt;Examples I&lt;/h4&gt;
+
+&lt;p&gt;Plain example:&lt;/p&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;enumeratum._&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;trait&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EnumEntry&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;findValues&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// magic&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Red&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Green&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Blue&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h4 id=&quot;examples-ii&quot;&gt;Examples II&lt;/h4&gt;
+
+&lt;p&gt;Values with attributes: &lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala#L11&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;h4 id=&quot;examples-iii&quot;&gt;Examples III&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/pureconfig/pureconfig&quot;&gt;Pureconfig&lt;/a&gt; integration: &lt;a href=&quot;https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;thanks&quot;&gt;Thanks!&lt;/h2&gt;
+
+&lt;!--slide-next--&gt;
+
+&lt;h2 id=&quot;other-posts&quot;&gt;Other posts&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pedrorijo.com/blog/scala-enums/&quot;&gt;From Pedro Rijo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 20 Apr 2020 00:00:00 +0200</pubDate>
+        <link>http://mauriciojost.github.io/2020/04/20/enumeratum-for-scala-2/presentation.html</link>
+        <guid isPermaLink="true">http://mauriciojost.github.io/2020/04/20/enumeratum-for-scala-2/presentation.html</guid>
+        
+        <category>scala</category>
+        
+        <category>enumeratum</category>
+        
+        <category>enum</category>
+        
+        
+      </item>
     
       <item>
         <title>Dump your JVM</title>
@@ -1350,853 +2126,6 @@ note right of “List[Dog]”: Can be added\nto a List[Animal]\nthanks to\ncovar
         <category>contravariant</category>
         
         <category>invariant</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>CoVariant, ContraVariant and InVariant... Variances in Scala</title>
-        <description>&lt;h2 id=&quot;variance&quot;&gt;Variance&lt;/h2&gt;
-
-&lt;p&gt;The variance in Scala aims to provide flexibility to the inheritance on parametric types.&lt;/p&gt;
-
-&lt;p&gt;Two examples where it helps are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Make &lt;code class=&quot;highlighter-rouge&quot;&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code class=&quot;highlighter-rouge&quot;&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;Reuse a function &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;a-concrete-example&quot;&gt;A concrete example&lt;/h3&gt;
-
-&lt;p&gt;Consider the following example:&lt;/p&gt;
-
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 1. Example types;
-scale max 900 width;
-Animal &amp;lt;|-- Dog;
-Animal &amp;lt;|-- Cat;
-@enduml;&quot; alt=&quot;Alt text&quot; /&gt;&lt;/span&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our pet classes
-sealed class Animal
-class Dog extends Animal
-class Cat extends Animal
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Let’s say you work for a veterinary. You’re writing an API.&lt;/p&gt;
-
-&lt;p&gt;You want to &lt;strong&gt;modularize the functions
-that retrieve pets’ information from a DB&lt;/strong&gt;, like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getName&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getBreed&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;etc.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Then, we could define a class &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; that will encapsulate an
-&lt;em&gt;information retriever&lt;/em&gt; function, &lt;code class=&quot;highlighter-rouge&quot;&gt;f&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here is our first attempt:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Func[I,O] (val f: I =&amp;gt; O) {
-  def apply(i: I): O = f(i)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Good! We can define our first instance of &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our first information retriever
-// Is my animal a dog?
-val isADog: Func[Animal, Boolean] = {
-  new Func((i: Animal) =&amp;gt; i.isInstanceOf[Dog])
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Animal&lt;/code&gt;) and invariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
-done by the compiler.&lt;/p&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;generalizing-func-covariance&quot;&gt;Generalizing &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;: Covariance&lt;/h2&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
-
-&lt;p&gt;Let’s say you handle many &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; implementations:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val x:  Func[Animal, Boolean] = ...
-val y:  Func[Animal, String] = ...
-val z:  Func[Animal, Int] = ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;It would be good to be able to treat all &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;z&lt;/code&gt; polymorphically.&lt;/p&gt;
-
-&lt;p&gt;For instance be able to do:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val l: List[Func[Animal, AnyVal]] =
-   List(x, y, z) // won't work, invariance
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Our initial declaration of &lt;code class=&quot;highlighter-rouge&quot;&gt;Func[I, O]&lt;/code&gt; was invariant in both &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;.
-It &lt;strong&gt;does not allow this supertype relation&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
-
-&lt;p&gt;The solution is &lt;strong&gt;covariance&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;The principle: making &lt;code class=&quot;highlighter-rouge&quot;&gt;Clz&lt;/code&gt; covariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; means that&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In other words: the inheritance of this &lt;strong&gt;parametric&lt;/strong&gt; type follows the one from the &lt;strong&gt;parameter&lt;/strong&gt; type.&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Back to our example, we simply re-define &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;, but making it covariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// now covariant on O
-class Func[I, +O] (val f: I =&amp;gt; O) {
-  def apply(i: I): O = f(i)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// specific type
-val isADog: Func[Animal, Boolean] = ...
-
-// generic type
-val covIsDogForAnyVal: Func[Animal, AnyVal] =
-        isADog   // assigned to a more general type
-                 // works because
-                 // Boolean &amp;lt;: AnyVal,
-                 // and thanks to covariance
-                 // Func[X, Boolean] &amp;lt;: Func[X, AnyVal]
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;specializing-func-contravariance&quot;&gt;Specializing &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;: Contravariance&lt;/h2&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;the-problem-1&quot;&gt;The problem&lt;/h3&gt;
-
-&lt;p&gt;Let’s say we have our function &lt;code class=&quot;highlighter-rouge&quot;&gt;Func[Animal, Boolean]&lt;/code&gt;. Given that &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Dog&lt;/code&gt; is a subtype of &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal&lt;/code&gt;),
-it seems natural to be able to apply such function to a &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;the-solution-1&quot;&gt;The solution&lt;/h3&gt;
-
-&lt;p&gt;The solution is &lt;strong&gt;contravariance&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;The principle: making &lt;code class=&quot;highlighter-rouge&quot;&gt;Clz&lt;/code&gt; contravariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; means that:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In other words the inheritance of this parametric type follows
-inversely the one from the parameter type.&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;We simply redefine &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; but making it contravariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; this time:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// now contravariant in I
-class Func[-I, O] (val f: I =&amp;gt; O) {
-  def apply(i: I): O = f(i)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// generic type
-val isDog: Func[Animal, Boolean] =
-        new Func((i: Animal) =&amp;gt; i.isInstanceOf[Dog])
-
-// specific type
-val contrvarIsDog: Func[Dog, Boolean] =
-        isDog // assigned to a more specific type
-              // works because
-              // Dog &amp;lt;: Animal, and thanks
-              // to contravariance
-              // Func[Dog, X] &amp;gt;: Func[Animal, X]
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
-
-&lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;See its declaration (ignore the &lt;code class=&quot;highlighter-rouge&quot;&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;trait Function2[-T1, -T2, +R] extends ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;For instance for the function:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val f: Function2[Animal, Cat, Dog] = ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Which of these casts are illegal?&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val f1: Function2[Animal, Cat, Animal] = f
-val f2: Function2[Dog, Cat, Dog] = f
-val f3: Function2[Cat, Cat, Dog] = f
-val f4: Function2[Animal, Cat, Animal] = f
-val f5: Function2[Animal, Cat, Cat] = f
-val f6: Function2[Animal, Dog, Dog] = f
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
-
-&lt;p&gt;This is the result of applying variances:&lt;/p&gt;
-
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Covariance and Contravariance;
-scale max 900 width;
-“List[Animal]” &amp;lt;|– “List[Dog]”: “Covariance [+A]”;
-“List[Animal]” &amp;lt;|– “List[Cat]”;
-“Funct[Dog]” &amp;lt;|– “Funct[Animal]”: “Contravariance [-A]”;
-note left of “Funct[Animal]”: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance;
-note right of “List[Dog]”: Can be added\nto a List[Animal]\nthanks to\ncovariance;
-@enduml;
-)&lt;/span&gt;&lt;/p&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;See the &lt;a href=&quot;https://docs.scala-lang.org/tour/variances.html&quot;&gt;official Scala documentation on variance&lt;/a&gt;.&lt;/p&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
-</description>
-        <pubDate>Tue, 10 Oct 2017 00:00:00 +0200</pubDate>
-        <link>http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2017/10/10/covariant-contravariant-invariant-in-scala/presentation.html</guid>
-        
-        <category>scala</category>
-        
-        <category>types</category>
-        
-        <category>covariant</category>
-        
-        <category>contravariant</category>
-        
-        <category>invariant</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>JVM Memory Spaces</title>
-        <description>&lt;p&gt;This post is about:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
-  &lt;li&gt;why they are such a good idea&lt;/li&gt;
-  &lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
-  &lt;li&gt;how to measure their usage in practice&lt;/li&gt;
-  &lt;li&gt;where to find more documentation about them&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;It will help you better understand concepts like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;heap memory&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;etc.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;why-the-need-for-memory-spaces&quot;&gt;Why the need for Memory Spaces?&lt;/h2&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;The JVM frees unreferenced memory via an entity called Garbage Collector (or GC for short).
-Every time the GC claims memory, it executes these steps:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 1. The steps of the Garbage Collection (GC);
-scale max 900 width;
-;
-(&lt;em&gt;) -right-&amp;gt; “1. Mark used memory” %23white;
--right-&amp;gt; “2. Delete unused memory” %23white;
--right-&amp;gt; “3. Compact used memory” %23white;
--right-&amp;gt; (&lt;/em&gt;);
-@enduml;
-)&lt;/p&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;If these steps were to be applied to a flat memory space, the process of freeing memory would become
-proportionally as slow as the amount of memory used. In other words, the more classes loaded, the more
-memory segments to explore every time memory is claimed.&lt;/p&gt;
-
-&lt;p&gt;As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal.&lt;/p&gt;
-
-&lt;p&gt;In a simplified version of reality, the GC considers a class object to be permanent (as it will probably
-live as long as the JVM).&lt;/p&gt;
-
-&lt;p&gt;On the other hand, the GC considers objects created with the &lt;em&gt;new&lt;/em&gt; keyword as
-more likely to have shorter life. The GC discriminates &lt;em&gt;very short life&lt;/em&gt; from &lt;em&gt;medium life&lt;/em&gt; and &lt;em&gt;long life&lt;/em&gt;
-by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they
-are still referenced (hence their block of memory is marked, preventing it from disposal).&lt;/p&gt;
-
-&lt;p&gt;Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change
-their &lt;em&gt;generation&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces,
-or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;.&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;what-are-the-memory-spaces-in-java&quot;&gt;What are the Memory Spaces in Java?&lt;/h2&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general
-terms they can be divided into:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
-scale max 900 width;
-rectangle “JVM Memory” {;
-  rectangle “Heap” {;
-    rectangle “Young\nGeneration” {;
-      rectangle eden as “MP PS\nEden\nSpace” %23red;
-      rectangle survivor as “MP PS\nSurvivor\nSpace” %23orange;
-    };
-    rectangle “Old\nGeneration” {;
-      rectangle oldgen as “MP PS\nOld Gen” %23blue;
-    };
-  };
-  rectangle OffHeap {;
-    rectangle metaspace as “MP\nMetaspace”;
-    rectangle codecache as “MP\nCodecache”;
-    rectangle classspace as “MP\nCompressed\nClass Space”;
-  };
-};
-note right of OffHeap %23white;
-  Not subject to GC.;
-end note;
-;
-note right of Heap %23white;
-  All object instances;
-  are stored here,;
-  memory from this;
-  space is used whenever;
-  new is present in the;
-  code.;
-  Subject to GC.;
-end note;
-;
-note right of metaspace %23white;
-  It used to be;
-  PermGen before;
-  Java 8.;
-end note;
-;
-note right of codecache %23white;
-  Contains compiled;
-  native code, mostly;
-  used by the JIT.;
-end note;
-;
-note right of eden %23white;
-   Recently allocated;
-   objects, did not;
-   survive any GC yet.;
-end note;
-;
-note right of survivor %23white;
-   Objects that have;
-   survived at least;
-   one GC.;
-end note;
-;
-note right of oldgen %23white;
-  Also called Tenured,;
-  objects that have;
-  survived some time;
-  in the Survivor Space.;
-end note;
-;
-@enduml;
-)&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
-
-&lt;p&gt;Exactly, no more &lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code class=&quot;highlighter-rouge&quot;&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;in-practice-can-i-measure-the-use-of-memory-spaces&quot;&gt;In practice, can I measure the use of Memory Spaces?&lt;/h2&gt;
-
-&lt;p&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the use of Memory Spaces&lt;/li&gt;
-  &lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
-  &lt;li&gt;loaded classes&lt;/li&gt;
-  &lt;li&gt;exposed MBeans&lt;/li&gt;
-  &lt;li&gt;and more!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
-
-&lt;p&gt;We will use the Scala REPL as an example:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scala
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We will open &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jconsole &amp;lt;PID&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;to hook to the corresponding JVM.&lt;/p&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;What I see initially is:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;However, if you perform a GC and then you create lots of objects with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val a = (1 to 1000000).toList.map(_.toString)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;You will see:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Can you explain:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
-  &lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;And more generally:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
-  &lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
-double check the version of the JVM it relates too.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;[Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Also, do not forget &lt;code class=&quot;highlighter-rouge&quot;&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code class=&quot;highlighter-rouge&quot;&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;p&gt;Enjoy!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 17 Aug 2017 00:00:00 +0200</pubDate>
-        <link>http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/post.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/post.html</guid>
-        
-        <category>scala</category>
-        
-        <category>java</category>
-        
-        <category>heap</category>
-        
-        <category>memory</category>
-        
-        <category>permgen</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>JVM Memory Spaces</title>
-        <description>&lt;p&gt;This post is about:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
-  &lt;li&gt;why they are such a good idea&lt;/li&gt;
-  &lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
-  &lt;li&gt;how to measure their usage in practice&lt;/li&gt;
-  &lt;li&gt;where to find more documentation about them&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;It will help you better understand concepts like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;heap memory&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;etc.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;why-the-need-for-memory-spaces&quot;&gt;Why the need for Memory Spaces?&lt;/h2&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;The JVM frees unreferenced memory via an entity called Garbage Collector (or GC for short).
-Every time the GC claims memory, it executes these steps:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 1. The steps of the Garbage Collection (GC);
-scale max 900 width;
-;
-(&lt;em&gt;) -right-&amp;gt; “1. Mark used memory” %23white;
--right-&amp;gt; “2. Delete unused memory” %23white;
--right-&amp;gt; “3. Compact used memory” %23white;
--right-&amp;gt; (&lt;/em&gt;);
-@enduml;
-)&lt;/p&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;If these steps were to be applied to a flat memory space, the process of freeing memory would become
-proportionally as slow as the amount of memory used. In other words, the more classes loaded, the more
-memory segments to explore every time memory is claimed.&lt;/p&gt;
-
-&lt;p&gt;As you could imagine, things get better if the GC is aware of the odds an object is eligible for disposal.&lt;/p&gt;
-
-&lt;p&gt;In a simplified version of reality, the GC considers a class object to be permanent (as it will probably
-live as long as the JVM).&lt;/p&gt;
-
-&lt;p&gt;On the other hand, the GC considers objects created with the &lt;em&gt;new&lt;/em&gt; keyword as
-more likely to have shorter life. The GC discriminates &lt;em&gt;very short life&lt;/em&gt; from &lt;em&gt;medium life&lt;/em&gt; and &lt;em&gt;long life&lt;/em&gt;
-by keeping count of the amount of times an object survived a GC cycle. Objects survive a GC cycle when they
-are still referenced (hence their block of memory is marked, preventing it from disposal).&lt;/p&gt;
-
-&lt;p&gt;Objects that survived some GC cycles are less eligible for disposal soon, and we can say they change
-their &lt;em&gt;generation&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;This categorisation of objects into generations really exists, and is materialised in JVMs via Memory Spaces,
-or more precisely &lt;em&gt;Generational Memory Spaces&lt;/em&gt;.&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;what-are-the-memory-spaces-in-java&quot;&gt;What are the Memory Spaces in Java?&lt;/h2&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;Strictly speaking, the Java Memory Spaces really depend on the Java VM implementation, but in general
-terms they can be divided into:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
-@startuml;
-skinparam monochrome false;
-caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
-scale max 900 width;
-rectangle “JVM Memory” {;
-  rectangle “Heap” {;
-    rectangle “Young\nGeneration” {;
-      rectangle eden as “MP PS\nEden\nSpace” %23red;
-      rectangle survivor as “MP PS\nSurvivor\nSpace” %23orange;
-    };
-    rectangle “Old\nGeneration” {;
-      rectangle oldgen as “MP PS\nOld Gen” %23blue;
-    };
-  };
-  rectangle OffHeap {;
-    rectangle metaspace as “MP\nMetaspace”;
-    rectangle codecache as “MP\nCodecache”;
-    rectangle classspace as “MP\nCompressed\nClass Space”;
-  };
-};
-note right of OffHeap %23white;
-  Not subject to GC.;
-end note;
-;
-note right of Heap %23white;
-  All object instances;
-  are stored here,;
-  memory from this;
-  space is used whenever;
-  new is present in the;
-  code.;
-  Subject to GC.;
-end note;
-;
-note right of metaspace %23white;
-  It used to be;
-  PermGen before;
-  Java 8.;
-end note;
-;
-note right of codecache %23white;
-  Contains compiled;
-  native code, mostly;
-  used by the JIT.;
-end note;
-;
-note right of eden %23white;
-   Recently allocated;
-   objects, did not;
-   survive any GC yet.;
-end note;
-;
-note right of survivor %23white;
-   Objects that have;
-   survived at least;
-   one GC.;
-end note;
-;
-note right of oldgen %23white;
-  Also called Tenured,;
-  objects that have;
-  survived some time;
-  in the Survivor Space.;
-end note;
-;
-@enduml;
-)&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
-
-&lt;p&gt;Exactly, no more &lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code class=&quot;highlighter-rouge&quot;&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;in-practice-can-i-measure-the-use-of-memory-spaces&quot;&gt;In practice, can I measure the use of Memory Spaces?&lt;/h2&gt;
-
-&lt;p&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the use of Memory Spaces&lt;/li&gt;
-  &lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
-  &lt;li&gt;loaded classes&lt;/li&gt;
-  &lt;li&gt;exposed MBeans&lt;/li&gt;
-  &lt;li&gt;and more!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
-
-&lt;p&gt;We will use the Scala REPL as an example:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scala
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We will open &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jconsole &amp;lt;PID&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;to hook to the corresponding JVM.&lt;/p&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;What I see initially is:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;However, if you perform a GC and then you create lots of objects with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val a = (1 to 1000000).toList.map(_.toString)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;!--slide-ignore-begin--&gt;
-
-&lt;p&gt;You will see:&lt;/p&gt;
-
-&lt;!--slide-ignore-end--&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Can you explain:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
-  &lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;And more generally:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
-  &lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;There is really lots of documentation about this topic. Whenever you read documentation about it, I suggest you to
-double check the version of the JVM it relates too.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;[Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--slide-down--&gt;
-
-&lt;p&gt;Also, do not forget &lt;code class=&quot;highlighter-rouge&quot;&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code class=&quot;highlighter-rouge&quot;&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--slide-next--&gt;
-
-&lt;p&gt;Enjoy!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 17 Aug 2017 00:00:00 +0200</pubDate>
-        <link>http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/presentation.html</link>
-        <guid isPermaLink="true">http://mauriciojost.github.io/2017/08/17/jvm-memory-spaces/presentation.html</guid>
-        
-        <category>scala</category>
-        
-        <category>java</category>
-        
-        <category>heap</category>
-        
-        <category>memory</category>
-        
-        <category>permgen</category>
         
         
       </item>

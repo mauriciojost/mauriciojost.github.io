@@ -2,6 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/presentation.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2020/04/30/arduino-finally-getting-started/post.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://mauriciojost.github.io/2020/04/20/enumeratum-for-scala-2/presentation.html</loc>
+    </url>
+    
+    <url>
         <loc>http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html</loc>
     </url>
     
