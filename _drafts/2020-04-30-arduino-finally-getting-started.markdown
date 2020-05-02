@@ -33,9 +33,14 @@ Please, stay only if...
 
 <!--slide-ignore-begin-->
 
-A real disclaimer: arduino is a time sucker as much as 3D printing, video games, and some other nasty-not-to-abuse-of hobbies. 
+A **real disclaimer**, arduino is a time sucker, same level as:
 
-Be careful, don't come to me and give me the chance to say _I told you_.
+- 3D printing, 
+- video games,
+- aeromodelling, 
+- etc.
+
+**Be careful**.
 
 <!--slide-ignore-end-->
 
@@ -45,11 +50,7 @@ Be careful, don't come to me and give me the chance to say _I told you_.
 
 ## What is Arduino?
 
-**Company and a community** that
-designs and manufactures **single-board microcontrollers** and
-microcontroller kits
-for building **digital devices**
-<_with the **framework to program them**_>
+**Company and a community** that designs and manufactures **single-board microcontrollers** and microcontroller kits for building **digital devices** <_with the **framework to program them**_>.
 
 <!--slide-next-->
 
