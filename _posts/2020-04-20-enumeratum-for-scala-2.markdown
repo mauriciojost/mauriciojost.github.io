@@ -231,6 +231,12 @@ Unable to parse the configuration: XX is not a member of Enum (R, W, RW, -).
 - Such enums are encoded as JSON now
 - They are decoded too
 
+<!--slide-down-->
+
+- ScalaCheck (for properties testing)
+- Doobie (Functional database library)
+- and more...
+
 <!--slide-next-->
 
 ## Thanks!
