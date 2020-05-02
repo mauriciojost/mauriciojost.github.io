@@ -18,13 +18,17 @@ comments: true
 Enumerations for _Scala_
 
 <!--slide-down-->
+
+{% include toc.html %}
+
+<!--slide-down-->
  
 ## Why should I care?
 
 <!--slide-down-->
 
-- Enumerations are the basis of programming
-- You ambition **less maintenance**
+- Enumerations are fundamental
+- You wish **less maintenance**
   - Find bugs at compile time
   - Code easy to understand
   - Meaningful data types
@@ -42,12 +46,6 @@ _"Let the compiler help you!!!"_
 
 <!--slide-next-->
 
-## Enumerations
-
-- How to code them in Scala?
-
-<!--slide-next-->
-
 ## What to wish?
 
 <img src="https://i.pinimg.com/236x/29/06/1e/29061ea2855d7036d66507a674e799eb--macarons-th-birthday.jpg" height="300" width="300">
@@ -56,7 +54,7 @@ _"Let the compiler help you!!!"_
 
 - Exhaustive pattern matching (**safety**)
 - No type erasure (**method overloading**)
-- Default methods for (safe) **serialization/deserialization**
+- Default methods for **de/serialization**
 - **List all** possible values
 - Values to have **extra fields**
 - Values to be provided an **ordering**
@@ -65,9 +63,14 @@ _"Let the compiler help you!!!"_
 
 <!--slide-next-->
 
+
+## How to code them?
+
+<!--slide-next-->
+
 ### 1. Using `scala.Enumeration`
 
-```
+```scala
 object Color extends Enumeration {
   val Red, Green, Blue = Value
 }
@@ -75,14 +78,10 @@ object Color extends Enumeration {
 
 <!--slide-down-->
 
-#### Evaluation
-
-<!--slide-down-->
-
 - (+) native
 - (-) No exhaustiveness checks
 
-```
+```scala
 def asString(c: Color.Value) = c match {
   case Color.Blue => "blue"
   // and other colors??? (!!!)
@@ -96,7 +95,7 @@ def asString(c: Color.Value) = c match {
 
 - (-) Cannot do method overloading (type erasure)
 
-```
+```scala
 def take(c: Color.Value)
 def take(c: Animal.Value)
 // take(Enumeration.this.Value)Unit is 
@@ -107,12 +106,12 @@ def take(c: Animal.Value)
 
 <!--slide-down-->
 
-(on serialization / deserialization)
+(on de/serialization)
 
 - (+) Built-in `.toString`
 - (-) Its `.withName` method is mean
 
-```
+```scala
 Color.withName("chucknorris")
 // throws NoSuchElementException... 
 // :. No referentially transparent
@@ -124,7 +123,7 @@ Color.withName("chucknorris")
 - (+) Values are provided an ordering
 - (-) Does not support extra fields
 
-```
+```scala
 // Could not code this:
 //       r g b
 // Red   1 0 0 
@@ -138,7 +137,7 @@ Color.withName("chucknorris")
 
 ### 2. Using Scala `sealed case`
 
-```
+```scala
 sealed abstract class Color
 object Color extends Enum {
   case object Red   extends Color
@@ -148,8 +147,6 @@ object Color extends Enum {
 ```
 
 <!--slide-down-->
-
-#### Evaluation
 
 - (+) _Scala 2_ **native**
 - (+) **Exhaustive** pattern matching
@@ -195,7 +192,7 @@ object Color extends Enum {
 
 Plain example: 
 
-```
+```scala
 import enumeratum._
 sealed trait Color extends EnumEntry
 object Color extends Enum[Color] {
