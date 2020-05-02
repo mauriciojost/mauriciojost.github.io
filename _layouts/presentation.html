@@ -122,16 +122,16 @@
           { src: '{{ "/reveal.js/plugin/markdown/markdown.js" | relative_url }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 
           // Syntax highlight for <code> elements
-          { src: '{{ "/reveal.js/plugin/highlight/highlight.js" | relative_url }}', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '{{ "/reveal.js/plugin/highlight/highlight.js" | relative_url }}', callback: function() { hljs.initHighlightingOnLoad(); } },
 
           // Zoom in and out with Alt+click
-          { src: '{{ "/reveal.js/plugin/zoom-js/zoom.js" | relative_url }}', async: true },
+          { src: '{{ "/reveal.js/plugin/zoom-js/zoom.js" | relative_url }}'},
 
           // Speaker notes
-          { src: '{{ "/reveal.js/plugin/notes/notes.js" | relative_url }}', async: true },
+          { src: '{{ "/reveal.js/plugin/notes/notes.js" | relative_url }}'},
 
           // MathJax
-          { src: '{{ "/reveal.js/plugin/math/math.js" | relative_url }}', async: true }
+          { src: '{{ "/reveal.js/plugin/math/math.js" | relative_url }}'}
         ]
       });
 
