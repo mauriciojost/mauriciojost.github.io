@@ -12,6 +12,7 @@ sass:
 markdown: kramdown
 kramdown:
   parse_block_html: true
+  toc_levels: [1, 2]
 
 # Dist build settings
 include: ["reveal.js"]
