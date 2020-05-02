@@ -52,13 +52,17 @@ A **real disclaimer**, arduino is a time sucker, same level as:
 
 <!--more-->
 
-## What is Arduino?
+## Overview
 
-**Company and a community** that designs and manufactures **single-board microcontrollers** and microcontroller kits for building **digital devices** <_with the **framework to program them**_>.
+<!--slide-down-->
 
-<!--slide-next-->
+### What is it?
 
-## Uses for Arduino
+Arduino is a **company and a community** that designs and manufactures **single-board microcontrollers** and microcontroller kits for building **digital devices** <_with the **framework to program them**_>.
+
+<!--slide-down-->
+
+### Its uses?
 
 Mostly pocket-sized devices with:
 
@@ -73,7 +77,7 @@ NOTE: For those more into it already, keep in mind that all the items above are 
 
 <!--slide-down-->
 
-## And Raspberry?
+### Arduino vs. Raspberry?
 
 - Also a pocket-size board
 - It's a full computer though
@@ -87,7 +91,7 @@ NOTE: Saw some videos making a big deal out of a Raspberry running on batteries 
 
 <!--slide-down-->
 
-## And the rest?
+### Arduino vs. *?
 
 - FPGA
 - ESPuma
@@ -100,7 +104,7 @@ NOTE: Saw some videos making a big deal out of a Raspberry running on batteries 
 
 <!--slide-next-->
 
-## Why is it all interesting?
+## Why so trendy?
 
 <!--slide-down-->
 
@@ -127,7 +131,7 @@ NOTE: Saw some videos making a big deal out of a Raspberry running on batteries 
 
 <!--slide-next-->
 
-## How to get started
+## How to get started?
 
 <!--slide-down-->
 
@@ -158,40 +162,34 @@ _The component aboves are not the cheapest, but the simplest to get started with
 
 <!--slide-down-->
 
-1. Install it from [here](https://docs.platformio.org/en/latest/core/installation.html)
-2. (optional) Install the IDE from [here](https://platformio.org/platformio-ide)
-3. See the documentation [here](https://docs.platformio.org/en/latest/core/index.html)
+1. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation.html)
+2. (opt.) Install the [PlatformIO IDE](https://platformio.org/platformio-ide)
 
 <!--slide-down-->
 
-4. Connect your laptop to the **NodeMCU esp8266** using the **usb cable**
-5. Clone the [blinking led](https://github.com/mauriciojost/esp8266-blinking-led) project
-6. Connect the leds to the board as described in [the Pinout.h header](https://github.com/mauriciojost/esp8266-blinking-led/blob/master/src/Pinout.h)
-7. Launch `platformio run --target upload` to upload it to the board
+3. Connect your laptop to the **NodeMCU esp8266** using the **usb cable**
+4. Clone the [blinking led](https://github.com/mauriciojost/esp8266-blinking-led) project
+5. Connect the leds to the board as described in [the Pinout.h header](https://github.com/mauriciojost/esp8266-blinking-led/blob/master/src/Pinout.h)
+6. Launch `platformio run --target upload` to load firmware
 
-<!--slide-down-->
-
-## Sensors
-
-- Other transductors: 
-  - temperature
-  - luminosity
-  - humidity
-  - pressure
-  - rfid
-  - mic
-  - buttons
-  - motors
-  - servos
-  - lasers
+**That's it!**
 
 <!--slide-next-->
 
 ## In my pipeline
 
+- Framework to facilitate
+  - Properties setup
+  - Development
+  - Logs retrieval
+- Projects
+  - Botino
+  - Sleepino
+  - Bimbino (proto ready)
+  - Zino (to come)
+
 <!--slide-down-->
 
-<!--more-->
+## Thanks!
+
  
-<!--slide-down-->
-
