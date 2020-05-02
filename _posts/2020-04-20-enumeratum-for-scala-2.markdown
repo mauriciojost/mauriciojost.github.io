@@ -188,7 +188,9 @@ object Color extends Enum {
 
 <!--slide-down-->
 
-#### Examples I
+#### Examples
+
+<!--slide-down-->
 
 Plain example: 
 
@@ -205,15 +207,29 @@ object Color extends Enum[Color] {
 
 <!--slide-down-->
 
-#### Examples II
-
 Values with attributes: [here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala#L11)
 
 <!--slide-down-->
 
-#### Examples III
+[Pureconfig](https://github.com/pureconfig/pureconfig) integration: 
 
-[Pureconfig](https://github.com/pureconfig/pureconfig) integration: [here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
+- [Enums here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/security/Permission.scala)
+- Dedicated section for parsing [transversal](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/helpers/ConfigLoader.scala#L29) (no parsing in business code)
+- Concerns remain separated
+- Clear error in case of unexpected value `XX`:
+
+```
+Unable to parse the configuration: XX is not a member of Enum (R, W, RW, -).
+```
+
+<!--slide-down-->
+
+[Circe](https://circe.github.io/circe/) integration
+
+- [Enums here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/models/Device.scala#L63)
+- Encoding [here](https://github.com/mauriciojost/main4ino-server/blob/master/src/main/scala/org/mauritania/main4ino/helpers/ConfigLoader.scala#L21)
+- Such enums are encoded as JSON now
+- They are decoded too
 
 <!--slide-next-->
 
