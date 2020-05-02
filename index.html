@@ -51,15 +51,15 @@
       <a href="/2019/07/20/dump-your-jvm.html">Dump your JVM (post)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
+      <p>This is a ultra-short post on JVM debugging tools. Did you get an <code class="highlighter-rouge">OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
 
 <h2 id="an-example-for-memory-analysis">An example for memory analysis</h2>
 
-<p>I&#39;d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.</p>
+<p>I’d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.</p>
 
-<p>This application simply will create a huge amount of <code>UUID</code> instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let&#39;s get started.</p>
+<p>This application simply will create a huge amount of <code class="highlighter-rouge">UUID</code> instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let’s get started.</p>
 
-<p>Put in <code>Main.scala</code> the following:</p>
+<p>Put in <code class="highlighter-rouge">Main.scala</code> the following:</p>
 
 
     </div>
@@ -77,14 +77,14 @@
       <a href="/2017/11/07/exception-handling-in-spark-2/post.html">Exception Handling in Spark 2.x (post)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <h1 id="why-exception-handling-e-h-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
+      <h1 id="why-exception-handling-eh-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
 
 <ul>
-<li><strong>data is rarely ideal</strong></li>
-<li>some scenarios don&#39;t deserve an <strong>immediate</strong> halt</li>
-<li>investigate newer scenarios as-per-priority (happier customers)</li>
-<li>ease product evolution</li>
-<li>understand application limitations</li>
+  <li><strong>data is rarely ideal</strong></li>
+  <li>some scenarios don’t deserve an <strong>immediate</strong> halt</li>
+  <li>investigate newer scenarios as-per-priority (happier customers)</li>
+  <li>ease product evolution</li>
+  <li>understand application limitations</li>
 </ul>
 
 <!--slide-next-->
@@ -105,14 +105,14 @@
       <a href="/2017/11/07/exception-handling-in-spark-2/presentation.html">Exception Handling in Spark 2.x (presentation)</a>
     </h2>
     <div class="post-content" itemprop="articleBody">
-      <h1 id="why-exception-handling-e-h-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
+      <h1 id="why-exception-handling-eh-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
 
 <ul>
-<li><strong>data is rarely ideal</strong></li>
-<li>some scenarios don&#39;t deserve an <strong>immediate</strong> halt</li>
-<li>investigate newer scenarios as-per-priority (happier customers)</li>
-<li>ease product evolution</li>
-<li>understand application limitations</li>
+  <li><strong>data is rarely ideal</strong></li>
+  <li>some scenarios don’t deserve an <strong>immediate</strong> halt</li>
+  <li>investigate newer scenarios as-per-priority (happier customers)</li>
+  <li>ease product evolution</li>
+  <li>understand application limitations</li>
 </ul>
 
 <!--slide-next-->
@@ -135,12 +135,12 @@
     <div class="post-content" itemprop="articleBody">
       <h2 id="dotfiles-me">Dotfiles? Me?</h2>
 
-<p>You&#39;re eligible if you use:</p>
+<p>You’re eligible if you use:</p>
 
 <ul>
-<li>Linux</li>
-<li>macOS</li>
-<li>Cygwin (over Windows)</li>
+  <li>Linux</li>
+  <li>macOS</li>
+  <li>Cygwin (over Windows)</li>
 </ul>
 
 <!--slide-down-->
@@ -148,20 +148,24 @@
 <p>And if at least one of the below is true:</p>
 
 <ul>
-<li>you often ‎<strong>can&#39;t remember commands</strong> and flags</li>
+  <li>you often ‎<strong>can’t remember commands</strong> and flags</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">git log --oneline \
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log --oneline \
   --decorate --all \
   --graph
-</code></pre></div>
+</code></pre></div></div>
+
 <ul>
-<li>you often <strong>lose configs</strong> of your apps (<code>bash</code>, <code>htop</code>)</li>
-<li>you often use <strong>hostile shell</strong> in many remote hosts</li>
+  <li>you often <strong>lose configs</strong> of your apps (<code class="highlighter-rouge">bash</code>, <code class="highlighter-rouge">htop</code>)</li>
+  <li>you often use <strong>hostile shell</strong> in many remote hosts</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">&gt;_
-</code></pre></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;_
+</code></pre></div></div>
+
 <ul>
-<li>you happen to enjoy a very <strong><span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span></span><span style="color:yellow">ment</span></strong></li>
+  <li>you happen to enjoy a very <strong><span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span>&lt;/span&gt;<span style="color:yellow">ment</span></strong></li>
 </ul>
 
 <!--slide-next-->
@@ -196,11 +200,11 @@
 on how to build your own blog posts, and generate both:</p>
 
 <ul>
-<li>a post, and</li>
-<li>a presentation</li>
+  <li>a post, and</li>
+  <li>a presentation</li>
 </ul>
 
-<p>from a single <code>markdown</code> file.</p>
+<p>from a single <code class="highlighter-rouge">markdown</code> file.</p>
 
 
     </div>
@@ -232,11 +236,11 @@ on how to build your own blog posts, and generate both:</p>
 on how to build your own blog posts, and generate both:</p>
 
 <ul>
-<li>a post, and</li>
-<li>a presentation</li>
+  <li>a post, and</li>
+  <li>a presentation</li>
 </ul>
 
-<p>from a single <code>markdown</code> file.</p>
+<p>from a single <code class="highlighter-rouge">markdown</code> file.</p>
 
 
     </div>
@@ -261,8 +265,8 @@ on how to build your own blog posts, and generate both:</p>
 <p>Two examples where it helps are:</p>
 
 <ul>
-<li>Make <code>List[Dog]</code> a subtype of <code>List[Animal]</code></li>
-<li>Reuse a function <code>Animal=&gt;Boolean</code> as a function <code>Dog=&gt;Boolean</code></li>
+  <li>Make <code class="highlighter-rouge">List[Dog]</code> a subtype of <code class="highlighter-rouge">List[Animal]</code></li>
+  <li>Reuse a function <code class="highlighter-rouge">Animal=&gt;Boolean</code> as a function <code class="highlighter-rouge">Dog=&gt;Boolean</code></li>
 </ul>
 
 <!--slide-next-->
@@ -290,8 +294,8 @@ on how to build your own blog posts, and generate both:</p>
 <p>Two examples where it helps are:</p>
 
 <ul>
-<li>Make <code>List[Dog]</code> a subtype of <code>List[Animal]</code></li>
-<li>Reuse a function <code>Animal=&gt;Boolean</code> as a function <code>Dog=&gt;Boolean</code></li>
+  <li>Make <code class="highlighter-rouge">List[Dog]</code> a subtype of <code class="highlighter-rouge">List[Animal]</code></li>
+  <li>Reuse a function <code class="highlighter-rouge">Animal=&gt;Boolean</code> as a function <code class="highlighter-rouge">Dog=&gt;Boolean</code></li>
 </ul>
 
 <!--slide-next-->
@@ -315,11 +319,11 @@ on how to build your own blog posts, and generate both:</p>
       <p>This post is about:</p>
 
 <ul>
-<li>what <strong>Java Memory Spaces</strong> are</li>
-<li>why they are such a good idea</li>
-<li>the spaces and their use in the JVM</li>
-<li>how to measure their usage in practice</li>
-<li>where to find more documentation about them</li>
+  <li>what <strong>Java Memory Spaces</strong> are</li>
+  <li>why they are such a good idea</li>
+  <li>the spaces and their use in the JVM</li>
+  <li>how to measure their usage in practice</li>
+  <li>where to find more documentation about them</li>
 </ul>
 
 <!--slide-down-->
@@ -327,10 +331,10 @@ on how to build your own blog posts, and generate both:</p>
 <p>It will help you better understand concepts like:</p>
 
 <ul>
-<li><code>OutOfMemoryError</code></li>
-<li><code>PermGen</code></li>
-<li><code>heap memory</code></li>
-<li>etc.</li>
+  <li><code class="highlighter-rouge">OutOfMemoryError</code></li>
+  <li><code class="highlighter-rouge">PermGen</code></li>
+  <li><code class="highlighter-rouge">heap memory</code></li>
+  <li>etc.</li>
 </ul>
 
 <!--slide-next-->
@@ -354,11 +358,11 @@ on how to build your own blog posts, and generate both:</p>
       <p>This post is about:</p>
 
 <ul>
-<li>what <strong>Java Memory Spaces</strong> are</li>
-<li>why they are such a good idea</li>
-<li>the spaces and their use in the JVM</li>
-<li>how to measure their usage in practice</li>
-<li>where to find more documentation about them</li>
+  <li>what <strong>Java Memory Spaces</strong> are</li>
+  <li>why they are such a good idea</li>
+  <li>the spaces and their use in the JVM</li>
+  <li>how to measure their usage in practice</li>
+  <li>where to find more documentation about them</li>
 </ul>
 
 <!--slide-down-->
@@ -366,10 +370,10 @@ on how to build your own blog posts, and generate both:</p>
 <p>It will help you better understand concepts like:</p>
 
 <ul>
-<li><code>OutOfMemoryError</code></li>
-<li><code>PermGen</code></li>
-<li><code>heap memory</code></li>
-<li>etc.</li>
+  <li><code class="highlighter-rouge">OutOfMemoryError</code></li>
+  <li><code class="highlighter-rouge">PermGen</code></li>
+  <li><code class="highlighter-rouge">heap memory</code></li>
+  <li>etc.</li>
 </ul>
 
 <!--slide-next-->
@@ -392,11 +396,11 @@ on how to build your own blog posts, and generate both:</p>
     <div class="post-content" itemprop="articleBody">
       <h2 id="why-benchmarking">Why benchmarking?</h2>
 
-<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don&#39;t really know what is happening under the JVM hood.</p>
+<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don’t really know what is happening under the JVM hood.</p>
 
-<p>A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). </p>
+<p>A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any).</p>
 
-<p>Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you&#39;re interested.</p>
+<p>Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you’re interested.</p>
 
 
     </div>
@@ -468,7 +472,7 @@ on how to build your own blog posts, and generate both:</p>
 
 <h2 id="but-what-is-a-partial-function-in-scala">But, what is a partial function in Scala?</h2>
 
-<p>It is a Scala trait that allows to express a partial function. For instance...</p>
+<p>It is a Scala trait that allows to express a partial function. For instance…</p>
 
 
     </div>

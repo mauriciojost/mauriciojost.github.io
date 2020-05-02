@@ -51,11 +51,11 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="why-benchmarking">Why benchmarking?</h2>
 
-<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don&#39;t really know what is happening under the JVM hood.</p>
+<p>Coding consciously and the use of code reviews are of great importance when it comes to writing clean and efficient code. Sometimes however, I feel like I need stronger reasons to go one way or another, specially when I don’t really know what is happening under the JVM hood.</p>
 
-<p>A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any). </p>
+<p>A benchmark helps describing the current status of your implementation. It provides awareness, helps deciding if improvement is worth the investment, and finally helps measuring the improvement of your change (if any).</p>
 
-<p>Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you&#39;re interested.</p>
+<p>Unfortunately getting such number is not so easy, but fortunately there are good tools to do it correctly. Keep reading if you’re interested.</p>
 
 <!--more-->
 
@@ -64,7 +64,7 @@
 <p>With benchmarking we can determine the performance of an algorithm. However getting meaningful data is tricky.</p>
 
 <blockquote>
-<p><em>What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!</em></p>
+  <p><em>What can be so complicated about it? Just launch the algorithm many times and measure its execution time, and voila!!!</em></p>
 </blockquote>
 
 <p>Nope, benchmarking is not so trivial, specially on top of JVM. Scala by itself applies more than 
@@ -77,17 +77,17 @@ below (the suspiciously even one) yields such unexpected results for
 <a href="https://github.com/mauriciojost/scala-benchmark/blob/master/src/main/scala/org/mauritania/minibenchmark/catalog/IdentityTricky.scala">these very different algorithms</a>. 
 Found the reason?</p>
 
-<p><a href="https://mauriciojost.github.io/scala-benchmark/"><img src="/images/posts/benchmarking/scala-benchmark.png" alt="Project"></a></p>
+<p><a href="https://mauriciojost.github.io/scala-benchmark/"><img src="/images/posts/benchmarking/scala-benchmark.png" alt="Project" /></a></p>
 
 <h2 id="and-the-solution">And the solution?</h2>
 
 <p>The one I recommend is to use <a href="http://openjdk.java.net/projects/code-tools/jmh/">JMH</a>, the harness for Java benchmarking that is exploitable from Scala thanks to <a href="https://github.com/ktoso/sbt-jmh">sbt-jmh</a>.</p>
 
-<p>There is also <a href="https://scalameter.github.io/">ScalaMeter</a> that should be taken into account, I haven&#39;t personally used it yet at the moment of writing this post. </p>
+<p>There is also <a href="https://scalameter.github.io/">ScalaMeter</a> that should be taken into account, I haven’t personally used it yet at the moment of writing this post.</p>
 
 <h2 id="how-to-get-started-right-now">How to get started right now?</h2>
 
-<p><strong>I&#39;ve set up a <a href="https://github.com/mauriciojost/scala-benchmark">project github/scala-benchmark</a> which 
+<p><strong>I’ve set up a <a href="https://github.com/mauriciojost/scala-benchmark">project github/scala-benchmark</a> which 
 renders <a href="https://mauriciojost.github.io/scala-benchmark/">visual reports</a> that GitHub can display via GitHub pages.</strong> 
 Help yourself and fork it if you like the idea.</p>
 
@@ -96,6 +96,7 @@ Help yourself and fork it if you like the idea.</p>
 <p>Also if you want to know more, I really recommend <a href="http://tutorials.jenkov.com/java-performance/jmh.html">this read about JMH</a>.</p>
 
 <h1 id="enjoy">Enjoy!</h1>
+
 
   </div>
 

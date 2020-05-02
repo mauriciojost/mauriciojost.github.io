@@ -63,12 +63,12 @@
           <script type="text/template">
             <h2 id="dotfiles-me">Dotfiles? Me?</h2>
 
-<p>You&#39;re eligible if you use:</p>
+<p>You’re eligible if you use:</p>
 
 <ul>
-<li>Linux</li>
-<li>macOS</li>
-<li>Cygwin (over Windows)</li>
+  <li>Linux</li>
+  <li>macOS</li>
+  <li>Cygwin (over Windows)</li>
 </ul>
 
 <!--slide-down-->
@@ -76,20 +76,24 @@
 <p>And if at least one of the below is true:</p>
 
 <ul>
-<li>you often ‎<strong>can&#39;t remember commands</strong> and flags</li>
+  <li>you often ‎<strong>can’t remember commands</strong> and flags</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">git log --oneline \
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log --oneline \
   --decorate --all \
   --graph
-</code></pre></div>
+</code></pre></div></div>
+
 <ul>
-<li>you often <strong>lose configs</strong> of your apps (<code>bash</code>, <code>htop</code>)</li>
-<li>you often use <strong>hostile shell</strong> in many remote hosts</li>
+  <li>you often <strong>lose configs</strong> of your apps (<code class="highlighter-rouge">bash</code>, <code class="highlighter-rouge">htop</code>)</li>
+  <li>you often use <strong>hostile shell</strong> in many remote hosts</li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">&gt;_
-</code></pre></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;_
+</code></pre></div></div>
+
 <ul>
-<li>you happen to enjoy a very <strong><span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span></span><span style="color:yellow">ment</span></strong></li>
+  <li>you happen to enjoy a very <strong><span style="color:green">color</span><span style="color:blue">ful </span><span style="color:red">environ</span>&lt;/span&gt;<span style="color:yellow">ment</span></strong></li>
 </ul>
 
 <!--slide-next-->
@@ -106,10 +110,10 @@ keep configuration files (and more) in a repository.</p>
 <h2 id="dotfiles-principles">Dotfiles principles</h2>
 
 <ul>
-<li>customization</li>
-<li>versioning</li>
-<li>sharing</li>
-<li>reusing</li>
+  <li>customization</li>
+  <li>versioning</li>
+  <li>sharing</li>
+  <li>reusing</li>
 </ul>
 
 <!--slide-next-->
@@ -117,21 +121,23 @@ keep configuration files (and more) in a repository.</p>
 <h2 id="why-the-name-dotfiles">Why the name dotfiles?</h2>
 
 <p>Files starting with <strong>dot</strong> are often configuration files:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">mjost@lapin:~$ ls -lAugh \.
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mjost@lapin:~$ ls -lAugh \.
 total 13M
 drwx------   4 mjost 4.0K Oct 21 09:51 .activator
 -rw-------   1 mjost 6.3K Oct 25 08:17 .aliases
 drwx------   3 mjost 4.0K Oct 21 09:51 .android
 drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
 ...
-</code></pre></div>
+</code></pre></div></div>
+
 <!--slide-next-->
 
 <h2 id="who-uses-dotfiles">Who uses dotfiles?</h2>
 
 <ul>
-<li><a href="https://github.com/mathiasbynens/dotfiles">Mathias dotfiles</a>: 17k GitHub stars (*)</li>
-<li><a href="https://github.com/apache/spark">Apache Spark</a>: 14k GitHub stars</li>
+  <li><a href="https://github.com/mathiasbynens/dotfiles">Mathias dotfiles</a>: 17k GitHub stars (*)</li>
+  <li><a href="https://github.com/apache/spark">Apache Spark</a>: 14k GitHub stars</li>
 </ul>
 
 <p>Many flavors, you fork your favorite one!</p>
@@ -143,38 +149,40 @@ drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
 <h2 id="what-can-dotfiles-contain">What can dotfiles contain?</h2>
 
 <ul>
-<li>Shell aliases and functions</li>
-<li>‎Any file <code>.xxx</code> under <code>$HOME</code> (like <code>.bashrc</code>)</li>
-<li>‎Any directory under <code>~/.config</code></li>
+  <li>Shell aliases and functions</li>
+  <li>‎Any file <code class="highlighter-rouge">.xxx</code> under <code class="highlighter-rouge">$HOME</code> (like <code class="highlighter-rouge">.bashrc</code>)</li>
+  <li>‎Any directory under <code class="highlighter-rouge">~/.config</code></li>
 </ul>
 
 <!--slide-down-->
 
-<h3 id="what-ive-personally-added">What I&#39;ve personally added?</h3>
+<h3 id="what-ive-personally-added">What I’ve personally added?</h3>
 
 <ul>
-<li><strong>Window managers</strong> settings (like <code>awesome</code> &amp; <code>xfce</code>)</li>
-<li><strong>Cron job</strong> to <code>renice</code> Intellij</li>
-<li>Integration with <strong><a href="https://github.com/kepkin/dev-shell-essentials">dev-shell-essentials</a></strong></li>
+  <li><strong>Window managers</strong> settings (like <code class="highlighter-rouge">awesome</code> &amp; <code class="highlighter-rouge">xfce</code>)</li>
+  <li><strong>Cron job</strong> to <code class="highlighter-rouge">renice</code> Intellij</li>
+  <li>Integration with <strong><a href="https://github.com/kepkin/dev-shell-essentials">dev-shell-essentials</a></strong></li>
 </ul>
-<div class="highlight"><pre><code class="language-" data-lang="">echo "a cat" | highlight green a | highlight red cat
-</code></pre></div>
-<!--slide-down-->
 
-<ul>
-<li><strong>‎Stderr in <span <span style="color:red">red</span></strong> using <a href="https://github.com/sickill/stderred"><code>stderred</code></a></li>
-<li>‎<strong>Code snippets</strong> (for Bash specially)</li>
-<li>‎<strong>How-To&#39;s</strong> (set up servers like <code>ssh</code>, <code>nfs</code>, <code>ldap</code>)</li>
-<li><strong>Tag with <code>$SESSION_ID</code></strong> commands in history</li>
-<li><strong>Tag with <code>$PWD</code></strong> commands in history</li>
-</ul>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "a cat" | highlight green a | highlight red cat
+</code></pre></div></div>
 
 <!--slide-down-->
 
 <ul>
-<li><strong>Aliases</strong> for commands like <code>git</code>, <code>grep</code> and others</li>
-<li><strong>Key Mappings</strong> for Intellij</li>
-<li>and much more!</li>
+  <li><strong>‎Stderr in &lt;span <span style="color:red">red</span></strong> using <a href="https://github.com/sickill/stderred"><code class="highlighter-rouge">stderred</code></a></li>
+  <li>‎<strong>Code snippets</strong> (for Bash specially)</li>
+  <li>‎<strong>How-To’s</strong> (set up servers like <code class="highlighter-rouge">ssh</code>, <code class="highlighter-rouge">nfs</code>, <code class="highlighter-rouge">ldap</code>)</li>
+  <li><strong>Tag with <code class="highlighter-rouge">$SESSION_ID</code></strong> commands in history</li>
+  <li><strong>Tag with <code class="highlighter-rouge">$PWD</code></strong> commands in history</li>
+</ul>
+
+<!--slide-down-->
+
+<ul>
+  <li><strong>Aliases</strong> for commands like <code class="highlighter-rouge">git</code>, <code class="highlighter-rouge">grep</code> and others</li>
+  <li><strong>Key Mappings</strong> for Intellij</li>
+  <li>and much more!</li>
 </ul>
 
 <!--slide-next-->
@@ -182,11 +190,11 @@ drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
 <h2 id="how-to-get-started-with-dotfiles">How to get started with dotfiles?</h2>
 
 <ul>
-<li>Choose your <a href="https://dotfiles.github.io/">flavor</a></li>
-<li>Install it and use it!</li>
+  <li>Choose your <a href="https://dotfiles.github.io/">flavor</a></li>
+  <li>Install it and use it!</li>
 </ul>
 
-<pre><code class="bash" data-trim contenteditable>
+<pre><code class="bash" data-trim="" contenteditable="">
 # clone your flavor
 git clone \
   https://github.com/mathiasbynens/dotfiles.git
@@ -204,12 +212,12 @@ bash bootstrap.sh
 
 <h1 id="enjoy">Enjoy!</h1>
 
+
           </script>
         </section>
       </div>
     </div>
 
-    <script src="/reveal.js/lib/js/head.min.js"></script>
     <script src="/reveal.js/js/reveal.js"></script>
     <script>
       // Full list of configuration options available at:
@@ -250,16 +258,16 @@ bash bootstrap.sh
           { src: '/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 
           // Syntax highlight for <code> elements
-          { src: '/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '/reveal.js/plugin/highlight/highlight.js', callback: function() { hljs.initHighlightingOnLoad(); } },
 
           // Zoom in and out with Alt+click
-          { src: '/reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '/reveal.js/plugin/zoom-js/zoom.js'},
 
           // Speaker notes
-          { src: '/reveal.js/plugin/notes/notes.js', async: true },
+          { src: '/reveal.js/plugin/notes/notes.js'},
 
           // MathJax
-          { src: '/reveal.js/plugin/math/math.js', async: true }
+          { src: '/reveal.js/plugin/math/math.js'}
         ]
       });
 

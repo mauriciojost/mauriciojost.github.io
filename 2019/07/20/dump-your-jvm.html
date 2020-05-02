@@ -49,26 +49,27 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>This is a ultra-short post on JVM debugging tools. Did you get an <code>OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
+    <p>This is a ultra-short post on JVM debugging tools. Did you get an <code class="highlighter-rouge">OutOfMemoryError</code> and have no idea how to proceed? This post is for you.</p>
 
 <h2 id="an-example-for-memory-analysis">An example for memory analysis</h2>
 
-<p>I&#39;d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.</p>
+<p>I’d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.</p>
 
-<p>This application simply will create a huge amount of <code>UUID</code> instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let&#39;s get started.</p>
+<p>This application simply will create a huge amount of <code class="highlighter-rouge">UUID</code> instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let’s get started.</p>
 
-<p>Put in <code>Main.scala</code> the following:</p>
+<p>Put in <code class="highlighter-rouge">Main.scala</code> the following:</p>
 
 <!--more-->
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">package</span> <span class="nn">com.mauritania</span>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.mauritania</span>
 
 <span class="k">import</span> <span class="nn">java.util.UUID.randomUUID</span>
 
 <span class="k">object</span> <span class="nc">Main</span> <span class="o">{</span>
   <span class="k">val</span> <span class="nv">Nb</span> <span class="k">=</span> <span class="mi">1500000</span>
 
-   <span class="c1">// my unique id string dummy class
-</span>  <span class="k">case</span> <span class="k">class</span> <span class="nc">Myuids</span><span class="o">(</span><span class="n">ui</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+   <span class="c1">// my unique id string dummy class</span>
+  <span class="k">case</span> <span class="k">class</span> <span class="nc">Myuids</span><span class="o">(</span><span class="n">ui</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
 
   <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
 
@@ -82,77 +83,84 @@
   <span class="o">}</span>
 
 <span class="o">}</span>
-</code></pre></div>
-<p>Clearly we&#39;re allocating many <code>Myuids</code> instances.</p>
+</code></pre></div></div>
 
-<p>Launch it as follows (using <code>scalac</code> 2.11.7 here):</p>
-<div class="highlight"><pre><code class="language-" data-lang="">scalac Main.scala
+<p>Clearly we’re allocating many <code class="highlighter-rouge">Myuids</code> instances.</p>
+
+<p>Launch it as follows (using <code class="highlighter-rouge">scalac</code> 2.11.7 here):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scalac Main.scala
 scala com.mauritania.Main
 
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="generating-heap-dumps">Generating heap dumps</h2>
 
-<p>There are sevaral ways to generate heap dumps (<code>.hprof</code> files) before we can analyse them:</p>
+<p>There are sevaral ways to generate heap dumps (<code class="highlighter-rouge">.hprof</code> files) before we can analyse them:</p>
 
 <ol>
-<li>Using <code>jmap</code> JDK&#39;s tool as follows:</li>
+  <li>Using <code class="highlighter-rouge">jmap</code> JDK’s tool as follows:</li>
 </ol>
-<div class="highlight"><pre><code class="language-" data-lang=""> jmap -dump:format=b,file=heap.hprof &lt;pid-of-running-jvm&gt;
-</code></pre></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jmap -dump:format=b,file=heap.hprof &lt;pid-of-running-jvm&gt;
+</code></pre></div></div>
 <ol>
-<li>Connecting to JVM via <code>mat</code> tool</li>
-<li>Connecting to JVM via <code>jmc</code> tool</li>
-<li>Connecting to JVM via <code>jvisualvm</code> tool</li>
-<li>Requesting the JVM to dump the heap on OOM using the following JVM settings:</li>
+  <li>Connecting to JVM via <code class="highlighter-rouge">mat</code> tool</li>
+  <li>Connecting to JVM via <code class="highlighter-rouge">jmc</code> tool</li>
+  <li>Connecting to JVM via <code class="highlighter-rouge">jvisualvm</code> tool</li>
+  <li>Requesting the JVM to dump the heap on OOM using the following JVM settings:</li>
 </ol>
-<div class="highlight"><pre><code class="language-" data-lang="">-XX:+HeapDumpOnOutOfMemoryError
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-XX:+HeapDumpOnOutOfMemoryError
 -XX:HeapDumpPath=/tmp/heap.dump/
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="analysing-heap-dumps">Analysing heap dumps</h2>
 
-<h3 id="eclipse-memory-analyser-mat">Eclipse Memory Analyser (<code>mat</code>)</h3>
+<h3 id="eclipse-memory-analyser-mat">Eclipse Memory Analyser (<code class="highlighter-rouge">mat</code>)</h3>
 
-<p>The easiest way of analysing memory heaps is using <code>mat</code> tool.</p>
-
-<ol>
-<li>Download the standalone Eclipse Memory Analyser (EMA, or <code>mat</code>).</li>
-<li>Open <code>mat</code></li>
-</ol>
-
-<p><img src="/images/posts/dump-jvm/mat-init.png" alt="Mat"></p>
+<p>The easiest way of analysing memory heaps is using <code class="highlighter-rouge">mat</code> tool.</p>
 
 <ol>
-<li>Get the memory dump of the just started JVM, it must be an <code>hprof</code> file.</li>
-<li>Choose the <code>Component report</code></li>
+  <li>Download the standalone Eclipse Memory Analyser (EMA, or <code class="highlighter-rouge">mat</code>).</li>
+  <li>Open <code class="highlighter-rouge">mat</code></li>
 </ol>
 
-<p><img src="/images/posts/dump-jvm/mat-choose-component.png" alt="Component"></p>
+<p><img src="/images/posts/dump-jvm/mat-init.png" alt="Mat" /></p>
 
 <ol>
-<li>Point to the package you&#39;re monitoring (in a regex), for instance <code>com\.mauritania\..*</code></li>
-<li>Now you must see a pie chart.</li>
+  <li>Get the memory dump of the just started JVM, it must be an <code class="highlighter-rouge">hprof</code> file.</li>
+  <li>Choose the <code class="highlighter-rouge">Component report</code></li>
 </ol>
 
-<p><img src="/images/posts/dump-jvm/mat-pie-chart.png" alt="Pie"></p>
+<p><img src="/images/posts/dump-jvm/mat-choose-component.png" alt="Component" /></p>
 
 <ol>
-<li>Click on <code>Top Consumers</code>, see their size in MB.</li>
+  <li>Point to the package you’re monitoring (in a regex), for instance <code class="highlighter-rouge">com\.mauritania\..*</code></li>
+  <li>Now you must see a pie chart.</li>
 </ol>
 
-<p><img src="/images/posts/dump-jvm/mat-top-consumers.png" alt="Top"></p>
-
-<p>The chart shows how <code>Myuids</code> instances are occupying the heap, just as expected.</p>
-
-<p>Note: normally you can also open <code>.hprof</code> files with <code>jhat</code>.</p>
-
-<h3 id="java-mission-control-jmc">Java Mission Control (<code>jmc</code>)</h3>
-
-<p>Let&#39;s now use <code>jmc</code>.</p>
+<p><img src="/images/posts/dump-jvm/mat-pie-chart.png" alt="Pie" /></p>
 
 <ol>
-<li>Add the following settings to your JVM:</li>
+  <li>Click on <code class="highlighter-rouge">Top Consumers</code>, see their size in MB.</li>
 </ol>
-<div class="highlight"><pre><code class="language-" data-lang="">-XX:+StartAttachListener
+
+<p><img src="/images/posts/dump-jvm/mat-top-consumers.png" alt="Top" /></p>
+
+<p>The chart shows how <code class="highlighter-rouge">Myuids</code> instances are occupying the heap, just as expected.</p>
+
+<p>Note: normally you can also open <code class="highlighter-rouge">.hprof</code> files with <code class="highlighter-rouge">jhat</code>.</p>
+
+<h3 id="java-mission-control-jmc">Java Mission Control (<code class="highlighter-rouge">jmc</code>)</h3>
+
+<p>Let’s now use <code class="highlighter-rouge">jmc</code>.</p>
+
+<ol>
+  <li>Add the following settings to your JVM:</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-XX:+StartAttachListener
 -XX:+UnlockCommercialFeatures
 -XX:+FlightRecorder
 -XX:FlightRecorderOptions=
@@ -163,56 +171,62 @@ scala com.mauritania.Main
   disk=true
 -XX:+HeapDumpOnOutOfMemoryError
 -XX:HeapDumpPath=/tmp/heap.dump/
-</code></pre></div>
+</code></pre></div></div>
+
 <ol>
-<li>Upon an <code>OutOfMemoryError</code> the <code>HeapDump*</code> settings will make the JVM create a heap dump under <code>/tmp/heap.dump/java_pidXXXXX.hprof</code></li>
-<li>Upon exit the <code>FlightRecorder*</code> settings will make the JVM create a report under <code>/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr</code> (which does not have memory heap exhaustive information, but more general indicators)</li>
+  <li>Upon an <code class="highlighter-rouge">OutOfMemoryError</code> the <code class="highlighter-rouge">HeapDump*</code> settings will make the JVM create a heap dump under <code class="highlighter-rouge">/tmp/heap.dump/java_pidXXXXX.hprof</code></li>
+  <li>Upon exit the <code class="highlighter-rouge">FlightRecorder*</code> settings will make the JVM create a report under <code class="highlighter-rouge">/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr</code> (which does not have memory heap exhaustive information, but more general indicators)</li>
 </ol>
 
-<p>Regarding our own application, it is enough to launch our application as follows, as all I wanted is to connect to the JVM without dump files: </p>
-<div class="highlight"><pre><code class="language-" data-lang="">java -cp .:&lt;path-to&gt;/scala/lib/scala-library.jar \
+<p>Regarding our own application, it is enough to launch our application as follows, as all I wanted is to connect to the JVM without dump files:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -cp .:&lt;path-to&gt;/scala/lib/scala-library.jar \
   -XX:+UnlockCommercialFeatures \
   -XX:+FlightRecorder \
   com.mauritania.Main
-</code></pre></div>
+</code></pre></div></div>
+
 <ol>
-<li>You can open the <code>.hprof</code> heap dump as seen in the sections above.</li>
-<li>To open the <code>.jfr</code> you need to use <code>Java Mission Control</code> (tool from jdk: <code>jmc</code>)</li>
-<li>Instead of opening an existent <code>.jfr</code> you can make <code>jmc</code> connect to an existent JVM, as follows:</li>
+  <li>You can open the <code class="highlighter-rouge">.hprof</code> heap dump as seen in the sections above.</li>
+  <li>To open the <code class="highlighter-rouge">.jfr</code> you need to use <code class="highlighter-rouge">Java Mission Control</code> (tool from jdk: <code class="highlighter-rouge">jmc</code>)</li>
+  <li>Instead of opening an existent <code class="highlighter-rouge">.jfr</code> you can make <code class="highlighter-rouge">jmc</code> connect to an existent JVM, as follows:</li>
 </ol>
 
 <p>a. Create a new connection</p>
 
-<p><img src="/images/posts/dump-jvm/jmc-connect.png" alt="Connect"></p>
+<p><img src="/images/posts/dump-jvm/jmc-connect.png" alt="Connect" /></p>
 
-<p>b. Set up the recording settings </p>
+<p>b. Set up the recording settings</p>
 
-<p><img src="/images/posts/dump-jvm/jmc-save.png" alt="Save">
-<img src="/images/posts/dump-jvm/jmc-settings.png" alt="Save"></p>
+<p><img src="/images/posts/dump-jvm/jmc-save.png" alt="Save" />
+<img src="/images/posts/dump-jvm/jmc-settings.png" alt="Save" /></p>
 
-<p>c. Interestingly you can request <code>jmc</code> to record certain events from the JVM, like <code>file open</code> event. This can be useful if you consider your application is slow because it has too much IO. </p>
+<p>c. Interestingly you can request <code class="highlighter-rouge">jmc</code> to record certain events from the JVM, like <code class="highlighter-rouge">file open</code> event. This can be useful if you consider your application is slow because it has too much IO.</p>
 
-<p><img src="/images/posts/dump-jvm/jmc-event-recording-settings.png" alt="Event"></p>
+<p><img src="/images/posts/dump-jvm/jmc-event-recording-settings.png" alt="Event" /></p>
 
 <p>d. Start recording</p>
 
-<p><img src="/images/posts/dump-jvm/jmc-start.png" alt="Start">
-<img src="/images/posts/dump-jvm/jmc-recording.png" alt="Rec"></p>
+<p><img src="/images/posts/dump-jvm/jmc-start.png" alt="Start" />
+<img src="/images/posts/dump-jvm/jmc-recording.png" alt="Rec" /></p>
 
 <p>e. See general performance indicators, their evolution in time too</p>
 
-<p><img src="/images/posts/dump-jvm/jmc-stats1.png" alt="Stats"></p>
+<p><img src="/images/posts/dump-jvm/jmc-stats1.png" alt="Stats" /></p>
 
-<p>f. Go deeper into memory consumption under package <code>org.mauritania</code></p>
+<p>f. Go deeper into memory consumption under package <code class="highlighter-rouge">org.mauritania</code></p>
 
-<p><img src="/images/posts/dump-jvm/jmc-object-statistics.png" alt="Stats"></p>
+<p><img src="/images/posts/dump-jvm/jmc-object-statistics.png" alt="Stats" /></p>
 
 <h2 id="extra-notes">Extra notes</h2>
 
-<p>Use the following JVM settings to get garbage collection activities logs. </p>
-<div class="highlight"><pre><code class="language-" data-lang="">-XX:+PrintGCDetails 
+<p>Use the following JVM settings to get garbage collection activities logs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-XX:+PrintGCDetails 
 -XX:+PrintGCTimeStamps
-</code></pre></div>
+</code></pre></div></div>
+
+
   </div>
 
   <hr/>

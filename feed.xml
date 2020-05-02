@@ -5,32 +5,33 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 05 Aug 2019 20:04:41 +0200</pubDate>
-    <lastBuildDate>Mon, 05 Aug 2019 20:04:41 +0200</lastBuildDate>
-    <generator>Jekyll v3.8.6</generator>
+    <pubDate>Sat, 02 May 2020 12:01:38 +0200</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 12:01:38 +0200</lastBuildDate>
+    <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>Dump your JVM</title>
-        <description>&lt;p&gt;This is a ultra-short post on JVM debugging tools. Did you get an &lt;code&gt;OutOfMemoryError&lt;/code&gt; and have no idea how to proceed? This post is for you.&lt;/p&gt;
+        <description>&lt;p&gt;This is a ultra-short post on JVM debugging tools. Did you get an &lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfMemoryError&lt;/code&gt; and have no idea how to proceed? This post is for you.&lt;/p&gt;
 
 &lt;h2 id=&quot;an-example-for-memory-analysis&quot;&gt;An example for memory analysis&lt;/h2&gt;
 
-&lt;p&gt;I&amp;#39;d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.&lt;/p&gt;
+&lt;p&gt;I’d like to start with a dummy application as example. We will make it run and analyse its memory heap. With the tools I will introduce you can analyse many other indicators, but the procedure to get to that point hast the same initial steps. Once in the tool you can explore by yourself.&lt;/p&gt;
 
-&lt;p&gt;This application simply will create a huge amount of &lt;code&gt;UUID&lt;/code&gt; instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let&amp;#39;s get started.&lt;/p&gt;
+&lt;p&gt;This application simply will create a huge amount of &lt;code class=&quot;highlighter-rouge&quot;&gt;UUID&lt;/code&gt; instances and keep them in memory for a while.  If we analyse it correctly, we should see them somewhere in our memory heap. So let’s get started.&lt;/p&gt;
 
-&lt;p&gt;Put in &lt;code&gt;Main.scala&lt;/code&gt; the following:&lt;/p&gt;
+&lt;p&gt;Put in &lt;code class=&quot;highlighter-rouge&quot;&gt;Main.scala&lt;/code&gt; the following:&lt;/p&gt;
 
 &lt;!--more--&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.mauritania&lt;/span&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.mauritania&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.UUID.randomUUID&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Main&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Nb&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1500000&lt;/span&gt;
 
-   &lt;span class=&quot;c1&quot;&gt;// my unique id string dummy class
-&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Myuids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;// my unique id string dummy class&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Myuids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
@@ -44,77 +45,84 @@
   &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Clearly we&amp;#39;re allocating many &lt;code&gt;Myuids&lt;/code&gt; instances.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Launch it as follows (using &lt;code&gt;scalac&lt;/code&gt; 2.11.7 here):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;scalac Main.scala
+&lt;p&gt;Clearly we’re allocating many &lt;code class=&quot;highlighter-rouge&quot;&gt;Myuids&lt;/code&gt; instances.&lt;/p&gt;
+
+&lt;p&gt;Launch it as follows (using &lt;code class=&quot;highlighter-rouge&quot;&gt;scalac&lt;/code&gt; 2.11.7 here):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scalac Main.scala
 scala com.mauritania.Main
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h2 id=&quot;generating-heap-dumps&quot;&gt;Generating heap dumps&lt;/h2&gt;
 
-&lt;p&gt;There are sevaral ways to generate heap dumps (&lt;code&gt;.hprof&lt;/code&gt; files) before we can analyse them:&lt;/p&gt;
+&lt;p&gt;There are sevaral ways to generate heap dumps (&lt;code class=&quot;highlighter-rouge&quot;&gt;.hprof&lt;/code&gt; files) before we can analyse them:&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Using &lt;code&gt;jmap&lt;/code&gt; JDK&amp;#39;s tool as follows:&lt;/li&gt;
+  &lt;li&gt;Using &lt;code class=&quot;highlighter-rouge&quot;&gt;jmap&lt;/code&gt; JDK’s tool as follows:&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt; jmap -dump:format=b,file=heap.hprof &amp;lt;pid-of-running-jvm&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jmap -dump:format=b,file=heap.hprof &amp;lt;pid-of-running-jvm&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;ol&gt;
-&lt;li&gt;Connecting to JVM via &lt;code&gt;mat&lt;/code&gt; tool&lt;/li&gt;
-&lt;li&gt;Connecting to JVM via &lt;code&gt;jmc&lt;/code&gt; tool&lt;/li&gt;
-&lt;li&gt;Connecting to JVM via &lt;code&gt;jvisualvm&lt;/code&gt; tool&lt;/li&gt;
-&lt;li&gt;Requesting the JVM to dump the heap on OOM using the following JVM settings:&lt;/li&gt;
+  &lt;li&gt;Connecting to JVM via &lt;code class=&quot;highlighter-rouge&quot;&gt;mat&lt;/code&gt; tool&lt;/li&gt;
+  &lt;li&gt;Connecting to JVM via &lt;code class=&quot;highlighter-rouge&quot;&gt;jmc&lt;/code&gt; tool&lt;/li&gt;
+  &lt;li&gt;Connecting to JVM via &lt;code class=&quot;highlighter-rouge&quot;&gt;jvisualvm&lt;/code&gt; tool&lt;/li&gt;
+  &lt;li&gt;Requesting the JVM to dump the heap on OOM using the following JVM settings:&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;-XX:+HeapDumpOnOutOfMemoryError
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-XX:+HeapDumpOnOutOfMemoryError
 -XX:HeapDumpPath=/tmp/heap.dump/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h2 id=&quot;analysing-heap-dumps&quot;&gt;Analysing heap dumps&lt;/h2&gt;
 
-&lt;h3 id=&quot;eclipse-memory-analyser-mat&quot;&gt;Eclipse Memory Analyser (&lt;code&gt;mat&lt;/code&gt;)&lt;/h3&gt;
+&lt;h3 id=&quot;eclipse-memory-analyser-mat&quot;&gt;Eclipse Memory Analyser (&lt;code class=&quot;highlighter-rouge&quot;&gt;mat&lt;/code&gt;)&lt;/h3&gt;
 
-&lt;p&gt;The easiest way of analysing memory heaps is using &lt;code&gt;mat&lt;/code&gt; tool.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Download the standalone Eclipse Memory Analyser (EMA, or &lt;code&gt;mat&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;Open &lt;code&gt;mat&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-init.png&quot; alt=&quot;Mat&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The easiest way of analysing memory heaps is using &lt;code class=&quot;highlighter-rouge&quot;&gt;mat&lt;/code&gt; tool.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Get the memory dump of the just started JVM, it must be an &lt;code&gt;hprof&lt;/code&gt; file.&lt;/li&gt;
-&lt;li&gt;Choose the &lt;code&gt;Component report&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Download the standalone Eclipse Memory Analyser (EMA, or &lt;code class=&quot;highlighter-rouge&quot;&gt;mat&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;Open &lt;code class=&quot;highlighter-rouge&quot;&gt;mat&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-choose-component.png&quot; alt=&quot;Component&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-init.png&quot; alt=&quot;Mat&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Point to the package you&amp;#39;re monitoring (in a regex), for instance &lt;code&gt;com\.mauritania\..*&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Now you must see a pie chart.&lt;/li&gt;
+  &lt;li&gt;Get the memory dump of the just started JVM, it must be an &lt;code class=&quot;highlighter-rouge&quot;&gt;hprof&lt;/code&gt; file.&lt;/li&gt;
+  &lt;li&gt;Choose the &lt;code class=&quot;highlighter-rouge&quot;&gt;Component report&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-pie-chart.png&quot; alt=&quot;Pie&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-choose-component.png&quot; alt=&quot;Component&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Click on &lt;code&gt;Top Consumers&lt;/code&gt;, see their size in MB.&lt;/li&gt;
+  &lt;li&gt;Point to the package you’re monitoring (in a regex), for instance &lt;code class=&quot;highlighter-rouge&quot;&gt;com\.mauritania\..*&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Now you must see a pie chart.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-top-consumers.png&quot; alt=&quot;Top&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;The chart shows how &lt;code&gt;Myuids&lt;/code&gt; instances are occupying the heap, just as expected.&lt;/p&gt;
-
-&lt;p&gt;Note: normally you can also open &lt;code&gt;.hprof&lt;/code&gt; files with &lt;code&gt;jhat&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;java-mission-control-jmc&quot;&gt;Java Mission Control (&lt;code&gt;jmc&lt;/code&gt;)&lt;/h3&gt;
-
-&lt;p&gt;Let&amp;#39;s now use &lt;code&gt;jmc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-pie-chart.png&quot; alt=&quot;Pie&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Add the following settings to your JVM:&lt;/li&gt;
+  &lt;li&gt;Click on &lt;code class=&quot;highlighter-rouge&quot;&gt;Top Consumers&lt;/code&gt;, see their size in MB.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;-XX:+StartAttachListener
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/mat-top-consumers.png&quot; alt=&quot;Top&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The chart shows how &lt;code class=&quot;highlighter-rouge&quot;&gt;Myuids&lt;/code&gt; instances are occupying the heap, just as expected.&lt;/p&gt;
+
+&lt;p&gt;Note: normally you can also open &lt;code class=&quot;highlighter-rouge&quot;&gt;.hprof&lt;/code&gt; files with &lt;code class=&quot;highlighter-rouge&quot;&gt;jhat&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;java-mission-control-jmc&quot;&gt;Java Mission Control (&lt;code class=&quot;highlighter-rouge&quot;&gt;jmc&lt;/code&gt;)&lt;/h3&gt;
+
+&lt;p&gt;Let’s now use &lt;code class=&quot;highlighter-rouge&quot;&gt;jmc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add the following settings to your JVM:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-XX:+StartAttachListener
 -XX:+UnlockCommercialFeatures
 -XX:+FlightRecorder
 -XX:FlightRecorderOptions=
@@ -125,56 +133,62 @@ scala com.mauritania.Main
   disk=true
 -XX:+HeapDumpOnOutOfMemoryError
 -XX:HeapDumpPath=/tmp/heap.dump/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;ol&gt;
-&lt;li&gt;Upon an &lt;code&gt;OutOfMemoryError&lt;/code&gt; the &lt;code&gt;HeapDump*&lt;/code&gt; settings will make the JVM create a heap dump under &lt;code&gt;/tmp/heap.dump/java_pidXXXXX.hprof&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Upon exit the &lt;code&gt;FlightRecorder*&lt;/code&gt; settings will make the JVM create a report under &lt;code&gt;/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr&lt;/code&gt; (which does not have memory heap exhaustive information, but more general indicators)&lt;/li&gt;
+  &lt;li&gt;Upon an &lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfMemoryError&lt;/code&gt; the &lt;code class=&quot;highlighter-rouge&quot;&gt;HeapDump*&lt;/code&gt; settings will make the JVM create a heap dump under &lt;code class=&quot;highlighter-rouge&quot;&gt;/tmp/heap.dump/java_pidXXXXX.hprof&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Upon exit the &lt;code class=&quot;highlighter-rouge&quot;&gt;FlightRecorder*&lt;/code&gt; settings will make the JVM create a report under &lt;code class=&quot;highlighter-rouge&quot;&gt;/tmp/jfr/hotspot-pid-XXXXX-id-XXXXXXXXXXX.jfr&lt;/code&gt; (which does not have memory heap exhaustive information, but more general indicators)&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Regarding our own application, it is enough to launch our application as follows, as all I wanted is to connect to the JVM without dump files: &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;java -cp .:&amp;lt;path-to&amp;gt;/scala/lib/scala-library.jar \
+&lt;p&gt;Regarding our own application, it is enough to launch our application as follows, as all I wanted is to connect to the JVM without dump files:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java -cp .:&amp;lt;path-to&amp;gt;/scala/lib/scala-library.jar \
   -XX:+UnlockCommercialFeatures \
   -XX:+FlightRecorder \
   com.mauritania.Main
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;ol&gt;
-&lt;li&gt;You can open the &lt;code&gt;.hprof&lt;/code&gt; heap dump as seen in the sections above.&lt;/li&gt;
-&lt;li&gt;To open the &lt;code&gt;.jfr&lt;/code&gt; you need to use &lt;code&gt;Java Mission Control&lt;/code&gt; (tool from jdk: &lt;code&gt;jmc&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;Instead of opening an existent &lt;code&gt;.jfr&lt;/code&gt; you can make &lt;code&gt;jmc&lt;/code&gt; connect to an existent JVM, as follows:&lt;/li&gt;
+  &lt;li&gt;You can open the &lt;code class=&quot;highlighter-rouge&quot;&gt;.hprof&lt;/code&gt; heap dump as seen in the sections above.&lt;/li&gt;
+  &lt;li&gt;To open the &lt;code class=&quot;highlighter-rouge&quot;&gt;.jfr&lt;/code&gt; you need to use &lt;code class=&quot;highlighter-rouge&quot;&gt;Java Mission Control&lt;/code&gt; (tool from jdk: &lt;code class=&quot;highlighter-rouge&quot;&gt;jmc&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Instead of opening an existent &lt;code class=&quot;highlighter-rouge&quot;&gt;.jfr&lt;/code&gt; you can make &lt;code class=&quot;highlighter-rouge&quot;&gt;jmc&lt;/code&gt; connect to an existent JVM, as follows:&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;a. Create a new connection&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-connect.png&quot; alt=&quot;Connect&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-connect.png&quot; alt=&quot;Connect&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;b. Set up the recording settings &lt;/p&gt;
+&lt;p&gt;b. Set up the recording settings&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-save.png&quot; alt=&quot;Save&quot;&gt;
-&lt;img src=&quot;/images/posts/dump-jvm/jmc-settings.png&quot; alt=&quot;Save&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-save.png&quot; alt=&quot;Save&quot; /&gt;
+&lt;img src=&quot;/images/posts/dump-jvm/jmc-settings.png&quot; alt=&quot;Save&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;c. Interestingly you can request &lt;code&gt;jmc&lt;/code&gt; to record certain events from the JVM, like &lt;code&gt;file open&lt;/code&gt; event. This can be useful if you consider your application is slow because it has too much IO. &lt;/p&gt;
+&lt;p&gt;c. Interestingly you can request &lt;code class=&quot;highlighter-rouge&quot;&gt;jmc&lt;/code&gt; to record certain events from the JVM, like &lt;code class=&quot;highlighter-rouge&quot;&gt;file open&lt;/code&gt; event. This can be useful if you consider your application is slow because it has too much IO.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-event-recording-settings.png&quot; alt=&quot;Event&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-event-recording-settings.png&quot; alt=&quot;Event&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;d. Start recording&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-start.png&quot; alt=&quot;Start&quot;&gt;
-&lt;img src=&quot;/images/posts/dump-jvm/jmc-recording.png&quot; alt=&quot;Rec&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-start.png&quot; alt=&quot;Start&quot; /&gt;
+&lt;img src=&quot;/images/posts/dump-jvm/jmc-recording.png&quot; alt=&quot;Rec&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;e. See general performance indicators, their evolution in time too&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-stats1.png&quot; alt=&quot;Stats&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-stats1.png&quot; alt=&quot;Stats&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;f. Go deeper into memory consumption under package &lt;code&gt;org.mauritania&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;f. Go deeper into memory consumption under package &lt;code class=&quot;highlighter-rouge&quot;&gt;org.mauritania&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-object-statistics.png&quot; alt=&quot;Stats&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dump-jvm/jmc-object-statistics.png&quot; alt=&quot;Stats&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;extra-notes&quot;&gt;Extra notes&lt;/h2&gt;
 
-&lt;p&gt;Use the following JVM settings to get garbage collection activities logs. &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;-XX:+PrintGCDetails 
+&lt;p&gt;Use the following JVM settings to get garbage collection activities logs.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-XX:+PrintGCDetails 
 -XX:+PrintGCTimeStamps
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
         <pubDate>Sat, 20 Jul 2019 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html</link>
         <guid isPermaLink="true">http://mauriciojost.github.io/2019/07/20/dump-your-jvm.html</guid>
@@ -202,14 +216,14 @@ scala com.mauritania.Main
     
       <item>
         <title>Exception Handling in Spark 2.x</title>
-        <description>&lt;h1 id=&quot;why-exception-handling-e-h-in-spark&quot;&gt;Why Exception Handling (E.H.) in Spark?&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;why-exception-handling-eh-in-spark&quot;&gt;Why Exception Handling (E.H.) in Spark?&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;data is rarely ideal&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;some scenarios don&amp;#39;t deserve an &lt;strong&gt;immediate&lt;/strong&gt; halt&lt;/li&gt;
-&lt;li&gt;investigate newer scenarios as-per-priority (happier customers)&lt;/li&gt;
-&lt;li&gt;ease product evolution&lt;/li&gt;
-&lt;li&gt;understand application limitations&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;data is rarely ideal&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;some scenarios don’t deserve an &lt;strong&gt;immediate&lt;/strong&gt; halt&lt;/li&gt;
+  &lt;li&gt;investigate newer scenarios as-per-priority (happier customers)&lt;/li&gt;
+  &lt;li&gt;ease product evolution&lt;/li&gt;
+  &lt;li&gt;understand application limitations&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -236,10 +250,10 @@ gives the development team more time to evaluate logs and better decide how to h
 &lt;p&gt;Failures &lt;a href=&quot;https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/&quot;&gt;can be classified as&lt;/a&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Expected Internal&lt;/strong&gt; (a circuit breaker)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Expected External&lt;/strong&gt; (a parsing exception)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Unexpected Internal&lt;/strong&gt; (a &lt;code&gt;NullPointerException&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Unexpected External&lt;/strong&gt; (a host down)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Expected Internal&lt;/strong&gt; (a circuit breaker)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Expected External&lt;/strong&gt; (a parsing exception)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unexpected Internal&lt;/strong&gt; (a &lt;code class=&quot;highlighter-rouge&quot;&gt;NullPointerException&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unexpected External&lt;/strong&gt; (a host down)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-ignore-end--&gt;
@@ -247,8 +261,8 @@ gives the development team more time to evaluate logs and better decide how to h
 &lt;p&gt;Among others, failures can be classified by importance:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;NonFatal&lt;/code&gt; (can be recovered)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Fatal&lt;/code&gt; (cannot be recovered)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NonFatal&lt;/code&gt; (can be recovered)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Fatal&lt;/code&gt; (cannot be recovered)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -256,31 +270,31 @@ gives the development team more time to evaluate logs and better decide how to h
 &lt;p&gt;Or by determinism:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Deterministic&lt;/code&gt; (can be reproduced consistently)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Non deterministic&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Deterministic&lt;/code&gt; (can be reproduced consistently)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Non deterministic&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;spark-exception-handling-e-h&quot;&gt;Spark Exception Handling (E.H.)&lt;/h2&gt;
+&lt;h2 id=&quot;spark-exception-handling-eh&quot;&gt;Spark Exception Handling (E.H.)&lt;/h2&gt;
 
 &lt;p&gt;Generally speaking, Spark exceptions can be divided in two groups:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Unexpected failures&lt;/strong&gt;: generally non-deterministic, fatal or non fatal (Spark framework via task retries)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Expected failures&lt;/strong&gt;: generally deterministic, non fatal -&amp;gt; &lt;strong&gt;this post&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unexpected failures&lt;/strong&gt;: generally non-deterministic, fatal or non fatal (Spark framework via task retries)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Expected failures&lt;/strong&gt;: generally deterministic, non fatal -&amp;gt; &lt;strong&gt;this post&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h1 id=&quot;application-e-h-approaches&quot;&gt;Application E.H. approaches&lt;/h1&gt;
+&lt;h1 id=&quot;application-eh-approaches&quot;&gt;Application E.H. approaches&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The no-exception-handling approach&lt;/li&gt;
-&lt;li&gt;The try-catch and log approach&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/li&gt;
-&lt;li&gt;The Accumulator approach&lt;/li&gt;
-&lt;li&gt;More evolved approaches&lt;/li&gt;
+  &lt;li&gt;The no-exception-handling approach&lt;/li&gt;
+  &lt;li&gt;The try-catch and log approach&lt;/li&gt;
+  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Try&lt;/code&gt; / &lt;code class=&quot;highlighter-rouge&quot;&gt;Either&lt;/code&gt; approach&lt;/li&gt;
+  &lt;li&gt;The Accumulator approach&lt;/li&gt;
+  &lt;li&gt;More evolved approaches&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -291,7 +305,7 @@ gives the development team more time to evaluate logs and better decide how to h
 
 &lt;p&gt;The Spark app will fail if upon retries a task keeps failing.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String): String = {
   cities(cityCode).get.country
   // the city has to be found!
@@ -309,11 +323,11 @@ def country(cityCode: String): String = {
 &lt;p&gt;Report unexpected scenarios via logs.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;May generate significant amount of logs (performance!)&lt;/li&gt;
-&lt;li&gt;Generally not purely functional&lt;/li&gt;
+  &lt;li&gt;May generate significant amount of logs (performance!)&lt;/li&gt;
+  &lt;li&gt;Generally not purely functional&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String): String = {
   try {
     cities(cityCode).get.country
@@ -331,23 +345,23 @@ def country(cityCode: String): String = {
 &lt;p&gt;Not really appealing:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Requires the use of RM tools to retrieve logs (as not in HDFS)&lt;/li&gt;
-&lt;li&gt;Difficult to test&lt;/li&gt;
-&lt;li&gt;However provides by default multiple levels of seriousness&lt;/li&gt;
+  &lt;li&gt;Requires the use of RM tools to retrieve logs (as not in HDFS)&lt;/li&gt;
+  &lt;li&gt;Difficult to test&lt;/li&gt;
+  &lt;li&gt;However provides by default multiple levels of seriousness&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;the-try-either-approach&quot;&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/h2&gt;
+&lt;h2 id=&quot;the-try--either-approach&quot;&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Try&lt;/code&gt; / &lt;code class=&quot;highlighter-rouge&quot;&gt;Either&lt;/code&gt; approach&lt;/h2&gt;
 
-&lt;p&gt;Return &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; types always.&lt;/p&gt;
+&lt;p&gt;Return &lt;code class=&quot;highlighter-rouge&quot;&gt;Try&lt;/code&gt; / &lt;code class=&quot;highlighter-rouge&quot;&gt;Either&lt;/code&gt; types always.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Purely functional&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Exception&lt;/code&gt; reports are part of the output of a transformation&lt;/li&gt;
+  &lt;li&gt;Purely functional&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Exception&lt;/code&gt; reports are part of the output of a transformation&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String): Try[String] = {
   Try{cities(cityCode).get.country}
 }
@@ -355,51 +369,51 @@ def country(cityCode: String): Try[String] = {
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+&lt;h3 id=&quot;when-to-use-1&quot;&gt;When to use?&lt;/h3&gt;
 
 &lt;p&gt;Maybe the most appealing approach:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Results are stored in HDFS&lt;/li&gt;
-&lt;li&gt;Easy to test&lt;/li&gt;
-&lt;li&gt;Easy to reason about&lt;/li&gt;
-&lt;li&gt;Spark/Hadoop agnostic&lt;/li&gt;
-&lt;li&gt;Can be tricky to save simultaneously &lt;code&gt;Success&lt;/code&gt;/&lt;code&gt;Right&lt;/code&gt; and &lt;code&gt;Failure&lt;/code&gt;/&lt;code&gt;Left&lt;/code&gt; sides (could be slow, requiring multiple actions to be triggered)&lt;/li&gt;
-&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+  &lt;li&gt;Results are stored in HDFS&lt;/li&gt;
+  &lt;li&gt;Easy to test&lt;/li&gt;
+  &lt;li&gt;Easy to reason about&lt;/li&gt;
+  &lt;li&gt;Spark/Hadoop agnostic&lt;/li&gt;
+  &lt;li&gt;Can be tricky to save simultaneously &lt;code class=&quot;highlighter-rouge&quot;&gt;Success&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;Right&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Failure&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;Left&lt;/code&gt; sides (could be slow, requiring multiple actions to be triggered)&lt;/li&gt;
+  &lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;the-accumulator-approach&quot;&gt;The Accumulator approach&lt;/h2&gt;
 
-&lt;p&gt;Use the Spark &lt;code&gt;Accumulator&lt;/code&gt; mechanism to report statistics on specific scenarios.&lt;/p&gt;
+&lt;p&gt;Use the Spark &lt;code class=&quot;highlighter-rouge&quot;&gt;Accumulator&lt;/code&gt; mechanism to report statistics on specific scenarios.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Not meant to retrieve detailed information about the failure&lt;/li&gt;
-&lt;li&gt;Function argument is mutable (often seen as bad practice)&lt;/li&gt;
+  &lt;li&gt;Not meant to retrieve detailed information about the failure&lt;/li&gt;
+  &lt;li&gt;Function argument is mutable (often seen as bad practice)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String, ac: Accumulator): String = {
   cities(cityCode) match {
-    case Some(city) =&gt; city.country
-    case None =&gt; {ac += 1; &quot;UnknownCountry&quot;}
+    case Some(city) =&amp;gt; city.country
+    case None =&amp;gt; {ac += 1; &quot;UnknownCountry&quot;}
   }
 }
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+&lt;h3 id=&quot;when-to-use-2&quot;&gt;When to use?&lt;/h3&gt;
 
 &lt;p&gt;The Spark approach:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Results can be printed in &lt;code&gt;stdout&lt;/code&gt; or stored in HDFS easily&lt;/li&gt;
-&lt;li&gt;Relatively easy to test&lt;/li&gt;
-&lt;li&gt;Spark framework dependant&lt;/li&gt;
-&lt;li&gt;Should be very fast&lt;/li&gt;
-&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+  &lt;li&gt;Results can be printed in &lt;code class=&quot;highlighter-rouge&quot;&gt;stdout&lt;/code&gt; or stored in HDFS easily&lt;/li&gt;
+  &lt;li&gt;Relatively easy to test&lt;/li&gt;
+  &lt;li&gt;Spark framework dependant&lt;/li&gt;
+  &lt;li&gt;Should be very fast&lt;/li&gt;
+  &lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -413,6 +427,7 @@ def country(cityCode: String, ac: Accumulator): String = {
 &lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
 
 &lt;p&gt;If you have any comments, let me know!&lt;/p&gt;
+
 </description>
         <pubDate>Tue, 07 Nov 2017 23:00:00 +0100</pubDate>
         <link>http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/post.html</link>
@@ -437,14 +452,14 @@ def country(cityCode: String, ac: Accumulator): String = {
     
       <item>
         <title>Exception Handling in Spark 2.x</title>
-        <description>&lt;h1 id=&quot;why-exception-handling-e-h-in-spark&quot;&gt;Why Exception Handling (E.H.) in Spark?&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;why-exception-handling-eh-in-spark&quot;&gt;Why Exception Handling (E.H.) in Spark?&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;data is rarely ideal&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;some scenarios don&amp;#39;t deserve an &lt;strong&gt;immediate&lt;/strong&gt; halt&lt;/li&gt;
-&lt;li&gt;investigate newer scenarios as-per-priority (happier customers)&lt;/li&gt;
-&lt;li&gt;ease product evolution&lt;/li&gt;
-&lt;li&gt;understand application limitations&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;data is rarely ideal&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;some scenarios don’t deserve an &lt;strong&gt;immediate&lt;/strong&gt; halt&lt;/li&gt;
+  &lt;li&gt;investigate newer scenarios as-per-priority (happier customers)&lt;/li&gt;
+  &lt;li&gt;ease product evolution&lt;/li&gt;
+  &lt;li&gt;understand application limitations&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -471,10 +486,10 @@ gives the development team more time to evaluate logs and better decide how to h
 &lt;p&gt;Failures &lt;a href=&quot;https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/&quot;&gt;can be classified as&lt;/a&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Expected Internal&lt;/strong&gt; (a circuit breaker)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Expected External&lt;/strong&gt; (a parsing exception)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Unexpected Internal&lt;/strong&gt; (a &lt;code&gt;NullPointerException&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Unexpected External&lt;/strong&gt; (a host down)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Expected Internal&lt;/strong&gt; (a circuit breaker)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Expected External&lt;/strong&gt; (a parsing exception)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unexpected Internal&lt;/strong&gt; (a &lt;code class=&quot;highlighter-rouge&quot;&gt;NullPointerException&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unexpected External&lt;/strong&gt; (a host down)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-ignore-end--&gt;
@@ -482,8 +497,8 @@ gives the development team more time to evaluate logs and better decide how to h
 &lt;p&gt;Among others, failures can be classified by importance:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;NonFatal&lt;/code&gt; (can be recovered)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Fatal&lt;/code&gt; (cannot be recovered)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NonFatal&lt;/code&gt; (can be recovered)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Fatal&lt;/code&gt; (cannot be recovered)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -491,31 +506,31 @@ gives the development team more time to evaluate logs and better decide how to h
 &lt;p&gt;Or by determinism:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Deterministic&lt;/code&gt; (can be reproduced consistently)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Non deterministic&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Deterministic&lt;/code&gt; (can be reproduced consistently)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Non deterministic&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;spark-exception-handling-e-h&quot;&gt;Spark Exception Handling (E.H.)&lt;/h2&gt;
+&lt;h2 id=&quot;spark-exception-handling-eh&quot;&gt;Spark Exception Handling (E.H.)&lt;/h2&gt;
 
 &lt;p&gt;Generally speaking, Spark exceptions can be divided in two groups:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Unexpected failures&lt;/strong&gt;: generally non-deterministic, fatal or non fatal (Spark framework via task retries)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Expected failures&lt;/strong&gt;: generally deterministic, non fatal -&amp;gt; &lt;strong&gt;this post&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unexpected failures&lt;/strong&gt;: generally non-deterministic, fatal or non fatal (Spark framework via task retries)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Expected failures&lt;/strong&gt;: generally deterministic, non fatal -&amp;gt; &lt;strong&gt;this post&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h1 id=&quot;application-e-h-approaches&quot;&gt;Application E.H. approaches&lt;/h1&gt;
+&lt;h1 id=&quot;application-eh-approaches&quot;&gt;Application E.H. approaches&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The no-exception-handling approach&lt;/li&gt;
-&lt;li&gt;The try-catch and log approach&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/li&gt;
-&lt;li&gt;The Accumulator approach&lt;/li&gt;
-&lt;li&gt;More evolved approaches&lt;/li&gt;
+  &lt;li&gt;The no-exception-handling approach&lt;/li&gt;
+  &lt;li&gt;The try-catch and log approach&lt;/li&gt;
+  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Try&lt;/code&gt; / &lt;code class=&quot;highlighter-rouge&quot;&gt;Either&lt;/code&gt; approach&lt;/li&gt;
+  &lt;li&gt;The Accumulator approach&lt;/li&gt;
+  &lt;li&gt;More evolved approaches&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -526,7 +541,7 @@ gives the development team more time to evaluate logs and better decide how to h
 
 &lt;p&gt;The Spark app will fail if upon retries a task keeps failing.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String): String = {
   cities(cityCode).get.country
   // the city has to be found!
@@ -544,11 +559,11 @@ def country(cityCode: String): String = {
 &lt;p&gt;Report unexpected scenarios via logs.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;May generate significant amount of logs (performance!)&lt;/li&gt;
-&lt;li&gt;Generally not purely functional&lt;/li&gt;
+  &lt;li&gt;May generate significant amount of logs (performance!)&lt;/li&gt;
+  &lt;li&gt;Generally not purely functional&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String): String = {
   try {
     cities(cityCode).get.country
@@ -566,23 +581,23 @@ def country(cityCode: String): String = {
 &lt;p&gt;Not really appealing:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Requires the use of RM tools to retrieve logs (as not in HDFS)&lt;/li&gt;
-&lt;li&gt;Difficult to test&lt;/li&gt;
-&lt;li&gt;However provides by default multiple levels of seriousness&lt;/li&gt;
+  &lt;li&gt;Requires the use of RM tools to retrieve logs (as not in HDFS)&lt;/li&gt;
+  &lt;li&gt;Difficult to test&lt;/li&gt;
+  &lt;li&gt;However provides by default multiple levels of seriousness&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;the-try-either-approach&quot;&gt;The &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; approach&lt;/h2&gt;
+&lt;h2 id=&quot;the-try--either-approach&quot;&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Try&lt;/code&gt; / &lt;code class=&quot;highlighter-rouge&quot;&gt;Either&lt;/code&gt; approach&lt;/h2&gt;
 
-&lt;p&gt;Return &lt;code&gt;Try&lt;/code&gt; / &lt;code&gt;Either&lt;/code&gt; types always.&lt;/p&gt;
+&lt;p&gt;Return &lt;code class=&quot;highlighter-rouge&quot;&gt;Try&lt;/code&gt; / &lt;code class=&quot;highlighter-rouge&quot;&gt;Either&lt;/code&gt; types always.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Purely functional&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Exception&lt;/code&gt; reports are part of the output of a transformation&lt;/li&gt;
+  &lt;li&gt;Purely functional&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Exception&lt;/code&gt; reports are part of the output of a transformation&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String): Try[String] = {
   Try{cities(cityCode).get.country}
 }
@@ -590,51 +605,51 @@ def country(cityCode: String): Try[String] = {
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+&lt;h3 id=&quot;when-to-use-1&quot;&gt;When to use?&lt;/h3&gt;
 
 &lt;p&gt;Maybe the most appealing approach:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Results are stored in HDFS&lt;/li&gt;
-&lt;li&gt;Easy to test&lt;/li&gt;
-&lt;li&gt;Easy to reason about&lt;/li&gt;
-&lt;li&gt;Spark/Hadoop agnostic&lt;/li&gt;
-&lt;li&gt;Can be tricky to save simultaneously &lt;code&gt;Success&lt;/code&gt;/&lt;code&gt;Right&lt;/code&gt; and &lt;code&gt;Failure&lt;/code&gt;/&lt;code&gt;Left&lt;/code&gt; sides (could be slow, requiring multiple actions to be triggered)&lt;/li&gt;
-&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+  &lt;li&gt;Results are stored in HDFS&lt;/li&gt;
+  &lt;li&gt;Easy to test&lt;/li&gt;
+  &lt;li&gt;Easy to reason about&lt;/li&gt;
+  &lt;li&gt;Spark/Hadoop agnostic&lt;/li&gt;
+  &lt;li&gt;Can be tricky to save simultaneously &lt;code class=&quot;highlighter-rouge&quot;&gt;Success&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;Right&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Failure&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;Left&lt;/code&gt; sides (could be slow, requiring multiple actions to be triggered)&lt;/li&gt;
+  &lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;the-accumulator-approach&quot;&gt;The Accumulator approach&lt;/h2&gt;
 
-&lt;p&gt;Use the Spark &lt;code&gt;Accumulator&lt;/code&gt; mechanism to report statistics on specific scenarios.&lt;/p&gt;
+&lt;p&gt;Use the Spark &lt;code class=&quot;highlighter-rouge&quot;&gt;Accumulator&lt;/code&gt; mechanism to report statistics on specific scenarios.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Not meant to retrieve detailed information about the failure&lt;/li&gt;
-&lt;li&gt;Function argument is mutable (often seen as bad practice)&lt;/li&gt;
+  &lt;li&gt;Not meant to retrieve detailed information about the failure&lt;/li&gt;
+  &lt;li&gt;Function argument is mutable (often seen as bad practice)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;scala&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 def country(cityCode: String, ac: Accumulator): String = {
   cities(cityCode) match {
-    case Some(city) =&gt; city.country
-    case None =&gt; {ac += 1; &quot;UnknownCountry&quot;}
+    case Some(city) =&amp;gt; city.country
+    case None =&amp;gt; {ac += 1; &quot;UnknownCountry&quot;}
   }
 }
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;when-to-use&quot;&gt;When to use?&lt;/h3&gt;
+&lt;h3 id=&quot;when-to-use-2&quot;&gt;When to use?&lt;/h3&gt;
 
 &lt;p&gt;The Spark approach:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Results can be printed in &lt;code&gt;stdout&lt;/code&gt; or stored in HDFS easily&lt;/li&gt;
-&lt;li&gt;Relatively easy to test&lt;/li&gt;
-&lt;li&gt;Spark framework dependant&lt;/li&gt;
-&lt;li&gt;Should be very fast&lt;/li&gt;
-&lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
+  &lt;li&gt;Results can be printed in &lt;code class=&quot;highlighter-rouge&quot;&gt;stdout&lt;/code&gt; or stored in HDFS easily&lt;/li&gt;
+  &lt;li&gt;Relatively easy to test&lt;/li&gt;
+  &lt;li&gt;Spark framework dependant&lt;/li&gt;
+  &lt;li&gt;Should be very fast&lt;/li&gt;
+  &lt;li&gt;Does not provide support for levels of seriousness&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -648,6 +663,7 @@ def country(cityCode: String, ac: Accumulator): String = {
 &lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
 
 &lt;p&gt;If you have any comments, let me know!&lt;/p&gt;
+
 </description>
         <pubDate>Tue, 07 Nov 2017 23:00:00 +0100</pubDate>
         <link>http://mauriciojost.github.io/2017/11/07/exception-handling-in-spark-2/presentation.html</link>
@@ -674,12 +690,12 @@ def country(cityCode: String, ac: Accumulator): String = {
         <title>Dotfiles</title>
         <description>&lt;h2 id=&quot;dotfiles-me&quot;&gt;Dotfiles? Me?&lt;/h2&gt;
 
-&lt;p&gt;You&amp;#39;re eligible if you use:&lt;/p&gt;
+&lt;p&gt;You’re eligible if you use:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Linux&lt;/li&gt;
-&lt;li&gt;macOS&lt;/li&gt;
-&lt;li&gt;Cygwin (over Windows)&lt;/li&gt;
+  &lt;li&gt;Linux&lt;/li&gt;
+  &lt;li&gt;macOS&lt;/li&gt;
+  &lt;li&gt;Cygwin (over Windows)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -687,20 +703,24 @@ def country(cityCode: String, ac: Accumulator): String = {
 &lt;p&gt;And if at least one of the below is true:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;you often ‎&lt;strong&gt;can&amp;#39;t remember commands&lt;/strong&gt; and flags&lt;/li&gt;
+  &lt;li&gt;you often ‎&lt;strong&gt;can’t remember commands&lt;/strong&gt; and flags&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;git log --oneline \
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git log --oneline \
   --decorate --all \
   --graph
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;ul&gt;
-&lt;li&gt;you often &lt;strong&gt;lose configs&lt;/strong&gt; of your apps (&lt;code&gt;bash&lt;/code&gt;, &lt;code&gt;htop&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;you often use &lt;strong&gt;hostile shell&lt;/strong&gt; in many remote hosts&lt;/li&gt;
+  &lt;li&gt;you often &lt;strong&gt;lose configs&lt;/strong&gt; of your apps (&lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;htop&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;you often use &lt;strong&gt;hostile shell&lt;/strong&gt; in many remote hosts&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&amp;gt;_
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;_
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;ul&gt;
-&lt;li&gt;you happen to enjoy a very &lt;strong&gt;&lt;span style=&quot;color:green&quot;&gt;color&lt;/span&gt;&lt;span style=&quot;color:blue&quot;&gt;ful &lt;/span&gt;&lt;span style=&quot;color:red&quot;&gt;environ&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:yellow&quot;&gt;ment&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;you happen to enjoy a very &lt;strong&gt;&lt;span style=&quot;color:green&quot;&gt;color&lt;/span&gt;&lt;span style=&quot;color:blue&quot;&gt;ful &lt;/span&gt;&lt;span style=&quot;color:red&quot;&gt;environ&lt;/span&gt;&amp;lt;/span&amp;gt;&lt;span style=&quot;color:yellow&quot;&gt;ment&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -717,10 +737,10 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 &lt;h2 id=&quot;dotfiles-principles&quot;&gt;Dotfiles principles&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;customization&lt;/li&gt;
-&lt;li&gt;versioning&lt;/li&gt;
-&lt;li&gt;sharing&lt;/li&gt;
-&lt;li&gt;reusing&lt;/li&gt;
+  &lt;li&gt;customization&lt;/li&gt;
+  &lt;li&gt;versioning&lt;/li&gt;
+  &lt;li&gt;sharing&lt;/li&gt;
+  &lt;li&gt;reusing&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -728,21 +748,23 @@ keep configuration files (and more) in a repository.&lt;/p&gt;
 &lt;h2 id=&quot;why-the-name-dotfiles&quot;&gt;Why the name dotfiles?&lt;/h2&gt;
 
 &lt;p&gt;Files starting with &lt;strong&gt;dot&lt;/strong&gt; are often configuration files:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;mjost@lapin:~$ ls -lAugh \.
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mjost@lapin:~$ ls -lAugh \.
 total 13M
 drwx------   4 mjost 4.0K Oct 21 09:51 .activator
 -rw-------   1 mjost 6.3K Oct 25 08:17 .aliases
 drwx------   3 mjost 4.0K Oct 21 09:51 .android
 drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
 ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;who-uses-dotfiles&quot;&gt;Who uses dotfiles?&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/mathiasbynens/dotfiles&quot;&gt;Mathias dotfiles&lt;/a&gt;: 17k GitHub stars (*)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/apache/spark&quot;&gt;Apache Spark&lt;/a&gt;: 14k GitHub stars&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mathiasbynens/dotfiles&quot;&gt;Mathias dotfiles&lt;/a&gt;: 17k GitHub stars (*)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apache/spark&quot;&gt;Apache Spark&lt;/a&gt;: 14k GitHub stars&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Many flavors, you fork your favorite one!&lt;/p&gt;
@@ -754,38 +776,40 @@ drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
 &lt;h2 id=&quot;what-can-dotfiles-contain&quot;&gt;What can dotfiles contain?&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Shell aliases and functions&lt;/li&gt;
-&lt;li&gt;‎Any file &lt;code&gt;.xxx&lt;/code&gt; under &lt;code&gt;$HOME&lt;/code&gt; (like &lt;code&gt;.bashrc&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;‎Any directory under &lt;code&gt;~/.config&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Shell aliases and functions&lt;/li&gt;
+  &lt;li&gt;‎Any file &lt;code class=&quot;highlighter-rouge&quot;&gt;.xxx&lt;/code&gt; under &lt;code class=&quot;highlighter-rouge&quot;&gt;$HOME&lt;/code&gt; (like &lt;code class=&quot;highlighter-rouge&quot;&gt;.bashrc&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;‎Any directory under &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.config&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;what-ive-personally-added&quot;&gt;What I&amp;#39;ve personally added?&lt;/h3&gt;
+&lt;h3 id=&quot;what-ive-personally-added&quot;&gt;What I’ve personally added?&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Window managers&lt;/strong&gt; settings (like &lt;code&gt;awesome&lt;/code&gt; &amp;amp; &lt;code&gt;xfce&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Cron job&lt;/strong&gt; to &lt;code&gt;renice&lt;/code&gt; Intellij&lt;/li&gt;
-&lt;li&gt;Integration with &lt;strong&gt;&lt;a href=&quot;https://github.com/kepkin/dev-shell-essentials&quot;&gt;dev-shell-essentials&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Window managers&lt;/strong&gt; settings (like &lt;code class=&quot;highlighter-rouge&quot;&gt;awesome&lt;/code&gt; &amp;amp; &lt;code class=&quot;highlighter-rouge&quot;&gt;xfce&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Cron job&lt;/strong&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;renice&lt;/code&gt; Intellij&lt;/li&gt;
+  &lt;li&gt;Integration with &lt;strong&gt;&lt;a href=&quot;https://github.com/kepkin/dev-shell-essentials&quot;&gt;dev-shell-essentials&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;echo &quot;a cat&quot; | highlight green a | highlight red cat
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;!--slide-down--&gt;
 
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;‎Stderr in &lt;span &lt;span style=&quot;color:red&quot;&gt;red&lt;/span&gt;&lt;/strong&gt; using &lt;a href=&quot;https://github.com/sickill/stderred&quot;&gt;&lt;code&gt;stderred&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;‎&lt;strong&gt;Code snippets&lt;/strong&gt; (for Bash specially)&lt;/li&gt;
-&lt;li&gt;‎&lt;strong&gt;How-To&amp;#39;s&lt;/strong&gt; (set up servers like &lt;code&gt;ssh&lt;/code&gt;, &lt;code&gt;nfs&lt;/code&gt;, &lt;code&gt;ldap&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Tag with &lt;code&gt;$SESSION_ID&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Tag with &lt;code&gt;$PWD&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo &quot;a cat&quot; | highlight green a | highlight red cat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Aliases&lt;/strong&gt; for commands like &lt;code&gt;git&lt;/code&gt;, &lt;code&gt;grep&lt;/code&gt; and others&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Key Mappings&lt;/strong&gt; for Intellij&lt;/li&gt;
-&lt;li&gt;and much more!&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;‎Stderr in &amp;lt;span &lt;span style=&quot;color:red&quot;&gt;red&lt;/span&gt;&lt;/strong&gt; using &lt;a href=&quot;https://github.com/sickill/stderred&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stderred&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;‎&lt;strong&gt;Code snippets&lt;/strong&gt; (for Bash specially)&lt;/li&gt;
+  &lt;li&gt;‎&lt;strong&gt;How-To’s&lt;/strong&gt; (set up servers like &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;nfs&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;ldap&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Tag with &lt;code class=&quot;highlighter-rouge&quot;&gt;$SESSION_ID&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Tag with &lt;code class=&quot;highlighter-rouge&quot;&gt;$PWD&lt;/code&gt;&lt;/strong&gt; commands in history&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Aliases&lt;/strong&gt; for commands like &lt;code class=&quot;highlighter-rouge&quot;&gt;git&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;grep&lt;/code&gt; and others&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Key Mappings&lt;/strong&gt; for Intellij&lt;/li&gt;
+  &lt;li&gt;and much more!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -793,11 +817,11 @@ drwx------   3 mjost 4.0K Oct 21 09:51 .ansible
 &lt;h2 id=&quot;how-to-get-started-with-dotfiles&quot;&gt;How to get started with dotfiles?&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Choose your &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;flavor&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Install it and use it!&lt;/li&gt;
+  &lt;li&gt;Choose your &lt;a href=&quot;https://dotfiles.github.io/&quot;&gt;flavor&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Install it and use it!&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;bash&quot; data-trim contenteditable&gt;
+&lt;pre&gt;&lt;code class=&quot;bash&quot; data-trim=&quot;&quot; contenteditable=&quot;&quot;&gt;
 # clone your flavor
 git clone \
   https://github.com/mathiasbynens/dotfiles.git
@@ -814,6 +838,7 @@ bash bootstrap.sh
 &lt;!--slide-next--&gt;
 
 &lt;h1 id=&quot;enjoy&quot;&gt;Enjoy!&lt;/h1&gt;
+
 </description>
         <pubDate>Mon, 23 Oct 2017 00:00:00 +0200</pubDate>
         <link>http://mauriciojost.github.io/2017/10/23/dotfiles/presentation.html</link>
@@ -846,11 +871,11 @@ bash bootstrap.sh
 on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;a post, and&lt;/li&gt;
-&lt;li&gt;a presentation&lt;/li&gt;
+  &lt;li&gt;a post, and&lt;/li&gt;
+  &lt;li&gt;a presentation&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;from a single &lt;code&gt;markdown&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;from a single &lt;code class=&quot;highlighter-rouge&quot;&gt;markdown&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
@@ -864,7 +889,7 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
 
-&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
+&lt;p&gt;Press &lt;code class=&quot;highlighter-rouge&quot;&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
 
 &lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
@@ -891,9 +916,22 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;h2 id=&quot;second-part-c&quot;&gt;Second part C&lt;/h2&gt;
 
-&lt;p&gt;Last one including a figure from &lt;code&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Last one including a figure from &lt;code class=&quot;highlighter-rouge&quot;&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20of%20a%20figure%20using%20Gravizo;%0Ascale%20max%20900%20width;%0Arectangle%20MARKDOWN;%0Arectangle%20BLOG%20%7B;%0A%20%20rectangle%20POST;%0A%20%20rectangle%20PRESENTATION;%0A%7D;%0AMARKDOWN%20--%3E%20POST;%0AMARKDOWN%20--%3E%20PRESENTATION;%0Anote%20left%20of%20MARKDOWN:%20example;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Example of a figure using Gravizo;
+scale max 900 width;
+rectangle MARKDOWN;
+rectangle BLOG {;
+  rectangle POST;
+  rectangle PRESENTATION;
+};
+MARKDOWN --&amp;gt; POST;
+MARKDOWN --&amp;gt; PRESENTATION;
+note left of MARKDOWN: example;
+@enduml;&quot; alt=&quot;Alt text&quot; /&gt;&lt;/span&gt;&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -902,11 +940,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 &lt;p&gt;Here you can find:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -944,11 +982,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;a post, and&lt;/li&gt;
-&lt;li&gt;a presentation&lt;/li&gt;
+  &lt;li&gt;a post, and&lt;/li&gt;
+  &lt;li&gt;a presentation&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;from a single &lt;code&gt;markdown&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;from a single &lt;code class=&quot;highlighter-rouge&quot;&gt;markdown&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
@@ -962,7 +1000,7 @@ on how to build your own blog posts, and generate both:&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
 
-&lt;p&gt;Press &lt;code&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
+&lt;p&gt;Press &lt;code class=&quot;highlighter-rouge&quot;&gt;ESC&lt;/code&gt; to navigate over all the slides.&lt;/p&gt;
 
 &lt;p&gt;You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.&lt;/p&gt;
@@ -989,9 +1027,22 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;h2 id=&quot;second-part-c&quot;&gt;Second part C&lt;/h2&gt;
 
-&lt;p&gt;Last one including a figure from &lt;code&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Last one including a figure from &lt;code class=&quot;highlighter-rouge&quot;&gt;Gravizo&lt;/code&gt;:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20of%20a%20figure%20using%20Gravizo;%0Ascale%20max%20900%20width;%0Arectangle%20MARKDOWN;%0Arectangle%20BLOG%20%7B;%0A%20%20rectangle%20POST;%0A%20%20rectangle%20PRESENTATION;%0A%7D;%0AMARKDOWN%20--%3E%20POST;%0AMARKDOWN%20--%3E%20PRESENTATION;%0Anote%20left%20of%20MARKDOWN:%20example;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Example of a figure using Gravizo;
+scale max 900 width;
+rectangle MARKDOWN;
+rectangle BLOG {;
+  rectangle POST;
+  rectangle PRESENTATION;
+};
+MARKDOWN --&amp;gt; POST;
+MARKDOWN --&amp;gt; PRESENTATION;
+note left of MARKDOWN: example;
+@enduml;&quot; alt=&quot;Alt text&quot; /&gt;&lt;/span&gt;&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -1000,11 +1051,11 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 &lt;p&gt;Here you can find:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html&quot;&gt;The generated presentation / slides&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html&quot;&gt;The generated blog post&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown&quot;&gt;The source markgown file&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll official page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hakimel/reveal.js/&quot;&gt;Reveal.js official git repository&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1035,8 +1086,8 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 &lt;p&gt;Two examples where it helps are:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Make &lt;code&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Reuse a function &lt;code&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Make &lt;code class=&quot;highlighter-rouge&quot;&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code class=&quot;highlighter-rouge&quot;&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Reuse a function &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1047,71 +1098,88 @@ post, so you can go more into details where it really matters.&lt;/p&gt;
 
 &lt;p&gt;Consider the following example:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// Our pet classes
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Example types;
+scale max 900 width;
+Animal &amp;lt;|-- Dog;
+Animal &amp;lt;|-- Cat;
+@enduml;&quot; alt=&quot;Alt text&quot; /&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our pet classes
 sealed class Animal
 class Dog extends Animal
 class Cat extends Animal
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Let&amp;#39;s say you work for a veterinary. You&amp;#39;re writing an API.&lt;/p&gt;
+&lt;p&gt;Let’s say you work for a veterinary. You’re writing an API.&lt;/p&gt;
 
 &lt;p&gt;You want to &lt;strong&gt;modularize the functions
-that retrieve pets&amp;#39; information from a DB&lt;/strong&gt;, like:&lt;/p&gt;
+that retrieve pets’ information from a DB&lt;/strong&gt;, like:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;getName&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;getBreed&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;etc.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getName&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getBreed&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Then, we could define a class &lt;code&gt;Func&lt;/code&gt; that will encapsulate an
-&lt;em&gt;information retriever&lt;/em&gt; function, &lt;code&gt;f&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then, we could define a class &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; that will encapsulate an
+&lt;em&gt;information retriever&lt;/em&gt; function, &lt;code class=&quot;highlighter-rouge&quot;&gt;f&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Here is our first attempt:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;class Func[I,O] (val f: I =&amp;gt; O) {
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Func[I,O] (val f: I =&amp;gt; O) {
   def apply(i: I): O = f(i)
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Good! We can define our first instance of &lt;code&gt;Func&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// Our first information retriever
+&lt;p&gt;Good! We can define our first instance of &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our first information retriever
 // Is my animal a dog?
 val isADog: Func[Animal, Boolean] = {
   new Func((i: Animal) =&amp;gt; i.isInstanceOf[Dog])
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
-&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code&gt;I&lt;/code&gt; (&lt;code&gt;Animal&lt;/code&gt;) and invariant in &lt;code&gt;O&lt;/code&gt; (&lt;code&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
+&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Animal&lt;/code&gt;) and invariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
 done by the compiler.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;generalizing-func-covariance&quot;&gt;Generalizing &lt;code&gt;Func&lt;/code&gt;: Covariance&lt;/h2&gt;
+&lt;h2 id=&quot;generalizing-func-covariance&quot;&gt;Generalizing &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;: Covariance&lt;/h2&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
 
-&lt;p&gt;Let&amp;#39;s say you handle many &lt;code&gt;Func&lt;/code&gt; implementations:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val x:  Func[Animal, Boolean] = ...
+&lt;p&gt;Let’s say you handle many &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; implementations:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val x:  Func[Animal, Boolean] = ...
 val y:  Func[Animal, String] = ...
 val z:  Func[Animal, Int] = ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;It would be good to be able to treat all &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;z&lt;/code&gt; polymorphically.&lt;/p&gt;
+&lt;p&gt;It would be good to be able to treat all &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;z&lt;/code&gt; polymorphically.&lt;/p&gt;
 
 &lt;p&gt;For instance be able to do:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val l: List[Func[Animal, AnyVal]] =
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val l: List[Func[Animal, AnyVal]] =
    List(x, y, z) // won't work, invariance
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Our initial declaration of &lt;code&gt;Func[I, O]&lt;/code&gt; was invariant in both &lt;code&gt;I&lt;/code&gt; and &lt;code&gt;O&lt;/code&gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Our initial declaration of &lt;code class=&quot;highlighter-rouge&quot;&gt;Func[I, O]&lt;/code&gt; was invariant in both &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;.
 It &lt;strong&gt;does not allow this supertype relation&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
@@ -1120,25 +1188,28 @@ It &lt;strong&gt;does not allow this supertype relation&lt;/strong&gt;.&lt;/p&gt
 
 &lt;p&gt;The solution is &lt;strong&gt;covariance&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;The principle: making &lt;code&gt;Clz&lt;/code&gt; covariant in &lt;code&gt;A&lt;/code&gt; means that&lt;/p&gt;
+&lt;p&gt;The principle: making &lt;code class=&quot;highlighter-rouge&quot;&gt;Clz&lt;/code&gt; covariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; means that&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In other words: the inheritance of this &lt;strong&gt;parametric&lt;/strong&gt; type follows the one from the &lt;strong&gt;parameter&lt;/strong&gt; type.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Back to our example, we simply re-define &lt;code&gt;Func&lt;/code&gt;, but making it covariant in &lt;code&gt;O&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// now covariant on O
+&lt;p&gt;Back to our example, we simply re-define &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;, but making it covariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// now covariant on O
 class Func[I, +O] (val f: I =&amp;gt; O) {
   def apply(i: I): O = f(i)
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// specific type
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// specific type
 val isADog: Func[Animal, Boolean] = ...
 
 // generic type
@@ -1149,31 +1220,32 @@ val covIsDogForAnyVal: Func[Animal, AnyVal] =
                  // and thanks to covariance
                  // Func[X, Boolean] &amp;lt;: Func[X, AnyVal]
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;specializing-func-contravariance&quot;&gt;Specializing &lt;code&gt;Func&lt;/code&gt;: Contravariance&lt;/h2&gt;
+&lt;h2 id=&quot;specializing-func-contravariance&quot;&gt;Specializing &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;: Contravariance&lt;/h2&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
+&lt;h3 id=&quot;the-problem-1&quot;&gt;The problem&lt;/h3&gt;
 
-&lt;p&gt;Let&amp;#39;s say we have our function &lt;code&gt;Func[Animal, Boolean]&lt;/code&gt;. Given that &lt;code&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code&gt;Dog&lt;/code&gt; is a subtype of &lt;code&gt;Animal&lt;/code&gt;),
-it seems natural to be able to apply such function to a &lt;code&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
+&lt;p&gt;Let’s say we have our function &lt;code class=&quot;highlighter-rouge&quot;&gt;Func[Animal, Boolean]&lt;/code&gt;. Given that &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Dog&lt;/code&gt; is a subtype of &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal&lt;/code&gt;),
+it seems natural to be able to apply such function to a &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
+&lt;h3 id=&quot;the-solution-1&quot;&gt;The solution&lt;/h3&gt;
 
 &lt;p&gt;The solution is &lt;strong&gt;contravariance&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;The principle: making &lt;code&gt;Clz&lt;/code&gt; contravariant in &lt;code&gt;A&lt;/code&gt; means that:&lt;/p&gt;
+&lt;p&gt;The principle: making &lt;code class=&quot;highlighter-rouge&quot;&gt;Clz&lt;/code&gt; contravariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; means that:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In other words the inheritance of this parametric type follows
@@ -1181,14 +1253,17 @@ inversely the one from the parameter type.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;We simply redefine &lt;code&gt;Func&lt;/code&gt; but making it contravariant in &lt;code&gt;I&lt;/code&gt; this time:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// now contravariant in I
+&lt;p&gt;We simply redefine &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; but making it contravariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; this time:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// now contravariant in I
 class Func[-I, O] (val f: I =&amp;gt; O) {
   def apply(i: I): O = f(i)
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// generic type
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// generic type
 val isDog: Func[Animal, Boolean] =
         new Func((i: Animal) =&amp;gt; i.isInstanceOf[Dog])
 
@@ -1200,39 +1275,57 @@ val contrvarIsDog: Func[Dog, Boolean] =
               // to contravariance
               // Func[Dog, X] &amp;gt;: Func[Animal, X]
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
 
 &lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;trait Function2[-T1, -T2, +R] extends ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See its declaration (ignore the &lt;code class=&quot;highlighter-rouge&quot;&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;trait Function2[-T1, -T2, +R] extends ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;For instance for the function:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f: Function2[Animal, Cat, Dog] = ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val f: Function2[Animal, Cat, Dog] = ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;Which of these casts are illegal?&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f1: Function2[Animal, Cat, Animal] = f
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val f1: Function2[Animal, Cat, Animal] = f
 val f2: Function2[Dog, Cat, Dog] = f
 val f3: Function2[Cat, Cat, Dog] = f
 val f4: Function2[Animal, Cat, Animal] = f
 val f5: Function2[Animal, Cat, Cat] = f
 val f6: Function2[Animal, Dog, Dog] = f
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;This is the result of applying variances:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BDog%5D%22%20%3C%7C--%20%22Funct%5BAnimal%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0Anote%20left%20of%20%22Funct%5BAnimal%5D%22:%20When%20instanciated,%5Cncan%20be%20reused%5Cnas%20Funct%5BDog%5D%5Cnthanks%20to%5Cncontravariance;%0Anote%20right%20of%20%22List%5BDog%5D%22:%20Can%20be%20added%5Cnto%20a%20List%5BAnimal%5D%5Cnthanks%20to%5Cncovariance;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Covariance and Contravariance;
+scale max 900 width;
+“List[Animal]” &amp;lt;|– “List[Dog]”: “Covariance [+A]”;
+“List[Animal]” &amp;lt;|– “List[Cat]”;
+“Funct[Dog]” &amp;lt;|– “Funct[Animal]”: “Contravariance [-A]”;
+note left of “Funct[Animal]”: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance;
+note right of “List[Dog]”: Can be added\nto a List[Animal]\nthanks to\ncovariance;
+@enduml;
+)&lt;/span&gt;&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -1270,8 +1363,8 @@ val f6: Function2[Animal, Dog, Dog] = f
 &lt;p&gt;Two examples where it helps are:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Make &lt;code&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Reuse a function &lt;code&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Make &lt;code class=&quot;highlighter-rouge&quot;&gt;List[Dog]&lt;/code&gt; a subtype of &lt;code class=&quot;highlighter-rouge&quot;&gt;List[Animal]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Reuse a function &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal=&amp;gt;Boolean&lt;/code&gt; as a function &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog=&amp;gt;Boolean&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1282,71 +1375,88 @@ val f6: Function2[Animal, Dog, Dog] = f
 
 &lt;p&gt;Consider the following example:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20types;%0Ascale%20max%20900%20width;%0AAnimal%20%3C%7C--%20Dog;%0AAnimal%20%3C%7C--%20Cat;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// Our pet classes
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Example types;
+scale max 900 width;
+Animal &amp;lt;|-- Dog;
+Animal &amp;lt;|-- Cat;
+@enduml;&quot; alt=&quot;Alt text&quot; /&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our pet classes
 sealed class Animal
 class Dog extends Animal
 class Cat extends Animal
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Let&amp;#39;s say you work for a veterinary. You&amp;#39;re writing an API.&lt;/p&gt;
+&lt;p&gt;Let’s say you work for a veterinary. You’re writing an API.&lt;/p&gt;
 
 &lt;p&gt;You want to &lt;strong&gt;modularize the functions
-that retrieve pets&amp;#39; information from a DB&lt;/strong&gt;, like:&lt;/p&gt;
+that retrieve pets’ information from a DB&lt;/strong&gt;, like:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;getName&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;getBreed&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;etc.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getName&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getBreed&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Then, we could define a class &lt;code&gt;Func&lt;/code&gt; that will encapsulate an
-&lt;em&gt;information retriever&lt;/em&gt; function, &lt;code&gt;f&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then, we could define a class &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; that will encapsulate an
+&lt;em&gt;information retriever&lt;/em&gt; function, &lt;code class=&quot;highlighter-rouge&quot;&gt;f&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Here is our first attempt:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;class Func[I,O] (val f: I =&amp;gt; O) {
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Func[I,O] (val f: I =&amp;gt; O) {
   def apply(i: I): O = f(i)
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Good! We can define our first instance of &lt;code&gt;Func&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// Our first information retriever
+&lt;p&gt;Good! We can define our first instance of &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Our first information retriever
 // Is my animal a dog?
 val isADog: Func[Animal, Boolean] = {
   new Func((i: Animal) =&amp;gt; i.isInstanceOf[Dog])
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
-&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code&gt;I&lt;/code&gt; (&lt;code&gt;Animal&lt;/code&gt;) and invariant in &lt;code&gt;O&lt;/code&gt; (&lt;code&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
+&lt;p&gt;We say that &lt;strong&gt;&lt;em&gt;Fun&lt;/em&gt; is invariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Animal&lt;/code&gt;) and invariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Boolean&lt;/code&gt;)&lt;/strong&gt;, as there is not subtype association
 done by the compiler.&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;generalizing-func-covariance&quot;&gt;Generalizing &lt;code&gt;Func&lt;/code&gt;: Covariance&lt;/h2&gt;
+&lt;h2 id=&quot;generalizing-func-covariance&quot;&gt;Generalizing &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;: Covariance&lt;/h2&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
 
-&lt;p&gt;Let&amp;#39;s say you handle many &lt;code&gt;Func&lt;/code&gt; implementations:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val x:  Func[Animal, Boolean] = ...
+&lt;p&gt;Let’s say you handle many &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; implementations:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val x:  Func[Animal, Boolean] = ...
 val y:  Func[Animal, String] = ...
 val z:  Func[Animal, Int] = ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;It would be good to be able to treat all &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;z&lt;/code&gt; polymorphically.&lt;/p&gt;
+&lt;p&gt;It would be good to be able to treat all &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;z&lt;/code&gt; polymorphically.&lt;/p&gt;
 
 &lt;p&gt;For instance be able to do:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val l: List[Func[Animal, AnyVal]] =
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val l: List[Func[Animal, AnyVal]] =
    List(x, y, z) // won't work, invariance
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Our initial declaration of &lt;code&gt;Func[I, O]&lt;/code&gt; was invariant in both &lt;code&gt;I&lt;/code&gt; and &lt;code&gt;O&lt;/code&gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Our initial declaration of &lt;code class=&quot;highlighter-rouge&quot;&gt;Func[I, O]&lt;/code&gt; was invariant in both &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;.
 It &lt;strong&gt;does not allow this supertype relation&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
@@ -1355,25 +1465,28 @@ It &lt;strong&gt;does not allow this supertype relation&lt;/strong&gt;.&lt;/p&gt
 
 &lt;p&gt;The solution is &lt;strong&gt;covariance&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;The principle: making &lt;code&gt;Clz&lt;/code&gt; covariant in &lt;code&gt;A&lt;/code&gt; means that&lt;/p&gt;
+&lt;p&gt;The principle: making &lt;code class=&quot;highlighter-rouge&quot;&gt;Clz&lt;/code&gt; covariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; means that&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Clz[Cat] &amp;lt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In other words: the inheritance of this &lt;strong&gt;parametric&lt;/strong&gt; type follows the one from the &lt;strong&gt;parameter&lt;/strong&gt; type.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Back to our example, we simply re-define &lt;code&gt;Func&lt;/code&gt;, but making it covariant in &lt;code&gt;O&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// now covariant on O
+&lt;p&gt;Back to our example, we simply re-define &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;, but making it covariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;O&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// now covariant on O
 class Func[I, +O] (val f: I =&amp;gt; O) {
   def apply(i: I): O = f(i)
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// specific type
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// specific type
 val isADog: Func[Animal, Boolean] = ...
 
 // generic type
@@ -1384,31 +1497,32 @@ val covIsDogForAnyVal: Func[Animal, AnyVal] =
                  // and thanks to covariance
                  // Func[X, Boolean] &amp;lt;: Func[X, AnyVal]
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
-&lt;h2 id=&quot;specializing-func-contravariance&quot;&gt;Specializing &lt;code&gt;Func&lt;/code&gt;: Contravariance&lt;/h2&gt;
+&lt;h2 id=&quot;specializing-func-contravariance&quot;&gt;Specializing &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt;: Contravariance&lt;/h2&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;the-problem&quot;&gt;The problem&lt;/h3&gt;
+&lt;h3 id=&quot;the-problem-1&quot;&gt;The problem&lt;/h3&gt;
 
-&lt;p&gt;Let&amp;#39;s say we have our function &lt;code&gt;Func[Animal, Boolean]&lt;/code&gt;. Given that &lt;code&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code&gt;Dog&lt;/code&gt; is a subtype of &lt;code&gt;Animal&lt;/code&gt;),
-it seems natural to be able to apply such function to a &lt;code&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
+&lt;p&gt;Let’s say we have our function &lt;code class=&quot;highlighter-rouge&quot;&gt;Func[Animal, Boolean]&lt;/code&gt;. Given that &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog &amp;lt;: Animal&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;Dog&lt;/code&gt; is a subtype of &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal&lt;/code&gt;),
+it seems natural to be able to apply such function to a &lt;code class=&quot;highlighter-rouge&quot;&gt;Dog&lt;/code&gt; too.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;h3 id=&quot;the-solution&quot;&gt;The solution&lt;/h3&gt;
+&lt;h3 id=&quot;the-solution-1&quot;&gt;The solution&lt;/h3&gt;
 
 &lt;p&gt;The solution is &lt;strong&gt;contravariance&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;The principle: making &lt;code&gt;Clz&lt;/code&gt; contravariant in &lt;code&gt;A&lt;/code&gt; means that:&lt;/p&gt;
+&lt;p&gt;The principle: making &lt;code class=&quot;highlighter-rouge&quot;&gt;Clz&lt;/code&gt; contravariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; means that:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat &amp;lt;: Animal&lt;/code&gt; implies&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Clz[Cat] &amp;gt;: Clz[Animal]&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In other words the inheritance of this parametric type follows
@@ -1416,14 +1530,17 @@ inversely the one from the parameter type.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;We simply redefine &lt;code&gt;Func&lt;/code&gt; but making it contravariant in &lt;code&gt;I&lt;/code&gt; this time:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// now contravariant in I
+&lt;p&gt;We simply redefine &lt;code class=&quot;highlighter-rouge&quot;&gt;Func&lt;/code&gt; but making it contravariant in &lt;code class=&quot;highlighter-rouge&quot;&gt;I&lt;/code&gt; this time:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// now contravariant in I
 class Func[-I, O] (val f: I =&amp;gt; O) {
   def apply(i: I): O = f(i)
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;// generic type
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// generic type
 val isDog: Func[Animal, Boolean] =
         new Func((i: Animal) =&amp;gt; i.isInstanceOf[Dog])
 
@@ -1435,39 +1552,57 @@ val contrvarIsDog: Func[Dog, Boolean] =
               // to contravariance
               // Func[Dog, X] &amp;gt;: Func[Animal, X]
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;use-in-the-scala-library&quot;&gt;Use in the Scala library&lt;/h2&gt;
 
 &lt;p&gt;I invite you to take a look at the implementation of &lt;a href=&quot;https://github.com/scala/scala/blob/v2.12.3/src/library/scala/Function2.scala&quot;&gt;the trait Function2 in Scala v2.12&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;See its declaration (ignore the &lt;code&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;trait Function2[-T1, -T2, +R] extends ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See its declaration (ignore the &lt;code class=&quot;highlighter-rouge&quot;&gt;@specialized&lt;/code&gt; annotation):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;trait Function2[-T1, -T2, +R] extends ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;What are the consequences of using covariance and contravariance?&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;For instance for the function:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f: Function2[Animal, Cat, Dog] = ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val f: Function2[Animal, Cat, Dog] = ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;Which of these casts are illegal?&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val f1: Function2[Animal, Cat, Animal] = f
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val f1: Function2[Animal, Cat, Animal] = f
 val f2: Function2[Dog, Cat, Dog] = f
 val f3: Function2[Cat, Cat, Dog] = f
 val f4: Function2[Animal, Cat, Animal] = f
 val f5: Function2[Animal, Cat, Cat] = f
 val f6: Function2[Animal, Dog, Dog] = f
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;This is the result of applying variances:&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Covariance%20and%20Contravariance;%0Ascale%20max%20900%20width;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BDog%5D%22:%20%22Covariance%20%5B+A%5D%22;%0A%22List%5BAnimal%5D%22%20%3C%7C--%20%22List%5BCat%5D%22;%0A%22Funct%5BDog%5D%22%20%3C%7C--%20%22Funct%5BAnimal%5D%22:%20%22Contravariance%20%5B-A%5D%22;%0Anote%20left%20of%20%22Funct%5BAnimal%5D%22:%20When%20instanciated,%5Cncan%20be%20reused%5Cnas%20Funct%5BDog%5D%5Cnthanks%20to%5Cncontravariance;%0Anote%20right%20of%20%22List%5BDog%5D%22:%20Can%20be%20added%5Cnto%20a%20List%5BAnimal%5D%5Cnthanks%20to%5Cncovariance;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;display:block;text-align:center&quot;&gt;![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Covariance and Contravariance;
+scale max 900 width;
+“List[Animal]” &amp;lt;|– “List[Dog]”: “Covariance [+A]”;
+“List[Animal]” &amp;lt;|– “List[Cat]”;
+“Funct[Dog]” &amp;lt;|– “Funct[Animal]”: “Contravariance [-A]”;
+note left of “Funct[Animal]”: When instanciated,\ncan be reused\nas Funct[Dog]\nthanks to\ncontravariance;
+note right of “List[Dog]”: Can be added\nto a List[Animal]\nthanks to\ncovariance;
+@enduml;
+)&lt;/span&gt;&lt;/p&gt;
 
 &lt;!--slide-next--&gt;
 
@@ -1501,11 +1636,11 @@ val f6: Function2[Animal, Dog, Dog] = f
         <description>&lt;p&gt;This post is about:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
-&lt;li&gt;why they are such a good idea&lt;/li&gt;
-&lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
-&lt;li&gt;how to measure their usage in practice&lt;/li&gt;
-&lt;li&gt;where to find more documentation about them&lt;/li&gt;
+  &lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
+  &lt;li&gt;why they are such a good idea&lt;/li&gt;
+  &lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
+  &lt;li&gt;how to measure their usage in practice&lt;/li&gt;
+  &lt;li&gt;where to find more documentation about them&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -1513,10 +1648,10 @@ val f6: Function2[Animal, Dog, Dog] = f
 &lt;p&gt;It will help you better understand concepts like:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;PermGen&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;heap memory&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;etc.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;heap memory&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1532,7 +1667,18 @@ Every time the GC claims memory, it executes these steps:&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20The%20steps%20of%20the%20Garbage%20Collection%20(GC);%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. The steps of the Garbage Collection (GC);
+scale max 900 width;
+;
+(&lt;em&gt;) -right-&amp;gt; “1. Mark used memory” %23white;
+-right-&amp;gt; “2. Delete unused memory” %23white;
+-right-&amp;gt; “3. Compact used memory” %23white;
+-right-&amp;gt; (&lt;/em&gt;);
+@enduml;
+)&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
 
@@ -1569,19 +1715,86 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Java%20Memory%20Spaces%20(MP%20stands%20for%20Memory%20Pool);%0Ascale%20max%20900%20width;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22MP%20PS%5CnEden%5CnSpace%22%20%23red;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22MP%20PS%5CnSurvivor%5CnSpace%22%20%23orange;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22MP%20PS%5CnOld%20Gen%22%20%23blue;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20OffHeap%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22MP%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22MP%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22MP%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0Anote%20right%20of%20OffHeap%20%23white;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap%20%23white;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace%20%23white;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache%20%23white;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden%20%23white;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor%20%23white;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen%20%23white;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
+scale max 900 width;
+rectangle “JVM Memory” {;
+  rectangle “Heap” {;
+    rectangle “Young\nGeneration” {;
+      rectangle eden as “MP PS\nEden\nSpace” %23red;
+      rectangle survivor as “MP PS\nSurvivor\nSpace” %23orange;
+    };
+    rectangle “Old\nGeneration” {;
+      rectangle oldgen as “MP PS\nOld Gen” %23blue;
+    };
+  };
+  rectangle OffHeap {;
+    rectangle metaspace as “MP\nMetaspace”;
+    rectangle codecache as “MP\nCodecache”;
+    rectangle classspace as “MP\nCompressed\nClass Space”;
+  };
+};
+note right of OffHeap %23white;
+  Not subject to GC.;
+end note;
+;
+note right of Heap %23white;
+  All object instances;
+  are stored here,;
+  memory from this;
+  space is used whenever;
+  new is present in the;
+  code.;
+  Subject to GC.;
+end note;
+;
+note right of metaspace %23white;
+  It used to be;
+  PermGen before;
+  Java 8.;
+end note;
+;
+note right of codecache %23white;
+  Contains compiled;
+  native code, mostly;
+  used by the JIT.;
+end note;
+;
+note right of eden %23white;
+   Recently allocated;
+   objects, did not;
+   survive any GC yet.;
+end note;
+;
+note right of survivor %23white;
+   Objects that have;
+   survived at least;
+   one GC.;
+end note;
+;
+note right of oldgen %23white;
+  Also called Tenured,;
+  objects that have;
+  survived some time;
+  in the Survivor Space.;
+end note;
+;
+@enduml;
+)&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
 
-&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Exactly, no more &lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
 
-&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
+&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code class=&quot;highlighter-rouge&quot;&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
@@ -1589,14 +1802,14 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;h2 id=&quot;in-practice-can-i-measure-the-use-of-memory-spaces&quot;&gt;In practice, can I measure the use of Memory Spaces?&lt;/h2&gt;
 
-&lt;p&gt;You can use &lt;code&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
+&lt;p&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;the use of Memory Spaces&lt;/li&gt;
-&lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
-&lt;li&gt;loaded classes&lt;/li&gt;
-&lt;li&gt;exposed MBeans&lt;/li&gt;
-&lt;li&gt;and more!&lt;/li&gt;
+  &lt;li&gt;the use of Memory Spaces&lt;/li&gt;
+  &lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
+  &lt;li&gt;loaded classes&lt;/li&gt;
+  &lt;li&gt;exposed MBeans&lt;/li&gt;
+  &lt;li&gt;and more!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -1604,11 +1817,15 @@ terms they can be divided into:&lt;/p&gt;
 &lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
 
 &lt;p&gt;We will use the Scala REPL as an example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;jconsole &amp;lt;PID&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scala
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We will open &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jconsole &amp;lt;PID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;to hook to the corresponding JVM.&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
@@ -1619,13 +1836,15 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;However, if you perform a GC and then you create lots of objects with:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val a = (1 to 1000000).toList.map(_.toString)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val a = (1 to 1000000).toList.map(_.toString)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
 &lt;!--slide-ignore-begin--&gt;
@@ -1634,15 +1853,15 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;Can you explain:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
-&lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
+  &lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
+  &lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -1650,8 +1869,8 @@ terms they can be divided into:&lt;/p&gt;
 &lt;p&gt;And more generally:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
-&lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
+  &lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
+  &lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1662,18 +1881,20 @@ terms they can be divided into:&lt;/p&gt;
 double check the version of the JVM it relates too.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html&quot;&gt;Java Garbage Collection Basics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Also, do not forget &lt;code class=&quot;highlighter-rouge&quot;&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code class=&quot;highlighter-rouge&quot;&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;
@@ -1700,11 +1921,11 @@ double check the version of the JVM it relates too.&lt;/p&gt;
         <description>&lt;p&gt;This post is about:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
-&lt;li&gt;why they are such a good idea&lt;/li&gt;
-&lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
-&lt;li&gt;how to measure their usage in practice&lt;/li&gt;
-&lt;li&gt;where to find more documentation about them&lt;/li&gt;
+  &lt;li&gt;what &lt;strong&gt;Java Memory Spaces&lt;/strong&gt; are&lt;/li&gt;
+  &lt;li&gt;why they are such a good idea&lt;/li&gt;
+  &lt;li&gt;the spaces and their use in the JVM&lt;/li&gt;
+  &lt;li&gt;how to measure their usage in practice&lt;/li&gt;
+  &lt;li&gt;where to find more documentation about them&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -1712,10 +1933,10 @@ double check the version of the JVM it relates too.&lt;/p&gt;
 &lt;p&gt;It will help you better understand concepts like:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;PermGen&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;heap memory&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;etc.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfMemoryError&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;heap memory&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1731,7 +1952,18 @@ Every time the GC claims memory, it executes these steps:&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20The%20steps%20of%20the%20Garbage%20Collection%20(GC);%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. The steps of the Garbage Collection (GC);
+scale max 900 width;
+;
+(&lt;em&gt;) -right-&amp;gt; “1. Mark used memory” %23white;
+-right-&amp;gt; “2. Delete unused memory” %23white;
+-right-&amp;gt; “3. Compact used memory” %23white;
+-right-&amp;gt; (&lt;/em&gt;);
+@enduml;
+)&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
 
@@ -1768,19 +2000,86 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Java%20Memory%20Spaces%20(MP%20stands%20for%20Memory%20Pool);%0Ascale%20max%20900%20width;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22MP%20PS%5CnEden%5CnSpace%22%20%23red;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22MP%20PS%5CnSurvivor%5CnSpace%22%20%23orange;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22MP%20PS%5CnOld%20Gen%22%20%23blue;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20OffHeap%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22MP%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22MP%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22MP%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0Anote%20right%20of%20OffHeap%20%23white;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap%20%23white;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace%20%23white;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache%20%23white;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden%20%23white;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor%20%23white;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen%20%23white;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;p&gt;![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
+scale max 900 width;
+rectangle “JVM Memory” {;
+  rectangle “Heap” {;
+    rectangle “Young\nGeneration” {;
+      rectangle eden as “MP PS\nEden\nSpace” %23red;
+      rectangle survivor as “MP PS\nSurvivor\nSpace” %23orange;
+    };
+    rectangle “Old\nGeneration” {;
+      rectangle oldgen as “MP PS\nOld Gen” %23blue;
+    };
+  };
+  rectangle OffHeap {;
+    rectangle metaspace as “MP\nMetaspace”;
+    rectangle codecache as “MP\nCodecache”;
+    rectangle classspace as “MP\nCompressed\nClass Space”;
+  };
+};
+note right of OffHeap %23white;
+  Not subject to GC.;
+end note;
+;
+note right of Heap %23white;
+  All object instances;
+  are stored here,;
+  memory from this;
+  space is used whenever;
+  new is present in the;
+  code.;
+  Subject to GC.;
+end note;
+;
+note right of metaspace %23white;
+  It used to be;
+  PermGen before;
+  Java 8.;
+end note;
+;
+note right of codecache %23white;
+  Contains compiled;
+  native code, mostly;
+  used by the JIT.;
+end note;
+;
+note right of eden %23white;
+   Recently allocated;
+   objects, did not;
+   survive any GC yet.;
+end note;
+;
+note right of survivor %23white;
+   Objects that have;
+   survived at least;
+   one GC.;
+end note;
+;
+note right of oldgen %23white;
+  Also called Tenured,;
+  objects that have;
+  survived some time;
+  in the Survivor Space.;
+end note;
+;
+@enduml;
+)&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;h3 id=&quot;no-permgen-space-in-jdk-8&quot;&gt;No PermGen Space in JDK 8?&lt;/h3&gt;
 
-&lt;p&gt;Exactly, no more &lt;code&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Exactly, no more &lt;code class=&quot;highlighter-rouge&quot;&gt;PermGen&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
 
-&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
+&lt;p&gt;The amount of native memory that can be used for class metadata is by default unlimited. You can use the option &lt;code class=&quot;highlighter-rouge&quot;&gt;MaxMetaspaceSize&lt;/code&gt; to put an upper limit on it.&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
@@ -1788,14 +2087,14 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;h2 id=&quot;in-practice-can-i-measure-the-use-of-memory-spaces&quot;&gt;In practice, can I measure the use of Memory Spaces?&lt;/h2&gt;
 
-&lt;p&gt;You can use &lt;code&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
+&lt;p&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; for that. This tool will show you:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;the use of Memory Spaces&lt;/li&gt;
-&lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
-&lt;li&gt;loaded classes&lt;/li&gt;
-&lt;li&gt;exposed MBeans&lt;/li&gt;
-&lt;li&gt;and more!&lt;/li&gt;
+  &lt;li&gt;the use of Memory Spaces&lt;/li&gt;
+  &lt;li&gt;the threads in your JVM (with name, status, stacktrace, etc.)&lt;/li&gt;
+  &lt;li&gt;loaded classes&lt;/li&gt;
+  &lt;li&gt;exposed MBeans&lt;/li&gt;
+  &lt;li&gt;and more!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -1803,11 +2102,15 @@ terms they can be divided into:&lt;/p&gt;
 &lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
 
 &lt;p&gt;We will use the Scala REPL as an example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;scala
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We will open &lt;code&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;jconsole &amp;lt;PID&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scala
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We will open &lt;code class=&quot;highlighter-rouge&quot;&gt;jconsole&lt;/code&gt; and hook to the just launched JVM (using its PID).&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jconsole &amp;lt;PID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;to hook to the corresponding JVM.&lt;/p&gt;
 
 &lt;!--slide-ignore-begin--&gt;
@@ -1818,13 +2121,15 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole1.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;However, if you perform a GC and then you create lots of objects with:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;val a = (1 to 1000000).toList.map(_.toString)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val a = (1 to 1000000).toList.map(_.toString)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-down--&gt;
 
 &lt;!--slide-ignore-begin--&gt;
@@ -1833,15 +2138,15 @@ terms they can be divided into:&lt;/p&gt;
 
 &lt;!--slide-ignore-end--&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/jconsole2.png&quot; style=&quot;width:800px;height:600px;&quot; /&gt;&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
 &lt;p&gt;Can you explain:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
-&lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
+  &lt;li&gt;what happens to the &lt;em&gt;Heap Memory Usage&lt;/em&gt; when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.&lt;/li&gt;
+  &lt;li&gt;what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; allocated.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
@@ -1849,8 +2154,8 @@ terms they can be divided into:&lt;/p&gt;
 &lt;p&gt;And more generally:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
-&lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
+  &lt;li&gt;what happens to the Loaded classes? They increased by the team &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated given the lazy class loading.&lt;/li&gt;
+  &lt;li&gt;what happens to the use of CPU? There is a peak when &lt;code class=&quot;highlighter-rouge&quot;&gt;val a&lt;/code&gt; was instantiated. Can you see it?&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-next--&gt;
@@ -1861,18 +2166,20 @@ terms they can be divided into:&lt;/p&gt;
 double check the version of the JVM it relates too.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html&quot;&gt;Java Garbage Collection Basics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/en/java/&quot;&gt;General documentation from Oracle about Java&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/7/&quot;&gt;JAVA SE 7&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/8/&quot;&gt;JAVA SE 8&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.oracle.com/javase/9/&quot;&gt;JAVA SE 9&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!--slide-down--&gt;
 
-&lt;p&gt;Also, do not forget &lt;code&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Also, do not forget &lt;code class=&quot;highlighter-rouge&quot;&gt;man java&lt;/code&gt;. If java was not installed properly via a package manager, you can still try to read the manual with &lt;code class=&quot;highlighter-rouge&quot;&gt;man&lt;/code&gt;. For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;man &lt;span class=&quot;nt&quot;&gt;--manpath&lt;/span&gt; /home/mjost/opt/zips/jdk1.7.0_79/man java
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;!--slide-next--&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;

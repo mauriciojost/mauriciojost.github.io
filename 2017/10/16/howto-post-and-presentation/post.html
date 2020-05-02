@@ -63,11 +63,11 @@
 on how to build your own blog posts, and generate both:</p>
 
 <ul>
-<li>a post, and</li>
-<li>a presentation</li>
+  <li>a post, and</li>
+  <li>a presentation</li>
 </ul>
 
-<p>from a single <code>markdown</code> file.</p>
+<p>from a single <code class="highlighter-rouge">markdown</code> file.</p>
 
 <!--more-->
 
@@ -81,7 +81,7 @@ on how to build your own blog posts, and generate both:</p>
 
 <!--slide-ignore-begin-->
 
-<p>Press <code>ESC</code> to navigate over all the slides.</p>
+<p>Press <code class="highlighter-rouge">ESC</code> to navigate over all the slides.</p>
 
 <p>You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.</p>
@@ -108,9 +108,22 @@ post, so you can go more into details where it really matters.</p>
 
 <h2 id="second-part-c">Second part C</h2>
 
-<p>Last one including a figure from <code>Gravizo</code>:</p>
+<p>Last one including a figure from <code class="highlighter-rouge">Gravizo</code>:</p>
 
-<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20Example%20of%20a%20figure%20using%20Gravizo;%0Ascale%20max%20900%20width;%0Arectangle%20MARKDOWN;%0Arectangle%20BLOG%20%7B;%0A%20%20rectangle%20POST;%0A%20%20rectangle%20PRESENTATION;%0A%7D;%0AMARKDOWN%20--%3E%20POST;%0AMARKDOWN%20--%3E%20PRESENTATION;%0Anote%20left%20of%20MARKDOWN:%20example;%0A@enduml;" alt="Alt text"></p>
+<p><span style="display:block;text-align:center"><img src="https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. Example of a figure using Gravizo;
+scale max 900 width;
+rectangle MARKDOWN;
+rectangle BLOG {;
+  rectangle POST;
+  rectangle PRESENTATION;
+};
+MARKDOWN --&gt; POST;
+MARKDOWN --&gt; PRESENTATION;
+note left of MARKDOWN: example;
+@enduml;" alt="Alt text" /></span></p>
 
 <!--slide-next-->
 
@@ -119,11 +132,11 @@ post, so you can go more into details where it really matters.</p>
 <p>Here you can find:</p>
 
 <ul>
-<li><a href="https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html">The generated presentation / slides</a></li>
-<li><a href="https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html">The generated blog post</a></li>
-<li><a href="https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown">The source markgown file</a></li>
-<li><a href="https://jekyllrb.com/">Jekyll official page</a></li>
-<li><a href="https://github.com/hakimel/reveal.js/">Reveal.js official git repository</a></li>
+  <li><a href="https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html">The generated presentation / slides</a></li>
+  <li><a href="https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html">The generated blog post</a></li>
+  <li><a href="https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown">The source markgown file</a></li>
+  <li><a href="https://jekyllrb.com/">Jekyll official page</a></li>
+  <li><a href="https://github.com/hakimel/reveal.js/">Reveal.js official git repository</a></li>
 </ul>
 
 <!--slide-next-->

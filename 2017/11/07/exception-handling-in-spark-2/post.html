@@ -49,14 +49,14 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="why-exception-handling-e-h-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
+    <h1 id="why-exception-handling-eh-in-spark">Why Exception Handling (E.H.) in Spark?</h1>
 
 <ul>
-<li><strong>data is rarely ideal</strong></li>
-<li>some scenarios don&#39;t deserve an <strong>immediate</strong> halt</li>
-<li>investigate newer scenarios as-per-priority (happier customers)</li>
-<li>ease product evolution</li>
-<li>understand application limitations</li>
+  <li><strong>data is rarely ideal</strong></li>
+  <li>some scenarios don’t deserve an <strong>immediate</strong> halt</li>
+  <li>investigate newer scenarios as-per-priority (happier customers)</li>
+  <li>ease product evolution</li>
+  <li>understand application limitations</li>
 </ul>
 
 <!--slide-next-->
@@ -83,10 +83,10 @@ gives the development team more time to evaluate logs and better decide how to h
 <p>Failures <a href="https://tersesystems.com/blog/2012/12/27/error-handling-in-scala/">can be classified as</a>:</p>
 
 <ul>
-<li><strong>Expected Internal</strong> (a circuit breaker)</li>
-<li><strong>Expected External</strong> (a parsing exception)</li>
-<li><strong>Unexpected Internal</strong> (a <code>NullPointerException</code>)</li>
-<li><strong>Unexpected External</strong> (a host down)</li>
+  <li><strong>Expected Internal</strong> (a circuit breaker)</li>
+  <li><strong>Expected External</strong> (a parsing exception)</li>
+  <li><strong>Unexpected Internal</strong> (a <code class="highlighter-rouge">NullPointerException</code>)</li>
+  <li><strong>Unexpected External</strong> (a host down)</li>
 </ul>
 
 <!--slide-ignore-end-->
@@ -94,8 +94,8 @@ gives the development team more time to evaluate logs and better decide how to h
 <p>Among others, failures can be classified by importance:</p>
 
 <ul>
-<li><code>NonFatal</code> (can be recovered)</li>
-<li><code>Fatal</code> (cannot be recovered)</li>
+  <li><code class="highlighter-rouge">NonFatal</code> (can be recovered)</li>
+  <li><code class="highlighter-rouge">Fatal</code> (cannot be recovered)</li>
 </ul>
 
 <!--slide-down-->
@@ -103,31 +103,31 @@ gives the development team more time to evaluate logs and better decide how to h
 <p>Or by determinism:</p>
 
 <ul>
-<li><code>Deterministic</code> (can be reproduced consistently)</li>
-<li><code>Non deterministic</code></li>
+  <li><code class="highlighter-rouge">Deterministic</code> (can be reproduced consistently)</li>
+  <li><code class="highlighter-rouge">Non deterministic</code></li>
 </ul>
 
 <!--slide-next-->
 
-<h2 id="spark-exception-handling-e-h">Spark Exception Handling (E.H.)</h2>
+<h2 id="spark-exception-handling-eh">Spark Exception Handling (E.H.)</h2>
 
 <p>Generally speaking, Spark exceptions can be divided in two groups:</p>
 
 <ul>
-<li><strong>Unexpected failures</strong>: generally non-deterministic, fatal or non fatal (Spark framework via task retries)</li>
-<li><strong>Expected failures</strong>: generally deterministic, non fatal -&gt; <strong>this post</strong></li>
+  <li><strong>Unexpected failures</strong>: generally non-deterministic, fatal or non fatal (Spark framework via task retries)</li>
+  <li><strong>Expected failures</strong>: generally deterministic, non fatal -&gt; <strong>this post</strong></li>
 </ul>
 
 <!--slide-next-->
 
-<h1 id="application-e-h-approaches">Application E.H. approaches</h1>
+<h1 id="application-eh-approaches">Application E.H. approaches</h1>
 
 <ul>
-<li>The no-exception-handling approach</li>
-<li>The try-catch and log approach</li>
-<li>The <code>Try</code> / <code>Either</code> approach</li>
-<li>The Accumulator approach</li>
-<li>More evolved approaches</li>
+  <li>The no-exception-handling approach</li>
+  <li>The try-catch and log approach</li>
+  <li>The <code class="highlighter-rouge">Try</code> / <code class="highlighter-rouge">Either</code> approach</li>
+  <li>The Accumulator approach</li>
+  <li>More evolved approaches</li>
 </ul>
 
 <!--slide-next-->
@@ -138,7 +138,7 @@ gives the development team more time to evaluate logs and better decide how to h
 
 <p>The Spark app will fail if upon retries a task keeps failing.</p>
 
-<pre><code class="scala" data-trim contenteditable>
+<pre><code class="scala" data-trim="" contenteditable="">
 def country(cityCode: String): String = {
   cities(cityCode).get.country
   // the city has to be found!
@@ -156,11 +156,11 @@ def country(cityCode: String): String = {
 <p>Report unexpected scenarios via logs.</p>
 
 <ul>
-<li>May generate significant amount of logs (performance!)</li>
-<li>Generally not purely functional</li>
+  <li>May generate significant amount of logs (performance!)</li>
+  <li>Generally not purely functional</li>
 </ul>
 
-<pre><code class="scala" data-trim contenteditable>
+<pre><code class="scala" data-trim="" contenteditable="">
 def country(cityCode: String): String = {
   try {
     cities(cityCode).get.country
@@ -178,23 +178,23 @@ def country(cityCode: String): String = {
 <p>Not really appealing:</p>
 
 <ul>
-<li>Requires the use of RM tools to retrieve logs (as not in HDFS)</li>
-<li>Difficult to test</li>
-<li>However provides by default multiple levels of seriousness</li>
+  <li>Requires the use of RM tools to retrieve logs (as not in HDFS)</li>
+  <li>Difficult to test</li>
+  <li>However provides by default multiple levels of seriousness</li>
 </ul>
 
 <!--slide-next-->
 
-<h2 id="the-try-either-approach">The <code>Try</code> / <code>Either</code> approach</h2>
+<h2 id="the-try--either-approach">The <code class="highlighter-rouge">Try</code> / <code class="highlighter-rouge">Either</code> approach</h2>
 
-<p>Return <code>Try</code> / <code>Either</code> types always.</p>
+<p>Return <code class="highlighter-rouge">Try</code> / <code class="highlighter-rouge">Either</code> types always.</p>
 
 <ul>
-<li>Purely functional</li>
-<li><code>Exception</code> reports are part of the output of a transformation</li>
+  <li>Purely functional</li>
+  <li><code class="highlighter-rouge">Exception</code> reports are part of the output of a transformation</li>
 </ul>
 
-<pre><code class="scala" data-trim contenteditable>
+<pre><code class="scala" data-trim="" contenteditable="">
 def country(cityCode: String): Try[String] = {
   Try{cities(cityCode).get.country}
 }
@@ -202,51 +202,51 @@ def country(cityCode: String): Try[String] = {
 
 <!--slide-down-->
 
-<h3 id="when-to-use">When to use?</h3>
+<h3 id="when-to-use-1">When to use?</h3>
 
 <p>Maybe the most appealing approach:</p>
 
 <ul>
-<li>Results are stored in HDFS</li>
-<li>Easy to test</li>
-<li>Easy to reason about</li>
-<li>Spark/Hadoop agnostic</li>
-<li>Can be tricky to save simultaneously <code>Success</code>/<code>Right</code> and <code>Failure</code>/<code>Left</code> sides (could be slow, requiring multiple actions to be triggered)</li>
-<li>Does not provide support for levels of seriousness</li>
+  <li>Results are stored in HDFS</li>
+  <li>Easy to test</li>
+  <li>Easy to reason about</li>
+  <li>Spark/Hadoop agnostic</li>
+  <li>Can be tricky to save simultaneously <code class="highlighter-rouge">Success</code>/<code class="highlighter-rouge">Right</code> and <code class="highlighter-rouge">Failure</code>/<code class="highlighter-rouge">Left</code> sides (could be slow, requiring multiple actions to be triggered)</li>
+  <li>Does not provide support for levels of seriousness</li>
 </ul>
 
 <!--slide-next-->
 
 <h2 id="the-accumulator-approach">The Accumulator approach</h2>
 
-<p>Use the Spark <code>Accumulator</code> mechanism to report statistics on specific scenarios.</p>
+<p>Use the Spark <code class="highlighter-rouge">Accumulator</code> mechanism to report statistics on specific scenarios.</p>
 
 <ul>
-<li>Not meant to retrieve detailed information about the failure</li>
-<li>Function argument is mutable (often seen as bad practice)</li>
+  <li>Not meant to retrieve detailed information about the failure</li>
+  <li>Function argument is mutable (often seen as bad practice)</li>
 </ul>
 
-<pre><code class="scala" data-trim contenteditable>
+<pre><code class="scala" data-trim="" contenteditable="">
 def country(cityCode: String, ac: Accumulator): String = {
   cities(cityCode) match {
-    case Some(city) => city.country
-    case None => {ac += 1; "UnknownCountry"}
+    case Some(city) =&gt; city.country
+    case None =&gt; {ac += 1; "UnknownCountry"}
   }
 }
 </code></pre>
 
 <!--slide-down-->
 
-<h3 id="when-to-use">When to use?</h3>
+<h3 id="when-to-use-2">When to use?</h3>
 
 <p>The Spark approach:</p>
 
 <ul>
-<li>Results can be printed in <code>stdout</code> or stored in HDFS easily</li>
-<li>Relatively easy to test</li>
-<li>Spark framework dependant</li>
-<li>Should be very fast</li>
-<li>Does not provide support for levels of seriousness</li>
+  <li>Results can be printed in <code class="highlighter-rouge">stdout</code> or stored in HDFS easily</li>
+  <li>Relatively easy to test</li>
+  <li>Spark framework dependant</li>
+  <li>Should be very fast</li>
+  <li>Does not provide support for levels of seriousness</li>
 </ul>
 
 <!--slide-next-->
@@ -260,6 +260,7 @@ def country(cityCode: String, ac: Accumulator): String = {
 <h1 id="enjoy">Enjoy!</h1>
 
 <p>If you have any comments, let me know!</p>
+
 
   </div>
 

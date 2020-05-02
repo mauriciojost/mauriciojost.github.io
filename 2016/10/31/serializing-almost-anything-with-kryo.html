@@ -58,48 +58,51 @@
 <p>Registering your classes with Kryo in Spark is done this way:</p>
 
 <!--more-->
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">sparkConf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">()</span>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">sparkConf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">()</span>
 <span class="o">...</span>
 <span class="nv">sparkConf</span><span class="o">.</span><span class="py">registerKryoClasses</span><span class="o">(</span>
    <span class="nc">Array</span><span class="o">(</span>
-       <span class="c1">// your classes here
-</span>   <span class="o">)</span>
+       <span class="c1">// your classes here</span>
+   <span class="o">)</span>
 <span class="o">)</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="how-to-serialize-unaccessible-classes">How to serialize unaccessible classes?</h2>
 
-<p>It all goes fine until you hit private classes, or arrays of classes. If you tried to serialize classes from the Joda library probably you know what I am talking about. However there are a few tricks that will help you serialize almost anything:  </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// scala basic classes
-</span>
+<p>It all goes fine until you hit private classes, or arrays of classes. If you tried to serialize classes from the Joda library probably you know what I am talking about. However there are a few tricks that will help you serialize almost anything:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// scala basic classes</span>
+
 <span class="nv">Class</span><span class="o">.</span><span class="py">forName</span><span class="o">(</span><span class="s">"scala.collection.immutable.$colon$colon"</span><span class="o">)</span>
 
 <span class="nv">Class</span><span class="o">.</span><span class="py">forName</span><span class="o">(</span><span class="s">"scala.collection.immutable.Nil$"</span><span class="o">)</span>
 
 <span class="n">classOf</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">Tuple2</span><span class="o">[</span><span class="k">_</span>,<span class="k">_</span><span class="o">]]]</span>
 
-<span class="c1">// arrays of primitive classes
-</span>
+<span class="c1">// arrays of primitive classes</span>
+
 <span class="n">classOf</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span>
 
 <span class="n">classOf</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span>
 
-<span class="c1">// monads of primitive classes
-</span>
+<span class="c1">// monads of primitive classes</span>
+
 <span class="n">classOf</span><span class="o">[</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span>
 
 <span class="n">classOf</span><span class="o">[</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]]</span>
 
-<span class="c1">// case objects
-</span>
+<span class="c1">// case objects</span>
+
 <span class="nv">Class</span><span class="o">.</span><span class="py">forName</span><span class="o">(</span><span class="s">"scala.None$"</span><span class="o">)</span>
 
-<span class="c1">// protected static final classes
-</span>
+<span class="c1">// protected static final classes</span>
+
 <span class="nc">ClassTag</span><span class="o">(</span><span class="nv">Class</span><span class="o">.</span><span class="py">forName</span><span class="o">(</span><span class="s">"org.roaringbitmap.RoaringArray$Element"</span><span class="o">))</span>
    <span class="o">.</span><span class="py">wrap</span><span class="o">.</span><span class="py">runtimeClass</span>
 
-<span class="c1">// public static class FakeFileStatus
-</span>
+<span class="c1">// public static class FakeFileStatus</span>
+
 <span class="nv">Class</span><span class="o">.</span><span class="py">forName</span><span class="o">(</span>
    <span class="s">"org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus"</span><span class="o">)</span>
 
@@ -107,8 +110,8 @@
    <span class="s">"org.apache.spark.sql.sources.HadoopFsRelation$FakeFileStatus"</span><span class="o">))</span>
    <span class="o">.</span><span class="py">wrap</span><span class="o">.</span><span class="py">runtimeClass</span>
 
-<span class="c1">// joda classes
-</span>
+<span class="c1">// joda classes</span>
+
 <span class="n">classOf</span><span class="o">[</span><span class="kt">org.joda.time.tz.DateTimeZoneBuilder</span><span class="o">]</span>
 
 <span class="n">classOf</span><span class="o">[</span><span class="kt">org.joda.time.tz.FixedDateTimeZone</span><span class="o">]</span>
@@ -126,8 +129,9 @@
 
 <span class="nc">ClassTag</span><span class="o">(</span><span class="nv">Class</span><span class="o">.</span><span class="py">forName</span><span class="o">(</span>
    <span class="s">"org.joda.time.tz.CachedDateTimeZone$Info"</span><span class="o">)).</span><span class="py">wrap</span><span class="o">.</span><span class="py">runtimeClass</span>
-</code></pre></div>
-<p><strong>Won&#39;t you serialize anything?</strong></p>
+</code></pre></div></div>
+
+<p><strong>Won’t you serialize anything?</strong></p>
 
   </div>
 

@@ -1,7 +1,8 @@
 # mauriciojost.github.io
 
-
 [![github.io](https://img.shields.io/badge/github-io-22bb22.svg)](https://mauriciojost.github.io/)
+
+Simply my technical notes made posts. 
 
 ## Installation
 
@@ -13,10 +14,7 @@ sudo apt-get install ruby2.4
 sudo apt-get install ruby2.5
 
 # Install jekyll for blog generation from static files
-sudo gem install jekyll
-
-# Install redcarpet markdown interpreter
-sudo gem install redcarpet
+sudo gem install jekyll -v 4.0
 
 # Ensure all submodules to this project are properly cloned too
 git submodule update --init --recursive

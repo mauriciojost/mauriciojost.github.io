@@ -52,11 +52,11 @@
     <p>This post is about:</p>
 
 <ul>
-<li>what <strong>Java Memory Spaces</strong> are</li>
-<li>why they are such a good idea</li>
-<li>the spaces and their use in the JVM</li>
-<li>how to measure their usage in practice</li>
-<li>where to find more documentation about them</li>
+  <li>what <strong>Java Memory Spaces</strong> are</li>
+  <li>why they are such a good idea</li>
+  <li>the spaces and their use in the JVM</li>
+  <li>how to measure their usage in practice</li>
+  <li>where to find more documentation about them</li>
 </ul>
 
 <!--slide-down-->
@@ -64,10 +64,10 @@
 <p>It will help you better understand concepts like:</p>
 
 <ul>
-<li><code>OutOfMemoryError</code></li>
-<li><code>PermGen</code></li>
-<li><code>heap memory</code></li>
-<li>etc.</li>
+  <li><code class="highlighter-rouge">OutOfMemoryError</code></li>
+  <li><code class="highlighter-rouge">PermGen</code></li>
+  <li><code class="highlighter-rouge">heap memory</code></li>
+  <li>etc.</li>
 </ul>
 
 <!--slide-next-->
@@ -83,7 +83,18 @@ Every time the GC claims memory, it executes these steps:</p>
 
 <!--slide-ignore-end-->
 
-<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%201.%20The%20steps%20of%20the%20Garbage%20Collection%20(GC);%0Ascale%20max%20900%20width;%0A;%0A(*)%20-right-%3E%20%221.%20Mark%20used%20memory%22%20%23white;%0A-right-%3E%20%222.%20Delete%20unused%20memory%22%20%23white;%0A-right-%3E%20%223.%20Compact%20used%20memory%22%20%23white;%0A-right-%3E%20(*);%0A@enduml;" alt="Alt text"></p>
+<p>![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 1. The steps of the Garbage Collection (GC);
+scale max 900 width;
+;
+(<em>) -right-&gt; “1. Mark used memory” %23white;
+-right-&gt; “2. Delete unused memory” %23white;
+-right-&gt; “3. Compact used memory” %23white;
+-right-&gt; (</em>);
+@enduml;
+)</p>
 
 <!--slide-ignore-begin-->
 
@@ -120,19 +131,86 @@ terms they can be divided into:</p>
 
 <!--slide-ignore-end-->
 
-<p><img src="https://g.gravizo.com/svg?%0A@startuml;%0Askinparam%20monochrome%20false;%0Acaption%20Figure%202.%20Java%20Memory%20Spaces%20(MP%20stands%20for%20Memory%20Pool);%0Ascale%20max%20900%20width;%0Arectangle%20%22JVM%20Memory%22%20%7B;%0A%20%20rectangle%20%22Heap%22%20%7B;%0A%20%20%20%20rectangle%20%22Young%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20eden%20as%20%22MP%20PS%5CnEden%5CnSpace%22%20%23red;%0A%20%20%20%20%20%20rectangle%20survivor%20as%20%22MP%20PS%5CnSurvivor%5CnSpace%22%20%23orange;%0A%20%20%20%20%7D;%0A%20%20%20%20rectangle%20%22Old%5CnGeneration%22%20%7B;%0A%20%20%20%20%20%20rectangle%20oldgen%20as%20%22MP%20PS%5CnOld%20Gen%22%20%23blue;%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%20%20rectangle%20OffHeap%20%7B;%0A%20%20%20%20rectangle%20metaspace%20as%20%22MP%5CnMetaspace%22;%0A%20%20%20%20rectangle%20codecache%20as%20%22MP%5CnCodecache%22;%0A%20%20%20%20rectangle%20classspace%20as%20%22MP%5CnCompressed%5CnClass%20Space%22;%0A%20%20%7D;%0A%7D;%0Anote%20right%20of%20OffHeap%20%23white;%0A%20%20Not%20subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20Heap%20%23white;%0A%20%20All%20object%20instances;%0A%20%20are%20stored%20here,;%0A%20%20memory%20from%20this;%0A%20%20space%20is%20used%20whenever;%0A%20%20new%20is%20present%20in%20the;%0A%20%20code.;%0A%20%20Subject%20to%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20metaspace%20%23white;%0A%20%20It%20used%20to%20be;%0A%20%20PermGen%20before;%0A%20%20Java%208.;%0Aend%20note;%0A;%0Anote%20right%20of%20codecache%20%23white;%0A%20%20Contains%20compiled;%0A%20%20native%20code,%20mostly;%0A%20%20used%20by%20the%20JIT.;%0Aend%20note;%0A;%0Anote%20right%20of%20eden%20%23white;%0A%20%20%20Recently%20allocated;%0A%20%20%20objects,%20did%20not;%0A%20%20%20survive%20any%20GC%20yet.;%0Aend%20note;%0A;%0Anote%20right%20of%20survivor%20%23white;%0A%20%20%20Objects%20that%20have;%0A%20%20%20survived%20at%20least;%0A%20%20%20one%20GC.;%0Aend%20note;%0A;%0Anote%20right%20of%20oldgen%20%23white;%0A%20%20Also%20called%20Tenured,;%0A%20%20objects%20that%20have;%0A%20%20survived%20some%20time;%0A%20%20in%20the%20Survivor%20Space.;%0Aend%20note;%0A;%0A@enduml;" alt="Alt text"></p>
+<p>![Alt text](https://g.gravizo.com/svg?
+@startuml;
+skinparam monochrome false;
+caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
+scale max 900 width;
+rectangle “JVM Memory” {;
+  rectangle “Heap” {;
+    rectangle “Young\nGeneration” {;
+      rectangle eden as “MP PS\nEden\nSpace” %23red;
+      rectangle survivor as “MP PS\nSurvivor\nSpace” %23orange;
+    };
+    rectangle “Old\nGeneration” {;
+      rectangle oldgen as “MP PS\nOld Gen” %23blue;
+    };
+  };
+  rectangle OffHeap {;
+    rectangle metaspace as “MP\nMetaspace”;
+    rectangle codecache as “MP\nCodecache”;
+    rectangle classspace as “MP\nCompressed\nClass Space”;
+  };
+};
+note right of OffHeap %23white;
+  Not subject to GC.;
+end note;
+;
+note right of Heap %23white;
+  All object instances;
+  are stored here,;
+  memory from this;
+  space is used whenever;
+  new is present in the;
+  code.;
+  Subject to GC.;
+end note;
+;
+note right of metaspace %23white;
+  It used to be;
+  PermGen before;
+  Java 8.;
+end note;
+;
+note right of codecache %23white;
+  Contains compiled;
+  native code, mostly;
+  used by the JIT.;
+end note;
+;
+note right of eden %23white;
+   Recently allocated;
+   objects, did not;
+   survive any GC yet.;
+end note;
+;
+note right of survivor %23white;
+   Objects that have;
+   survived at least;
+   one GC.;
+end note;
+;
+note right of oldgen %23white;
+  Also called Tenured,;
+  objects that have;
+  survived some time;
+  in the Survivor Space.;
+end note;
+;
+@enduml;
+)</p>
 
 <!--slide-down-->
 
 <h3 id="no-permgen-space-in-jdk-8">No PermGen Space in JDK 8?</h3>
 
-<p>Exactly, no more <code>PermGen</code>.</p>
+<p>Exactly, no more <code class="highlighter-rouge">PermGen</code>.</p>
 
 <p>In JDK 8 the permanent generation was removed. The class metadata is allocated in native memory instead.</p>
 
 <!--slide-ignore-begin-->
 
-<p>The amount of native memory that can be used for class metadata is by default unlimited. You can use the option <code>MaxMetaspaceSize</code> to put an upper limit on it.</p>
+<p>The amount of native memory that can be used for class metadata is by default unlimited. You can use the option <code class="highlighter-rouge">MaxMetaspaceSize</code> to put an upper limit on it.</p>
 
 <!--slide-ignore-end-->
 
@@ -140,14 +218,14 @@ terms they can be divided into:</p>
 
 <h2 id="in-practice-can-i-measure-the-use-of-memory-spaces">In practice, can I measure the use of Memory Spaces?</h2>
 
-<p>You can use <code>jconsole</code> for that. This tool will show you:</p>
+<p>You can use <code class="highlighter-rouge">jconsole</code> for that. This tool will show you:</p>
 
 <ul>
-<li>the use of Memory Spaces</li>
-<li>the threads in your JVM (with name, status, stacktrace, etc.)</li>
-<li>loaded classes</li>
-<li>exposed MBeans</li>
-<li>and more!</li>
+  <li>the use of Memory Spaces</li>
+  <li>the threads in your JVM (with name, status, stacktrace, etc.)</li>
+  <li>loaded classes</li>
+  <li>exposed MBeans</li>
+  <li>and more!</li>
 </ul>
 
 <!--slide-down-->
@@ -155,11 +233,15 @@ terms they can be divided into:</p>
 <h3 id="example">Example</h3>
 
 <p>We will use the Scala REPL as an example:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">scala
-</code></pre></div>
-<p>We will open <code>jconsole</code> and hook to the just launched JVM (using its PID).</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">jconsole &lt;PID&gt;
-</code></pre></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scala
+</code></pre></div></div>
+
+<p>We will open <code class="highlighter-rouge">jconsole</code> and hook to the just launched JVM (using its PID).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jconsole &lt;PID&gt;
+</code></pre></div></div>
+
 <p>to hook to the corresponding JVM.</p>
 
 <!--slide-ignore-begin-->
@@ -170,13 +252,15 @@ terms they can be divided into:</p>
 
 <!--slide-down-->
 
-<p><img src="/images/posts/jconsole1.png" style="width:800px;height:600px;"></p>
+<p><img src="/images/posts/jconsole1.png" style="width:800px;height:600px;" /></p>
 
 <!--slide-down-->
 
 <p>However, if you perform a GC and then you create lots of objects with:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">val a = (1 to 1000000).toList.map(_.toString)
-</code></pre></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val a = (1 to 1000000).toList.map(_.toString)
+</code></pre></div></div>
+
 <!--slide-down-->
 
 <!--slide-ignore-begin-->
@@ -185,15 +269,15 @@ terms they can be divided into:</p>
 
 <!--slide-ignore-end-->
 
-<p><img src="/images/posts/jconsole2.png" style="width:800px;height:600px;"></p>
+<p><img src="/images/posts/jconsole2.png" style="width:800px;height:600px;" /></p>
 
 <!--slide-down-->
 
 <p>Can you explain:</p>
 
 <ul>
-<li>what happens to the <em>Heap Memory Usage</em> when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.</li>
-<li>what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object <code>val a</code> allocated.</li>
+  <li>what happens to the <em>Heap Memory Usage</em> when we launched the GC? It drops, used memory was marked, letting GC dispose unused blocks of memory, freing it for new objects to use it.</li>
+  <li>what happens when we created objects in Scala? See how the heap usage increases by about 100MiB. There is one new big object <code class="highlighter-rouge">val a</code> allocated.</li>
 </ul>
 
 <!--slide-down-->
@@ -201,8 +285,8 @@ terms they can be divided into:</p>
 <p>And more generally:</p>
 
 <ul>
-<li>what happens to the Loaded classes? They increased by the team <code>val a</code> was instantiated given the lazy class loading.</li>
-<li>what happens to the use of CPU? There is a peak when <code>val a</code> was instantiated. Can you see it?</li>
+  <li>what happens to the Loaded classes? They increased by the team <code class="highlighter-rouge">val a</code> was instantiated given the lazy class loading.</li>
+  <li>what happens to the use of CPU? There is a peak when <code class="highlighter-rouge">val a</code> was instantiated. Can you see it?</li>
 </ul>
 
 <!--slide-next-->
@@ -213,18 +297,20 @@ terms they can be divided into:</p>
 double check the version of the JVM it relates too.</p>
 
 <ul>
-<li><a href="http://docs.oracle.com/en/java/">General documentation from Oracle about Java</a></li>
-<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html">Java Garbage Collection Basics</a></li>
-<li><a href="http://docs.oracle.com/javase/7/">JAVA SE 7</a></li>
-<li><a href="http://docs.oracle.com/javase/8/">JAVA SE 8</a></li>
-<li><a href="http://docs.oracle.com/javase/9/">JAVA SE 9</a></li>
+  <li><a href="http://docs.oracle.com/en/java/">General documentation from Oracle about Java</a></li>
+  <li>[Java Garbage Collection Basics] (http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)</li>
+  <li><a href="http://docs.oracle.com/javase/7/">JAVA SE 7</a></li>
+  <li><a href="http://docs.oracle.com/javase/8/">JAVA SE 8</a></li>
+  <li><a href="http://docs.oracle.com/javase/9/">JAVA SE 9</a></li>
 </ul>
 
 <!--slide-down-->
 
-<p>Also, do not forget <code>man java</code>. If java was not installed properly via a package manager, you can still try to read the manual with <code>man</code>. For example:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">man <span class="nt">--manpath</span> /home/mjost/opt/zips/jdk1.7.0_79/man java
-</code></pre></div>
+<p>Also, do not forget <code class="highlighter-rouge">man java</code>. If java was not installed properly via a package manager, you can still try to read the manual with <code class="highlighter-rouge">man</code>. For example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>man <span class="nt">--manpath</span> /home/mjost/opt/zips/jdk1.7.0_79/man java
+</code></pre></div></div>
+
 <!--slide-next-->
 
 <p>Enjoy!</p>

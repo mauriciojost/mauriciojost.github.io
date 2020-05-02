@@ -59,20 +59,26 @@
 
 <h2 id="basic-sorting">Basic sorting</h2>
 
-<p>Let&#39;s use the below as our example collection (you can try this out in the scala-shell):</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span>
-</code></pre></div>
-<h3 id="get-an-extreme-value-max">Get an extreme value: <code>max</code></h3>
+<p>Let’s use the below as our example collection (you can try this out in the scala-shell):</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">l</span> <span class="k">:</span> <span class="kt">Iterable</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="get-an-extreme-value-max">Get an extreme value: <code class="highlighter-rouge">max</code></h3>
 
 <p>If you feel tempted to do:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">max</span> <span class="k">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">toSeq</span><span class="o">.</span><span class="py">sorted</span><span class="o">.</span><span class="py">last</span>
-</code></pre></div>
-<p>just don&#39;t, <strong>you better do</strong>:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">max</span> <span class="k">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">max</span>
-</code></pre></div>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">max</span> <span class="k">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">toSeq</span><span class="o">.</span><span class="py">sorted</span><span class="o">.</span><span class="py">last</span>
+</code></pre></div></div>
+
+<p>just don’t, <strong>you better do</strong>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">max</span> <span class="k">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">max</span>
+</code></pre></div></div>
+
 <p><strong>Why?</strong></p>
 
-<p>Apart from being simpler and easier to read, it&#39;s also more efficient
+<p>Apart from being simpler and easier to read, it’s also more efficient
 (as no intermediate collection will be created).</p>
 
 <h3 id="keep-sorted">Keep sorted</h3>
@@ -80,30 +86,35 @@
 <p>Some usecases require to keep a collection sorted at all times.</p>
 
 <p>If you feel tempted to do:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">seq</span> <span class="k">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">toSeq</span>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">seq</span> <span class="k">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">toSeq</span>
 <span class="k">val</span> <span class="nv">l2</span> <span class="k">=</span> <span class="n">seq</span> <span class="o">:+</span> <span class="mi">5</span>
 <span class="k">val</span> <span class="nv">sorted2</span> <span class="k">=</span> <span class="nv">l2</span><span class="o">.</span><span class="py">sorted</span>
 <span class="k">val</span> <span class="nv">l3</span> <span class="k">=</span> <span class="n">sorted2</span> <span class="o">:+</span> <span class="mi">6</span>
 <span class="k">val</span> <span class="nv">sorted3</span> <span class="k">=</span> <span class="nv">l3</span><span class="o">.</span><span class="py">sorted</span>
-</code></pre></div>
-<p>just don&#39;t, <strong>you better do</strong>:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">import</span> <span class="nn">scala.collection.SortedSet</span>
+</code></pre></div></div>
+
+<p>just don’t, <strong>you better do</strong>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.collection.SortedSet</span>
 <span class="k">val</span> <span class="nv">s</span> <span class="k">=</span> <span class="nv">SortedSet</span><span class="o">.</span><span class="py">empty</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">++</span> <span class="n">l</span>
-<span class="k">val</span> <span class="nv">sorted2</span> <span class="k">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">5</span> <span class="c1">// sorted
-</span><span class="k">val</span> <span class="nv">sorted3</span> <span class="k">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">6</span> <span class="c1">// sorted
-</span></code></pre></div>
+<span class="k">val</span> <span class="nv">sorted2</span> <span class="k">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">5</span> <span class="c1">// sorted</span>
+<span class="k">val</span> <span class="nv">sorted3</span> <span class="k">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">6</span> <span class="c1">// sorted</span>
+</code></pre></div></div>
+
 <p><strong>Why?</strong></p>
 
-<p>Apart from being cleaner, it&#39;s also more efficient as (no intermediate non-sorted collections are created).</p>
+<p>Apart from being cleaner, it’s also more efficient as (no intermediate non-sorted collections are created).</p>
 
-<p>Mind though, that <code>Set</code> is not suitable if you need your collection to keep duplicate elements.</p>
+<p>Mind though, that <code class="highlighter-rouge">Set</code> is not suitable if you need your collection to keep duplicate elements.</p>
 
-<h2 id="sorting-complex-types-ordering">Sorting complex types: <code>Ordering</code></h2>
+<h2 id="sorting-complex-types-ordering">Sorting complex types: <code class="highlighter-rouge">Ordering</code></h2>
 
 <p>Many scenarios with more complex types require some sort of functional definition of the ordering.</p>
 
-<p>What if we have more complex types? For instance: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">Person</span><span class="o">(</span>
+<p>What if we have more complex types? For instance:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="k">class</span> <span class="nc">Person</span><span class="o">(</span>
    <span class="n">savings</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
    <span class="n">surname</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
    <span class="n">hasKids</span><span class="k">:</span> <span class="kt">Boolean</span>
@@ -113,28 +124,36 @@
    <span class="nc">Person</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Charles"</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span>
    <span class="nc">Person</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Adam"</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
 <span class="o">)</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>We can say that <em>there is no implicit Ordering defined for Person</em>. As Person is part of our business,
-it’s up to us to define its <em>Ordering</em>, which we can do easily as follows: </p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">orderingOnSavings</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Person</span><span class="o">]</span> <span class="k">=</span> <span class="nv">Ordering</span><span class="o">.</span><span class="py">by</span><span class="o">(</span><span class="n">p</span> <span class="k">=&gt;</span> <span class="nv">p</span><span class="o">.</span><span class="py">savings</span><span class="o">)</span>
-<span class="nv">l</span><span class="o">.</span><span class="py">min</span><span class="o">(</span><span class="n">orderingOnSavings</span><span class="o">)</span> <span class="c1">// Person(-1, "Adam", true)
-</span></code></pre></div>
-<p>Keep in mind that there is an implicit ordering defined for the type <code>Int</code> and that&#39;s why this works. 
+it’s up to us to define its <em>Ordering</em>, which we can do easily as follows:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">orderingOnSavings</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Person</span><span class="o">]</span> <span class="k">=</span> <span class="nv">Ordering</span><span class="o">.</span><span class="py">by</span><span class="o">(</span><span class="n">p</span> <span class="k">=&gt;</span> <span class="nv">p</span><span class="o">.</span><span class="py">savings</span><span class="o">)</span>
+<span class="nv">l</span><span class="o">.</span><span class="py">min</span><span class="o">(</span><span class="n">orderingOnSavings</span><span class="o">)</span> <span class="c1">// Person(-1, "Adam", true)</span>
+</code></pre></div></div>
+
+<p>Keep in mind that there is an implicit ordering defined for the type <code class="highlighter-rouge">Int</code> and that’s why this works. 
 Scala also has an implicit ordering defined for tuples of types for which there is an implicit ordering, which includes
-primitive types such as <code>Int</code>, <code>String</code>, <code>Double</code> and so on.</p>
+primitive types such as <code class="highlighter-rouge">Int</code>, <code class="highlighter-rouge">String</code>, <code class="highlighter-rouge">Double</code> and so on.</p>
 
 <p>Thanks to this we can specify a multi-field ordering with a given priority, as follows:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">orderingOSavingsAndSurname</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Person</span><span class="o">]</span> <span class="k">=</span>
-      <span class="nv">Ordering</span><span class="o">.</span><span class="py">by</span><span class="o">(</span><span class="n">a</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nv">a</span><span class="o">.</span><span class="py">savings</span><span class="o">,</span> <span class="nv">a</span><span class="o">.</span><span class="py">surname</span><span class="o">))</span> <span class="c1">// uses imp. ordering
-</span><span class="nv">l</span><span class="o">.</span><span class="py">max</span><span class="o">(</span><span class="n">orderingOSavingsAndSurname</span><span class="o">)</span> <span class="c1">// Person(1, "Charles", true)
-</span></code></pre></div>
-<p>Using <strong>Orderings</strong> your code will become:
- - much cleaner,
- - robust,
- - reusable and
- - testable</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">orderingOSavingsAndSurname</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Person</span><span class="o">]</span> <span class="k">=</span>
+      <span class="nv">Ordering</span><span class="o">.</span><span class="py">by</span><span class="o">(</span><span class="n">a</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nv">a</span><span class="o">.</span><span class="py">savings</span><span class="o">,</span> <span class="nv">a</span><span class="o">.</span><span class="py">surname</span><span class="o">))</span> <span class="c1">// uses imp. ordering</span>
+<span class="nv">l</span><span class="o">.</span><span class="py">max</span><span class="o">(</span><span class="n">orderingOSavingsAndSurname</span><span class="o">)</span> <span class="c1">// Person(1, "Charles", true)</span>
+</code></pre></div></div>
+
+<p>Using <strong>Orderings</strong> your code will become:</p>
+<ul>
+  <li>much cleaner,</li>
+  <li>robust,</li>
+  <li>reusable and</li>
+  <li>testable</li>
+</ul>
 
 <h1 id="enjoy">Enjoy!</h1>
+
 
   </div>
 
