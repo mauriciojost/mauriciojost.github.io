@@ -43,9 +43,9 @@ This is an example of an horizontal slide.
 
 Text written here appears in both the presentation and the post layouts.
 
-<!--slide-ignore-begin-->
-
 Press `ESC` to navigate over all the slides.
+
+<!--slide-ignore-begin-->
 
 You can have text that will be ignored in the presentation, but written in the
 post, so you can go more into details where it really matters.
@@ -60,7 +60,11 @@ post, so you can go more into details where it really matters.
 
 ## Second part (A)
 
-You can add a vertical slide (I personally use them for continuation of the upper slide).
+You can add a vertical slide.
+
+Next horizontal slide = new paragraph. 
+
+Next vertical slide = new sentence.
 
 <!--slide-down-->
 
@@ -98,7 +102,7 @@ Here you can find:
 
 - [The generated presentation / slides](https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/presentation.html)
 - [The generated blog post](https://mauriciojost.github.io/2017/10/16/howto-post-and-presentation/post.html)
-- [The source markgown file](https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown)
+- [The source markdown file](https://raw.githubusercontent.com/mauriciojost/mauriciojost.github.io/development/_posts/2017-10-10-covariant-contravariant-invariant-in-scala.markdown)
 - [Jekyll official page](https://jekyllrb.com/)
 - [Reveal.js official git repository](https://github.com/hakimel/reveal.js/)
 

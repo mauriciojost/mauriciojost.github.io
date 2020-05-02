@@ -45,18 +45,17 @@ Every time the GC claims memory, it executes these steps:
 
 <!--slide-ignore-end-->
 
-![Alt text](https://g.gravizo.com/svg?
+<img src='https://g.gravizo.com/svg?
 @startuml;
 skinparam monochrome false;
 caption Figure 1. The steps of the Garbage Collection (GC);
 scale max 900 width;
-;
 (*) -right-> "1. Mark used memory" %23white;
 -right-> "2. Delete unused memory" %23white;
 -right-> "3. Compact used memory" %23white;
--right-> \(*\);
+-right-> (*);
 @enduml;
-)
+'>
 
 <!--slide-ignore-begin-->
 
@@ -93,7 +92,7 @@ terms they can be divided into:
 
 <!--slide-ignore-end-->
 
-![Alt text](https://g.gravizo.com/svg?
+<img src='https://g.gravizo.com/svg?
 @startuml;
 skinparam monochrome false;
 caption Figure 2. Java Memory Spaces (MP stands for Memory Pool);
@@ -160,7 +159,7 @@ note right of oldgen %23white;
 end note;
 ;
 @enduml;
-)
+'>
 
 <!--slide-down-->
 
