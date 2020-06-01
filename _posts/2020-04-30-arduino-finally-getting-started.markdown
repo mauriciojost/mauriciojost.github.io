@@ -72,6 +72,7 @@ Mostly pocket-sized devices with:
 - Need for portability
 - Low price
 - _No Operating System_ needed
+- Development ongoing
 
 NOTE: For those more into it already, keep in mind that all the items above are indicative. Sure you can have an arduino with 3 simple purposes, the user interface could be a color LCD still, maybe not efficient if you use no sleep features, no portability if you have a automatic window opening system, price can vary if you have a very expensive sensor, there are some so called operating systems for Arduino like Mongoose OS, ...
 
@@ -94,6 +95,7 @@ NOTE: Saw some videos making a big deal out of a Raspberry running on batteries 
 ### Arduino vs. *?
 
 - FPGA
+- PLC
 - ESPuma
 - uPython
 - Blynk
@@ -191,7 +193,14 @@ _The component aboves are not the cheapest, but the simplest to get started with
 
 <!--slide-down-->
 
-About the incredible [ESP8266](https://en.wikipedia.org/wiki/ESP8266)...
+Why [ESP8266](https://en.wikipedia.org/wiki/ESP8266)?
+
+- not the most common Arduino
+- has WiFi
+- is power efficient
+- is small
+- is cheap
+- strong community
 
 <!--slide-next-->
 
