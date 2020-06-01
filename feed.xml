@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 01 Jun 2020 11:17:10 +0200</pubDate>
-    <lastBuildDate>Mon, 01 Jun 2020 11:17:10 +0200</lastBuildDate>
+    <pubDate>Mon, 01 Jun 2020 18:36:04 +0200</pubDate>
+    <lastBuildDate>Mon, 01 Jun 2020 18:36:04 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -218,7 +218,8 @@
   &lt;li&gt;Sensor: &lt;a href=&quot;https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_&quot;&gt;&lt;strong&gt;a button&lt;/strong&gt; (~3€ each)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;UI: &lt;a href=&quot;https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3&quot;&gt;&lt;strong&gt;some leds&lt;/strong&gt; (~3€)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Power: laptop &lt;a href=&quot;https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_&quot;&gt;(+ &lt;strong&gt;an usb cable&lt;/strong&gt; (~3€))&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-semaphore&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-semaphore&quot;&gt;semaphore&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Wires: &lt;a href=&quot;https://www.amazon.fr/dp/B074P726ZR/ref=cm_sw_em_r_mt_dp_U_Z2s1Eb484FPA6&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;em&gt;The component aboves are not the cheapest, but the simplest to get started with!!!&lt;/em&gt;&lt;/p&gt;
@@ -498,7 +499,8 @@
   &lt;li&gt;Sensor: &lt;a href=&quot;https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_&quot;&gt;&lt;strong&gt;a button&lt;/strong&gt; (~3€ each)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;UI: &lt;a href=&quot;https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3&quot;&gt;&lt;strong&gt;some leds&lt;/strong&gt; (~3€)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Power: laptop &lt;a href=&quot;https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_&quot;&gt;(+ &lt;strong&gt;an usb cable&lt;/strong&gt; (~3€))&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-semaphore&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-semaphore&quot;&gt;semaphore&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Wires: &lt;a href=&quot;https://www.amazon.fr/dp/B074P726ZR/ref=cm_sw_em_r_mt_dp_U_Z2s1Eb484FPA6&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;em&gt;The component aboves are not the cheapest, but the simplest to get started with!!!&lt;/em&gt;&lt;/p&gt;
