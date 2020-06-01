@@ -188,6 +188,10 @@ Proposed ingredients (**to buy**):
 
 _The component aboves are not the cheapest, but the simplest to get started with!!!_
 
+<!--slide-down-->
+
+About the incredible [ESP8266](https://en.wikipedia.org/wiki/ESP8266)...
+
 <!--slide-next-->
 
 ### Procedure
