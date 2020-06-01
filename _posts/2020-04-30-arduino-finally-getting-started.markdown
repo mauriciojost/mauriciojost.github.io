@@ -184,7 +184,8 @@ Proposed ingredients (**to buy**):
 2. Sensor: [**a button** (~3€ each)](https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_)
 3. UI: [**some leds** (~3€)](https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3)
 4. Power: laptop [(+ **an usb cable** (~3€))](https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_)
-5. Firmware: [blinking led](https://github.com/mauriciojost/esp8266-semaphore) using [PlatformIO](https://platformio.org/)
+5. Firmware: [semaphore](https://github.com/mauriciojost/esp8266-semaphore) using [PlatformIO](https://platformio.org/)
+6. Wires: [here](https://www.amazon.fr/dp/B074P726ZR/ref=cm_sw_em_r_mt_dp_U_Z2s1Eb484FPA6)
 
 _The component aboves are not the cheapest, but the simplest to get started with!!!_
 
