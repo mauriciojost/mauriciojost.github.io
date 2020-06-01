@@ -5,8 +5,8 @@
     <description></description>
     <link>http://mauriciojost.github.io/</link>
     <atom:link href="http://mauriciojost.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 May 2020 17:15:27 +0200</pubDate>
-    <lastBuildDate>Sat, 02 May 2020 17:15:27 +0200</lastBuildDate>
+    <pubDate>Mon, 01 Jun 2020 11:06:42 +0200</pubDate>
+    <lastBuildDate>Mon, 01 Jun 2020 11:06:42 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -33,6 +33,7 @@
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#why-so-trendy&quot; id=&quot;markdown-toc-why-so-trendy&quot;&gt;Why so trendy?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#in-layers&quot; id=&quot;markdown-toc-in-layers&quot;&gt;In layers&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#how-to-get-started&quot; id=&quot;markdown-toc-how-to-get-started&quot;&gt;How to get started?&lt;/a&gt;        &lt;ul&gt;
           &lt;li&gt;&lt;a href=&quot;#main-ingredients&quot; id=&quot;markdown-toc-main-ingredients&quot;&gt;Main ingredients&lt;/a&gt;&lt;/li&gt;
           &lt;li&gt;&lt;a href=&quot;#procedure&quot; id=&quot;markdown-toc-procedure&quot;&gt;Procedure&lt;/a&gt;&lt;/li&gt;
@@ -115,7 +116,7 @@
 
 &lt;p&gt;&lt;strong&gt;OUT OF SCOPE&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours.&lt;/p&gt;
+&lt;p&gt;NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours. That’s nothing for a serious Arduino battery-powered based project.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -139,7 +140,7 @@
 &lt;!--slide-down--&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Boards can be way cheaper than a laptop&lt;/li&gt;
+  &lt;li&gt;Boards are way cheaper than a laptop&lt;/li&gt;
   &lt;li&gt;Lots of cool applications (IoT)
     &lt;ul&gt;
       &lt;li&gt;Smart Home&lt;/li&gt;
@@ -170,6 +171,28 @@
 
 &lt;!--slide-next--&gt;
 
+&lt;h2 id=&quot;in-layers&quot;&gt;In layers&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Your code&lt;/li&gt;
+  &lt;li&gt;Arduino code&lt;/li&gt;
+  &lt;li&gt;SDK&lt;/li&gt;
+  &lt;li&gt;Hardware&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mauriciojost/arduino-boards-primitives/blob/master/src/primitives/BoardESP32.h#L95&quot;&gt;Your code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/src/SPIFFS.h&quot;&gt;Arduino&lt;/a&gt; &lt;a href=&quot;https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/src/SPIFFS.cpp#L68&quot;&gt;2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html&quot;&gt;SDK&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;HW&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
 &lt;h2 id=&quot;how-to-get-started&quot;&gt;How to get started?&lt;/h2&gt;
 
 &lt;!--slide-down--&gt;
@@ -181,7 +204,7 @@
   &lt;li&gt;Some sensor/s&lt;/li&gt;
   &lt;li&gt;Some user interface/s&lt;/li&gt;
   &lt;li&gt;A power supply&lt;/li&gt;
-  &lt;li&gt;A firmware&lt;/li&gt;
+  &lt;li&gt;A firmware (on top of Arduino / SDK)&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg? @startuml; rectangle &amp;quot;Board&amp;quot; {;   rectangle &amp;quot;Firmware&amp;quot;; }; rectangle &amp;quot;Sensor&amp;quot;; rectangle &amp;quot;Power&amp;quot;;  rectangle &amp;quot;UI&amp;quot;; Sensor --&amp;gt; Firmware; Firmware --&amp;gt; UI; Power --&amp;gt; Board; @enduml &quot; /&gt;&lt;/p&gt;
@@ -195,7 +218,7 @@
   &lt;li&gt;Sensor: &lt;a href=&quot;https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_&quot;&gt;&lt;strong&gt;a button&lt;/strong&gt; (~3€ each)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;UI: &lt;a href=&quot;https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3&quot;&gt;&lt;strong&gt;some leds&lt;/strong&gt; (~3€)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Power: laptop &lt;a href=&quot;https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_&quot;&gt;(+ &lt;strong&gt;an usb cable&lt;/strong&gt; (~3€))&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-semaphore&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;em&gt;The component aboves are not the cheapest, but the simplest to get started with!!!&lt;/em&gt;&lt;/p&gt;
@@ -286,6 +309,7 @@
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#why-so-trendy&quot; id=&quot;markdown-toc-why-so-trendy&quot;&gt;Why so trendy?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#in-layers&quot; id=&quot;markdown-toc-in-layers&quot;&gt;In layers&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#how-to-get-started&quot; id=&quot;markdown-toc-how-to-get-started&quot;&gt;How to get started?&lt;/a&gt;        &lt;ul&gt;
           &lt;li&gt;&lt;a href=&quot;#main-ingredients&quot; id=&quot;markdown-toc-main-ingredients&quot;&gt;Main ingredients&lt;/a&gt;&lt;/li&gt;
           &lt;li&gt;&lt;a href=&quot;#procedure&quot; id=&quot;markdown-toc-procedure&quot;&gt;Procedure&lt;/a&gt;&lt;/li&gt;
@@ -368,7 +392,7 @@
 
 &lt;p&gt;&lt;strong&gt;OUT OF SCOPE&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours.&lt;/p&gt;
+&lt;p&gt;NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours. That’s nothing for a serious Arduino battery-powered based project.&lt;/p&gt;
 
 &lt;!--slide-down--&gt;
 
@@ -392,7 +416,7 @@
 &lt;!--slide-down--&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Boards can be way cheaper than a laptop&lt;/li&gt;
+  &lt;li&gt;Boards are way cheaper than a laptop&lt;/li&gt;
   &lt;li&gt;Lots of cool applications (IoT)
     &lt;ul&gt;
       &lt;li&gt;Smart Home&lt;/li&gt;
@@ -423,6 +447,28 @@
 
 &lt;!--slide-next--&gt;
 
+&lt;h2 id=&quot;in-layers&quot;&gt;In layers&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Your code&lt;/li&gt;
+  &lt;li&gt;Arduino code&lt;/li&gt;
+  &lt;li&gt;SDK&lt;/li&gt;
+  &lt;li&gt;Hardware&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-down--&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mauriciojost/arduino-boards-primitives/blob/master/src/primitives/BoardESP32.h#L95&quot;&gt;Your code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/src/SPIFFS.h&quot;&gt;Arduino&lt;/a&gt; &lt;a href=&quot;https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/src/SPIFFS.cpp#L68&quot;&gt;2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html&quot;&gt;SDK&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;HW&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--slide-next--&gt;
+
 &lt;h2 id=&quot;how-to-get-started&quot;&gt;How to get started?&lt;/h2&gt;
 
 &lt;!--slide-down--&gt;
@@ -434,7 +480,7 @@
   &lt;li&gt;Some sensor/s&lt;/li&gt;
   &lt;li&gt;Some user interface/s&lt;/li&gt;
   &lt;li&gt;A power supply&lt;/li&gt;
-  &lt;li&gt;A firmware&lt;/li&gt;
+  &lt;li&gt;A firmware (on top of Arduino / SDK)&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://g.gravizo.com/svg? @startuml; rectangle &amp;quot;Board&amp;quot; {;   rectangle &amp;quot;Firmware&amp;quot;; }; rectangle &amp;quot;Sensor&amp;quot;; rectangle &amp;quot;Power&amp;quot;;  rectangle &amp;quot;UI&amp;quot;; Sensor --&amp;gt; Firmware; Firmware --&amp;gt; UI; Power --&amp;gt; Board; @enduml &quot; /&gt;&lt;/p&gt;
@@ -448,7 +494,7 @@
   &lt;li&gt;Sensor: &lt;a href=&quot;https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_&quot;&gt;&lt;strong&gt;a button&lt;/strong&gt; (~3€ each)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;UI: &lt;a href=&quot;https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3&quot;&gt;&lt;strong&gt;some leds&lt;/strong&gt; (~3€)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Power: laptop &lt;a href=&quot;https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_&quot;&gt;(+ &lt;strong&gt;an usb cable&lt;/strong&gt; (~3€))&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-blinking-led&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firmware: &lt;a href=&quot;https://github.com/mauriciojost/esp8266-semaphore&quot;&gt;blinking led&lt;/a&gt; using &lt;a href=&quot;https://platformio.org/&quot;&gt;PlatformIO&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;em&gt;The component aboves are not the cheapest, but the simplest to get started with!!!&lt;/em&gt;&lt;/p&gt;

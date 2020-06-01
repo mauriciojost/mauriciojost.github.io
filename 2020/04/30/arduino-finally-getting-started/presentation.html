@@ -83,6 +83,7 @@
         </ul>
       </li>
       <li><a href="#why-so-trendy" id="markdown-toc-why-so-trendy">Why so trendy?</a></li>
+      <li><a href="#in-layers" id="markdown-toc-in-layers">In layers</a></li>
       <li><a href="#how-to-get-started" id="markdown-toc-how-to-get-started">How to get started?</a>        <ul>
           <li><a href="#main-ingredients" id="markdown-toc-main-ingredients">Main ingredients</a></li>
           <li><a href="#procedure" id="markdown-toc-procedure">Procedure</a></li>
@@ -165,7 +166,7 @@
 
 <p><strong>OUT OF SCOPE</strong></p>
 
-<p>NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours.</p>
+<p>NOTE: Saw some videos making a big deal out of a Raspberry running on batteries for 14 hours. That’s nothing for a serious Arduino battery-powered based project.</p>
 
 <!--slide-down-->
 
@@ -189,7 +190,7 @@
 <!--slide-down-->
 
 <ul>
-  <li>Boards can be way cheaper than a laptop</li>
+  <li>Boards are way cheaper than a laptop</li>
   <li>Lots of cool applications (IoT)
     <ul>
       <li>Smart Home</li>
@@ -220,6 +221,28 @@
 
 <!--slide-next-->
 
+<h2 id="in-layers">In layers</h2>
+
+<ul>
+  <li>Your code</li>
+  <li>Arduino code</li>
+  <li>SDK</li>
+  <li>Hardware</li>
+</ul>
+
+<!--slide-down-->
+
+<p>Example:</p>
+
+<ul>
+  <li><a href="https://github.com/mauriciojost/arduino-boards-primitives/blob/master/src/primitives/BoardESP32.h#L95">Your code</a></li>
+  <li><a href="https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/src/SPIFFS.h">Arduino</a> <a href="https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/src/SPIFFS.cpp#L68">2</a></li>
+  <li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html">SDK</a></li>
+  <li>HW</li>
+</ul>
+
+<!--slide-next-->
+
 <h2 id="how-to-get-started">How to get started?</h2>
 
 <!--slide-down-->
@@ -231,7 +254,7 @@
   <li>Some sensor/s</li>
   <li>Some user interface/s</li>
   <li>A power supply</li>
-  <li>A firmware</li>
+  <li>A firmware (on top of Arduino / SDK)</li>
 </ol>
 
 <p><img src="https://g.gravizo.com/svg? @startuml; rectangle &quot;Board&quot; {;   rectangle &quot;Firmware&quot;; }; rectangle &quot;Sensor&quot;; rectangle &quot;Power&quot;;  rectangle &quot;UI&quot;; Sensor --&gt; Firmware; Firmware --&gt; UI; Power --&gt; Board; @enduml " /></p>
@@ -245,7 +268,7 @@
   <li>Sensor: <a href="https://www.amazon.fr/dp/B07DPSMRJ6/ref=cm_sw_em_r_mt_"><strong>a button</strong> (~3€ each)</a></li>
   <li>UI: <a href="https://www.amazon.fr/dp/B07PR5T67K/ref=cm_sw_em_r_mt_dp_U_NncREbE6NZ3Q3"><strong>some leds</strong> (~3€)</a></li>
   <li>Power: laptop <a href="https://www.amazon.fr/dp/B0711PVX6Z/ref=cm_sw_em_r_mt_">(+ <strong>an usb cable</strong> (~3€))</a></li>
-  <li>Firmware: <a href="https://github.com/mauriciojost/esp8266-blinking-led">blinking led</a> using <a href="https://platformio.org/">PlatformIO</a></li>
+  <li>Firmware: <a href="https://github.com/mauriciojost/esp8266-semaphore">blinking led</a> using <a href="https://platformio.org/">PlatformIO</a></li>
 </ol>
 
 <p><em>The component aboves are not the cheapest, but the simplest to get started with!!!</em></p>
